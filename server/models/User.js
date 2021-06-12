@@ -4,6 +4,10 @@ const jwt = require("jsonwebtoken");
 
 const userSchema = mongoose.Schema(
   {
+    email: {
+      type: String,
+      unique: true,
+    },
     username: {
       type: String,
       minLength: 4,
@@ -13,11 +17,14 @@ const userSchema = mongoose.Schema(
       required: true,
       minLength: 4,
     },
-    isAdmin:Boolean,
     fullName: {
       type: String,
     },
-    profile_pic: {
+    branch: {
+      type: String,
+    },
+    year: Number,
+    image: {
       contentType: String,
     },
     bio: {
@@ -27,6 +34,25 @@ const userSchema = mongoose.Schema(
       type: String,
       minLength: 6,
     },
+
+    role: {
+      type: String,
+      enum: ["admin", "member"],
+      required: true,
+      default: "member",
+    },
+    questions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question",
+      },
+    ],
+    starredQuestions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question",
+      },
+    ],
     facebookProvider: {
       type: {
         id: String,
@@ -60,7 +86,18 @@ const userSchema = mongoose.Schema(
         type: String,
       },
     ],
-   
+    starredQuestions: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Question",
+      },
+    ],
+    starredInterviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "InterviewExp",
+      },
+    ],
   },
   {
     timestamps: true,
@@ -69,7 +106,6 @@ const userSchema = mongoose.Schema(
 
 userSchema.set("toJSON", { getters: true, virtuals: true });
 
-/* hash new password before saving to db  */
 userSchema.pre("save", async function (next) {
   const user = this;
   if (user.isModified("password")) {
@@ -78,8 +114,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-
-/* Can be used to create autb token for users */
 userSchema.methods.generateAuthToken = async function (expiry) {
   const user = this;
   const token = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_KEY, {
@@ -88,10 +122,8 @@ userSchema.methods.generateAuthToken = async function (expiry) {
   return token;
 };
 
-
-/* Following fn can be used to find user by email and pass */
-userSchema.statics.findByCredentials = async function (email, password,isAdmin=false) {
-  const user = await this.findOne({ email,isAdmin });
+userSchema.statics.findByCredentials = async function (email, password) {
+  const user = await this.findOne({ email });
   if (!user) {
     throw new Error({
       error: {
@@ -110,6 +142,139 @@ userSchema.statics.findByCredentials = async function (email, password,isAdmin=f
   });
 };
 
+userSchema.statics.upsertAzureUser = async function (token, cb) {
+  console.log(token);
+  var that = this;
+  let user = await this.findOne({
+    "azureProvider.id": token.oid,
+  });
+
+  if (!user) {
+    user = await this.findOne({
+      email: token.preferred_username || token.email,
+    });
+  }
+  if (!user) {
+    var newUser = await new that({
+      fullName: token.name || token.preferred_username || null,
+      username: token.name || token.preferred_username || null,
+      email: token.preferred_username || token.email || null,
+      azureProvider: {
+        id: token.oid,
+      },
+    });
+
+    await newUser.save(function (error, savedUser) {
+      if (error) {
+        console.log(error);
+      }
+      return cb(error, savedUser);
+    });
+  } else {
+    return cb(null, user);
+  }
+};
+
+
+userSchema.statics.upsertGoogleUser = async function (
+  accessToken,
+  refreshToken,
+  profile,
+  cb
+) {
+  let emails = [];
+  if (profile.emails) {
+    emails = profile.emails.map((e) => e.value);
+  }
+
+  console.log(profile);
+  var that = this;
+  let user = await this.findOne({
+    "googleProvider.id": profile.id,
+  });
+
+  if (!user) {
+    user = await this.findOne({}).where("email").in(emails);
+  }
+  if (!user) {
+    var newUser = new that({
+      fullName: profile.displayName || null,
+      username: profile.displayName || null,
+      email: profile.emails[0].value || profile.email || null,
+      googleProvider: {
+        id: profile.id,
+        token: accessToken,
+      },
+    });
+
+    await newUser.save(function (error, savedUser) {
+      if (error) {
+        console.log(error);
+      }
+      return cb(error, savedUser);
+    });
+  } else {
+    return cb(null, user);
+  }
+};
+
+userSchema.statics.upsertGithubUser = async function (
+  accessToken,
+  refreshToken,
+  profile,
+  cb
+) {
+  let emails = [];
+  if (profile.emails) {
+    emails = profile.emails.map((e) => e.value);
+  }
+
+  console.log(profile);
+  var that = this;
+  let user = await this.findOne({
+    "githubProvider.id": profile.id,
+  });
+
+  if (!user) {
+    user = await this.findOne({}).where("email").in(emails);
+  }
+  if (!user) {
+    var newUser = new that({
+      fullName: profile.displayName || profile.username || null,
+      username: profile.displayName || profile.username || null,
+      email: profile.emails[0].value || profile.email || null,
+      githubProvider: {
+        id: profile.id,
+        token: accessToken,
+      },
+    });
+
+    await newUser.save(function (error, savedUser) {
+      if (error) {
+        console.log(error);
+      }
+      return cb(error, savedUser);
+    });
+  } else {
+    return cb(null, user);
+  }
+};
+
+userSchema.statics.findByRefreshToken = async function (token) {
+  try {
+    let { _id } = await jwt.verify(token, process.env.JWT_REFRESH_KEY);
+    let user = await this.findById(_id);
+    console.log(user.refreshTokens, token);
+    if (user.refreshTokens.includes(token)) {
+      return user;
+    } else {
+      throw new Error("no User found");
+    }
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
 
 const User = mongoose.model("User", userSchema);
 
