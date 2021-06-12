@@ -4,7 +4,7 @@ services:
   db:
     image: mongo
     restart: unless-stopped
-    container_name: mongo
+    container_name: mongodb_engage2021
     volumes:
       - dbdata:/data/db
     expose:
@@ -12,8 +12,8 @@ services:
 
   web:
     build: .
-    image: swc_project/dev
-    container_name: node_project
+    image: engage2021/dev
+    container_name: engage2021
     restart: unless-stopped
     env_file: .env
     expose:
@@ -27,15 +27,15 @@ services:
       - .:/code
     command: sh -c "/entrypoint"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/project
-      - WAIT_HOSTS=mongo:27017
+      - MONGO_URI=mongodb://mongodb_engage2021:27017/engage2021
+      - WAIT_HOSTS=mongodb_engage2021:27017
       - WAIT_HOSTS_TIMEOUT=300
       - WAIT_SLEEP_INTERVAL=10
       - WAIT_HOST_CONNECT_TIMEOUT=30
-      - VIRTUAL_HOST=localhost
-      - VIRTUAL_PORT=3000
-      - VIRTUAL_PATH=/project
-      - VIRTUAL_PROTO=http
+      # - VIRTUAL_HOST=localhost
+      # - VIRTUAL_PORT=3000
+      # - VIRTUAL_PATH=/project
+      # - VIRTUAL_PROTO=http
   #Uncomment this block if your project needs to use redis
   # redis :
   #     restart: unless-stopped
@@ -46,7 +46,7 @@ services:
 volumes:
   dbdata:
 
-networks:
-  default:
-    external:
-      name: nginx-proxy
+# networks:
+#   default:
+#     external:
+#       name: nginx-proxy
