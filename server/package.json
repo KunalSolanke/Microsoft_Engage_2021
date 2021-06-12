@@ -1,0 +1,41 @@
+{
+  "name": "node-boilerpate",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "lint": "eslint **/*.js",
+    "lint:fix": "eslint --fix **/*.js"
+  },
+  "dependencies": {
+    "@admin-bro/express": "~3.0.1",
+    "@admin-bro/mongoose": "~1.1.0",
+    "@sentry/node": "~6.4.1",
+    "@sentry/tracing": "~6.4.1",
+    "admin-bro": "~4.0.1",
+    "bcryptjs": "~2.4.3",
+    "connect-mongodb-session": "^2.4.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "~10.0.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-ejs-layouts": "~2.5.0",
+    "express-formidable": "~1.2.0",
+    "express-session": "^1.17.2",
+    "http-errors": "~1.6.3",
+    "jsonwebtoken": "~8.5.1",
+    "mongoose": "~5.12.12",
+    "morgan": "~1.9.1",
+    "nodemon": "~2.0.7"
+  },
+  "devDependencies": {
+    "eslint": "~7.27.0",
+    "eslint-config-airbnb-base": "~14.2.1",
+    "eslint-config-prettier": "~8.3.0",
+    "eslint-plugin-import": "~2.23.3",
+    "eslint-plugin-prettier": "~3.4.0",
+    "prettier": "~2.3.0"
+  }
+}

@@ -1,0 +1,52 @@
+version: "3.8"
+#Docker compose file with mongo and nodejs services
+services:
+  db:
+    image: mongo
+    restart: unless-stopped
+    container_name: mongo
+    volumes:
+      - dbdata:/data/db
+    expose:
+      - 27017
+
+  web:
+    build: .
+    image: swc_project/dev
+    container_name: node_project
+    restart: unless-stopped
+    env_file: .env
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    #            - redis
+    volumes:
+      - .:/code
+    command: sh -c "/entrypoint"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/project
+      - WAIT_HOSTS=mongo:27017
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=10
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+      - VIRTUAL_HOST=localhost
+      - VIRTUAL_PORT=3000
+      - VIRTUAL_PATH=/project
+      - VIRTUAL_PROTO=http
+  #Uncomment this block if your project needs to use redis
+  # redis :
+  #     restart: unless-stopped
+  #     image : redis:alpine
+  #     expose :
+  #     - 6379
+
+volumes:
+  dbdata:
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
