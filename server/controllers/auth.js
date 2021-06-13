@@ -98,8 +98,6 @@ const refresh = async (req, res) => {
   }
 };
 
-
-
 const logout = async (req, res) => {
   res.clearCookie("refresh_token", {
     httpOnly: true,
@@ -114,8 +112,6 @@ const logout = async (req, res) => {
 
 module.exports = {
   signup,
-  signupform,
-  loginform,
   login,
   logout,
   refresh,

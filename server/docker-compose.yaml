@@ -19,7 +19,7 @@ services:
     expose:
       - 3000
     ports:
-      - 3000:3000
+      - 5000:3000
     depends_on:
       - db
     #            - redis
