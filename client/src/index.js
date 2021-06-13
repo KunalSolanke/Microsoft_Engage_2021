@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as Sentry from '@sentry/react';
 import {Integrations} from '@sentry/tracing';
+import './global.scss';
 
 //Sentry Setup
 Sentry.init({
