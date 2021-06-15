@@ -1,0 +1,15 @@
+.socialButton {
+  transition: "all .1s ease-in";
+  outline: none;
+  border: none;
+  border-radius: 100%;
+}
+.socialButton:hover {
+  transform: scale(1.1, 1.1);
+}
+
+.button {
+  outline: none;
+  border: none;
+  border-radius: 100%;
+}

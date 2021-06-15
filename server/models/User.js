@@ -116,7 +116,7 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.generateAuthToken = async function (expiry) {
   const user = this;
-  const token = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_KEY, {
+  const token = jwt.sign({ _id: user._id }, "random words", {
     expiresIn: expiry,
   });
   return token;
@@ -175,13 +175,7 @@ userSchema.statics.upsertAzureUser = async function (token, cb) {
   }
 };
 
-
-userSchema.statics.upsertGoogleUser = async function (
-  accessToken,
-  refreshToken,
-  profile,
-  cb
-) {
+userSchema.statics.upsertGoogleUser = async function (accessToken, refreshToken, profile, cb) {
   let emails = [];
   if (profile.emails) {
     emails = profile.emails.map((e) => e.value);
@@ -218,12 +212,7 @@ userSchema.statics.upsertGoogleUser = async function (
   }
 };
 
-userSchema.statics.upsertGithubUser = async function (
-  accessToken,
-  refreshToken,
-  profile,
-  cb
-) {
+userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken, profile, cb) {
   let emails = [];
   if (profile.emails) {
     emails = profile.emails.map((e) => e.value);

@@ -1,0 +1,13 @@
+.auth__image {
+  width: 100%;
+  height: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+.auth__grid {
+  align-items: center;
+}
+.redirect {
+  display: flex;
+  justify-content: space-between;
+}

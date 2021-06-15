@@ -1,0 +1,8 @@
+APIS :
+  - getusers
+  - create chat
+  - on call create meet
+  - get prev history
+  - update profile 
+  - get chat,delete chat
+  - getcallchat history

@@ -25,6 +25,7 @@ router.route("/google").post(
 
 router.route("/github").post(
   async (req, res, next) => {
+    console.log(req.body);
     const { code } = req.body;
 
     const data = {};
@@ -32,6 +33,7 @@ router.route("/github").post(
     data["client_secret"] = process.env.GITHUB_CLIENT_SECRET;
     data["code"] = code;
     data["redirect_uri"] = "";
+    console.log(data);
     try {
       // Request to exchange code for an access token
       const res = await fetch("https://github.com/login/oauth/access_token", {
