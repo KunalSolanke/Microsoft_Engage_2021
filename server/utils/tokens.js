@@ -12,7 +12,7 @@ module.exports = {
     res.cookie("refresh_token", req.refreshToken, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      // sameSite: "none",
+	    //  sameSite: "none",
       secure: true,
     });
     user.refreshTokens = user.refreshTokens.concat([req.refreshToken]);

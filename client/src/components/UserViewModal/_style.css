@@ -1,0 +1,24 @@
+.user_modal_content {
+  display: flex;
+  padding: 1rem 0.5rem;
+  align-items: center;
+  border: 1px solid #ededed;
+}
+.user_profile__data {
+  flex-grow: 1;
+}
+.user_modal_avatar {
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  object-fit: contain;
+  margin-right: 2rem;
+  margin-top: -0.5rem;
+}
+.modal_actions {
+  margin-top: 1rem;
+  width: 100px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}

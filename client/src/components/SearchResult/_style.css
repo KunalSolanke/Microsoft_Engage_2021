@@ -1,0 +1,18 @@
+.search__result__item {
+  display: flex;
+  padding: 1rem 0.5rem;
+  align-items: center;
+  border: 1px solid #ededed;
+  cursor: pointer;
+  overflow: hidden;
+}
+.user__data {
+  flex-grow: 1;
+}
+.user_search_avatar {
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  object-fit: cover;
+  margin-right: 2rem;
+}

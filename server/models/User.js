@@ -12,20 +12,8 @@ const userSchema = mongoose.Schema(
       type: String,
       minLength: 4,
     },
-    email: {
-      type: String,
-      required: true,
-      minLength: 4,
-    },
     fullName: {
       type: String,
-    },
-    branch: {
-      type: String,
-    },
-    year: Number,
-    image: {
-      contentType: String,
     },
     bio: {
       type: String,
@@ -34,25 +22,12 @@ const userSchema = mongoose.Schema(
       type: String,
       minLength: 6,
     },
-
     role: {
       type: String,
       enum: ["admin", "member"],
       required: true,
       default: "member",
     },
-    questions: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Question",
-      },
-    ],
-    starredQuestions: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Question",
-      },
-    ],
     facebookProvider: {
       type: {
         id: String,
@@ -84,18 +59,6 @@ const userSchema = mongoose.Schema(
     refreshTokens: [
       {
         type: String,
-      },
-    ],
-    starredQuestions: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Question",
-      },
-    ],
-    starredInterviews: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "InterviewExp",
       },
     ],
   },

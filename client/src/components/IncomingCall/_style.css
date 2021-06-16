@@ -1,0 +1,54 @@
+.incoming__call {
+  position: fixed;
+  bottom: 10px;
+  right: 5px;
+  width: clamp(450px, 400px, 300px);
+  height: 300px;
+  background-color: #161616;
+  display: grid;
+  place-items: center;
+  border-radius: 20px;
+  box-shadow: 2px 2px #161616, -2px -2px #161616;
+  z-index: 100000;
+}
+.user__avatar {
+  height: 100px;
+  width: 100px;
+  border-radius: 100%;
+  object-fit: contain;
+}
+
+.head {
+  color: white;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.call__actions {
+  position: absolute;
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  cursor: pointer;
+}
+.accept_button {
+  display: grid;
+  place-items: center;
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  background-color: aliceblue;
+}
+.decline_button {
+  display: grid;
+  place-items: center;
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  background-color: crimson;
+}

@@ -1,8 +1,7 @@
 .socialButton {
   transition: "all .1s ease-in";
-  outline: none;
-  border: none;
-  border-radius: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 .socialButton:hover {
   transform: scale(1.1, 1.1);
@@ -12,4 +11,6 @@
   outline: none;
   border: none;
   border-radius: 100%;
+  display: grid;
+  place-items: center;
 }

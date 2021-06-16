@@ -30,7 +30,7 @@ function HomeLayout(props) {
                 onClick={() => {}}
                 isActive={false}
               />
-              <HeaderName href="#" prefix="Connect" />
+              <HeaderName href="/" prefix="Connect" />
               <HeaderNavigation aria-label="Connect">
                 <HeaderMenuItem href="#">Services</HeaderMenuItem>
                 <HeaderMenu aria-label="Link 4" menuLinkName="Accounts">
