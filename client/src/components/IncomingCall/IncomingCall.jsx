@@ -1,8 +1,10 @@
-import { PhoneBlock24, PhoneIncoming24, UserProfile24 } from '@carbon/icons-react'
-import React from 'react'
+import { PhoneBlock24, PhoneBlockFilled24, PhoneIncoming24, PhoneIncomingFilled24, UserAvatar20, UserProfile24 } from '@carbon/icons-react'
+import React, { useContext } from 'react'
+import { SocketContext } from '../../context/GlobalSocketContext'
 import "./_style.css"
 
 function IncomingCall({user}) {
+    const context = useContext(SocketContext)
     return (
         <div className="incoming__call">
             <div className="head">
@@ -10,14 +12,15 @@ function IncomingCall({user}) {
             </div>     
             {
                     user&&user.image?(<img src={user.image} className="user__avatar"/>):
-                    (<UserProfile24 className="user__avatar"/>)
+                    (<UserAvatar20 className="user__avatar"/>)
             }
             <div class="call__actions">
-                <div className="accept_button">
-                  <PhoneIncoming24/>
+                <div className="accept_button" onClick={(e)=>context.answerCall()}>
+                  <PhoneIncomingFilled24  />
                 </div>
-                <div className="decline_button">
-                   <PhoneBlock24/>
+                <div className="decline_button"  onClick={(e)=>context.rejectCall()}>
+                   <PhoneBlockFilled24 color="white"/>
+                   
                 </div>
             </div>
         </div>

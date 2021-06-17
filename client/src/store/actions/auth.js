@@ -202,6 +202,7 @@ export const socialAuth = (data, provider) => {
       console.log("sennding post req....", response.data);
       const expiry = new Date(new Date().getTime() + (response.data.expiry - 60) * 1000);
       await dispatch(authSuccess(response.data));
+      await dispatch(getProfile());
       dispatch(checkauthtimeout((response.data.expiry - 60) * 1000));
     } catch (err) {
       console.log(err);

@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { Search} from "carbon-components-react";
+import { Content, Search} from "carbon-components-react";
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout';
 import { useSelector } from 'react-redux';
 import { findUsers } from '../../http/requests';
@@ -29,34 +29,39 @@ function SearchPage() {
         setsearchValue(e.target.value)
         findUsers(e.target.value,auth.token,setresults);
     }
-    return (
-        <DashboardLayout>
-            <div className="search__page">
-                  <div className="search_page_wrapper">
-                              
-                    <div className="search__block">
-                        <h3>Search</h3>
-                        <p style={{marginBottom:"2rem"}}>Connect with your peers</p>
-                        <Search {...props()} onChange={(e)=>onSearchChange(e)} autoFocus={true} value={searchValue}/>
-                        <div className="search__results">
-                            {
-                                results&&results.map(user=>(
-                                        <SearchResult key={user.id} user={user} setmodelopen={setmodelopen} setuser={setuser}/>
-                                    ))
-                                } 
-                        </div>
+    return (        
+                <DashboardLayout>
+                    <Content
+              id="main-content"
+              className="dashboard_main_area"
+            >
+                    <div className="search__page">
+                        <div className="search_page_wrapper">
+                                    
+                            <div className="search__block">
+                                <h3>Search</h3>
+                                <p style={{marginBottom:"2rem"}}>Connect with your peers</p>
+                                <Search {...props()} onChange={(e)=>onSearchChange(e)} autoFocus={true} value={searchValue}/>
+                                <div className="search__results">
+                                    {
+                                        results&&results.map(user=>(
+                                                <SearchResult key={user.id} user={user} setmodelopen={setmodelopen} setuser={setuser}/>
+                                            ))
+                                        } 
+                                </div>
+                            </div>
+                            <div className="search__image">
+                                <div> 
+                                    <img src={searchImage} />
+                                    <p style={{marginTop:"1rem"}}>Find your friends with simple keyword search</p>
+                            </div>
+                            
+                            </div>
+                            </div>
                     </div>
-                    <div className="search__image">
-                        <div> 
-                            <img src={searchImage} />
-                            <p style={{marginTop:"1rem"}}>Find your friends with simple keyword search</p>
-                       </div>
-                    
-                    </div>
-                    </div>
-            </div>
-            <UserViewModal user={user} open={modelopen} setmodelopen={setmodelopen}/>
-        </DashboardLayout>
+                    <UserViewModal user={user} open={modelopen} setmodelopen={setmodelopen}/>
+                    </Content>
+                </DashboardLayout>
     )
 }
 

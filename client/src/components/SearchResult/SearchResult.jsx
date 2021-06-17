@@ -1,10 +1,11 @@
 import { ArrowUpRight16, UserProfile24 } from '@carbon/icons-react'
 import { Link } from 'carbon-components-react'
 import React, { useState } from 'react'
+import { SocketContext } from '../../context/GlobalSocketContext'
 import "./_style.css"
 
 export default function SearchResult({user,setuser,setmodelopen}) {
-   
+    
     const openUserModel = (e)=>{ 
         setuser(user)
         setmodelopen(prev=>!prev);

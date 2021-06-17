@@ -1,0 +1,34 @@
+.dark {
+  background-color: #35373a !important;
+  overflow: hidden;
+  padding: 0rem 0rem 1.5rem 1.5rem !important;
+}
+.chatbox {
+  background-color: #cfcfcf;
+}
+.meetgrid {
+  min-height: 94vh;
+  padding: 0rem !important;
+  margin: 0rem !important;
+}
+.meet__row {
+  min-height: 94vh;
+}
+.video__grid {
+  min-height: 94vh;
+}
+.video__row {
+  min-height: 94vh;
+  align-items: center;
+  justify-content: center;
+}
+.videoplayer {
+  min-height: 300px;
+  border-radius: 1rem;
+  margin: 0.5rem;
+  width: 100%;
+  object-fit: cover;
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+}

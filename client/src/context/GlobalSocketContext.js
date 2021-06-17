@@ -1,61 +1,57 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
-import Peer from "simple-peer";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createMeet } from "../http/requests";
+import { authCheckState } from "../store/actions/auth";
+import { connectToAllUsers, handleUserJoined } from "./peers";
 
 const SocketContext = createContext();
 
 const socket = io("http://localhost:5000", { autoConnect: false });
 
+const videoConstraints = {
+  height: window.innerHeight / 2,
+  width: window.innerWidth / 2,
+};
+
 const ContextProvider = ({ children }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const auth = useSelector((state) => state.auth);
-  const [CallData, setCallData] = useState({ isRecieved: false });
+
+  //==== Socket State =================================
+  const [CallData, setCallData] = useState({ isReceived: false });
   const [CallAccepted, setCallAccepted] = useState(false);
   const [meet, setmeet] = useState(null);
   const [currentChat, setcurrentChat] = useState(null);
   const [callTo, setcallTo] = useState(null);
+  const [callAboarted, setcallAboarted] = useState(false);
+  const [peers, setpeers] = useState([]);
+  const peersRef = useRef([]);
+  const userVideoStream = useRef();
 
-  const peerConnection = useRef();
-  const handleIncomingCall = ({ call_from, meet, signal }) => {
+  const handleIncomingCall = ({ call_from, meet }) => {
+    console.log("Incoming call .... ");
     setCallData({
-      isRecieved: true,
+      isReceived: true,
       call_from,
       meet,
-      signal,
     });
   };
-
-  const handleCallAccepted = ({ meet }) => {
-    setCallAccepted(true);
-    setmeet(meet);
-    history.push(`/dashboard/meet/${meet._id}`);
-  };
-
-  const connectMyPeer = () => {
-    let peer = new Peer(auth.profile.userID, {
-      host: "localhost",
-      port: 9000,
-      path: "/myapp",
-    });
-    peerConnection.current = peer;
-  };
-
   useEffect(() => {
-    connectMyPeer();
-    socket.auth.token = auth.token;
-    socket.connect();
-    socket.on("incoming_call", handleIncomingCall);
-    socket.on("call_accepted", handleCallAccepted);
-
-    return () => {
-      socket.off("incoming_call", handleIncomingCall);
-    };
-  }, []);
-
-  const dispatch = useDispatch();
-  const history = useHistory();
+    if (auth.profile && !socket.connected) {
+      socket.auth = { token: auth.token };
+      socket.connect();
+      socket.on("incoming_call", handleIncomingCall);
+      socket.on("callaccepted", handleCallAccepted);
+      socket.on("callaborted", handleCallAboart);
+      return () => {
+        socket.off("incoming_call", handleIncomingCall);
+        socket.off("callaccepted", handleCallAccepted);
+      };
+    }
+  }, [auth.profile]);
 
   useEffect(() => {
     if (!auth.token) {
@@ -63,20 +59,65 @@ const ContextProvider = ({ children }) => {
     }
   }, [auth.token]);
 
+  //======================== CALLING USER =========================================
+
   const callUser = async ({ user }) => {
     setcallTo(user);
-    let meet = await createMeet(user, "individual");
-    socket.emit("callUser", { user, meet });
+    let meet = await createMeet(user);
+    socket.emit("calluser", { user, meet });
     setmeet(meet);
-    setcurrentChat(meet.chat._id);
-    history.push("/dashboard/call_user");
+    setcurrentChat(meet.chat);
+    history.push("/dashboard/calluser");
   };
 
-  const initiateMyVideoStream = () => {
-    let peer = peerConnection.current;
+  const answerCall = () => {
+    setCallAccepted(true);
+    socket.emit("answercall", { meet: CallData.meet, call_from: CallData.call_from });
+    history.push(`/dashboard/meet/${CallData.meet._id}`);
   };
 
-  const connectToNewUser = () => {};
+  const rejectCall = () => {
+    socket.emit("rejectcall", { meet: CallData.meet, user: CallData.call_from });
+    setCallData({ isReceived: false });
+  };
+
+  const handleCallAccepted = ({ meet }) => {
+    setCallAccepted(true);
+    history.push(`/dashboard/meet/${meet._id}`);
+  };
+
+  const handleCallAboart = ({ meet }) => {
+    setcallAboarted(true);
+    setcallTo(null);
+    setCallData({ isReceived: false });
+    setmeet(null);
+    setCallAccepted(false);
+  };
+
+  //================================= VIDEO CALL ==================================
+
+  const initializeVideoCall = () => {
+    navigator.mediaDevices
+      .getUserMedia({
+        video: videoConstraints,
+        audio: true,
+      })
+      .then((stream) => {
+        userVideoStream.current.srcObject = stream;
+        socket.on("join_meet", { meet });
+        socket.on("users_in_meet", (users) => {
+          connectToAllUsers(users, setpeers, peersRef, stream);
+        });
+        socket.on("user_joined", (payload) => handleUserJoined(payload, setpeers, stream));
+        socket.on("receive_signal_back", (payload) => {
+          const peerRef = peersRef.current.find((p) => p.peerID === payload.id);
+          if (peerRef != -1) {
+            peerRef.peer.signal(payload.signal);
+          }
+        });
+      });
+  };
+  //=========================== GROUP MEET ====================================
 
   const groupMeet = async (chat_id) => {
     let meet = await createMeet(user, "group");
@@ -84,16 +125,21 @@ const ContextProvider = ({ children }) => {
     setmeet(meet);
   };
 
-  const answerCall = ({ meet }) => {
-    setCallAccepted(true);
-    socket.emit("answer_call", { meet });
-    history.push(`/dashboard/meet/${meet._id}`);
+  const reinitialize = () => {
+    setCallData({ isReceived: false });
+    setCallAccepted(false);
+    setcurrentChat(null);
+    setmeet(null);
+    setcallTo(null);
+    setcallAboarted(false);
   };
 
   const leaveCall = () => {
-    peerConnection.current.destroy();
-    history.push("/dashboard/activity");
+    reinitialize();
+    socket.emit("leavecall", { user: auth.profile });
+    history.push("/dashboard/call");
   };
+
   return (
     <SocketContext.Provider
       value={{
@@ -106,14 +152,18 @@ const ContextProvider = ({ children }) => {
         callUser,
         groupMeet,
         currentChat,
-        initiateMyVideoStream,
-        connectToNewUser,
         callTo,
+        reinitialize,
+        rejectCall,
+        callAboarted,
+        initializeVideoCall,
+        peers,
+        peersRef,
+        userVideoStream,
       }}
     >
       {children}
     </SocketContext.Provider>
   );
 };
-
-export const { SocketContext, ContextProvider, socket };
+export { SocketContext, ContextProvider, socket };

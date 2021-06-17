@@ -216,8 +216,9 @@ userSchema.statics.findByRefreshToken = async function (token) {
   try {
     let { _id } = await jwt.verify(token, process.env.JWT_REFRESH_KEY);
     let user = await this.findById(_id);
-    console.log(user.refreshTokens, token);
+
     if (user.refreshTokens.includes(token)) {
+      // console.log(user);
       return user;
     } else {
       throw new Error("no User found");

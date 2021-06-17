@@ -4,3 +4,8 @@
   margin-left: 1.5rem !important;
   position: relative;
 }
+.dark {
+  background-color: #161d29 !important;
+  overflow: hidden;
+  padding: 0rem 0rem 1.5rem 1.5rem !important;
+}

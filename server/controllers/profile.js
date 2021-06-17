@@ -1,11 +1,8 @@
 const User = require("../models/User");
 
 const getProfile = async (req, res) => {
-  const token = req.get("Authorization").split(" ")[1];
-  console.log("token is ", token);
   try {
     const user = req.user;
-    console.log(user);
     res.status(200).send(user);
   } catch (err) {
     console.log(err.message);

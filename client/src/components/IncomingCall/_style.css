@@ -2,7 +2,7 @@
   position: fixed;
   bottom: 10px;
   right: 5px;
-  width: clamp(450px, 400px, 300px);
+  width: clamp(400px, 350px, 450px);
   height: 300px;
   background-color: #161616;
   display: grid;
@@ -16,6 +16,7 @@
   width: 100px;
   border-radius: 100%;
   object-fit: contain;
+  background-color: white;
 }
 
 .head {
@@ -42,7 +43,7 @@
   height: 50px;
   width: 50px;
   border-radius: 100%;
-  background-color: aliceblue;
+  background-color: #dbb561;
 }
 .decline_button {
   display: grid;
@@ -50,5 +51,5 @@
   height: 50px;
   width: 50px;
   border-radius: 100%;
-  background-color: crimson;
+  background-color: hsl(359, calc(var(--saturation-factor, 1) * 82.6%), 59.4%);
 }

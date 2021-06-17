@@ -1,13 +1,15 @@
 import axios from "axios";
 import apiInstance from "./api";
+import store from "../store";
 
-export const setAuthToken = (token) => {
+export const setAuthToken = () => {
+  const token = store.getState().auth.token;
   apiInstance.defaults.headers["Authorization"] = `Token ${token}`;
 };
 
 export const findUsers = async (search, token, setusers) => {
   let users = [];
-  setAuthToken(token);
+  setAuthToken();
   try {
     let response = await apiInstance.get("/users/find?search=" + search);
     let data = response.data;
@@ -18,10 +20,10 @@ export const findUsers = async (search, token, setusers) => {
   }
 };
 
-export const createMeet = async (user, token, type) => {
-  setAuthToken(token);
+export const createMeet = async (user) => {
+  setAuthToken();
   try {
-    let response = await apiInstance.post(`/meet/create`, { user, type });
+    let response = await apiInstance.post(`/meet/create`, { user });
     let data = response.data;
     return data;
   } catch (err) {

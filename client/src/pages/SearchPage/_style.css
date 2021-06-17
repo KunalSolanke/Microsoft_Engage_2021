@@ -3,6 +3,7 @@
   align-items: stretch;
   justify-content: center;
 }
+
 .search_page_wrapper {
   width: clamp(80%, 400px, 400px);
   display: flex;

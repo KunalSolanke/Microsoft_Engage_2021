@@ -1,15 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as Sentry from '@sentry/react';
-import {Integrations} from '@sentry/tracing';
-import './global.scss';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import * as Sentry from "@sentry/react";
+import { Integrations } from "@sentry/tracing";
+import "./global.scss";
 
-import {Provider} from 'react-redux';
-import configureStore from './store';
+import { Provider } from "react-redux";
+import store from "./store";
 
-export const store = configureStore();
 // //Sentry Setup
 // Sentry.init({
 //     dsn: process.env.REACT_APP_SENTRY_URL,
@@ -21,8 +20,8 @@ export const store = configureStore();
 //     tracesSampleRate: 1.0,
 // });
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    document.getElementById('root')
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
 );

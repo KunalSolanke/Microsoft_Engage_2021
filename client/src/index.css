@@ -11,8 +11,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
+
 html,
-body {
-  min-height: 100% !important;
+body,
+#root,
+.App {
   height: 100%;
 }
