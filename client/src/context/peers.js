@@ -19,17 +19,25 @@ const createPeer = (userTosignal, caller, stream) => {
   return peer;
 };
 
-const connectToAllUsers = (users, setpeers, peersRef, stream) => {
+const connectToAllUsers = (users, setpeers, peersRef, stream, userID) => {
+  console.log(users);
   const peers = [];
-  users.map((user) => {
-    const peer = createPeer(user._id, auth.profile._id, stream);
-    peersRef.current.push({
-      peerID: user._id,
-      peer,
-      muted: false,
-      videoPaused: false,
-    });
-    peers.push(peer);
+  users.forEach((user) => {
+    if (user != userID) {
+      const peer = createPeer(user, userID, stream);
+      peersRef.current.push({
+        peerID: user,
+        peer,
+        muted: false,
+        videoPaused: false,
+      });
+      peers.push({
+        peerID: user,
+        peer,
+        muted: false,
+        videoPaused: false,
+      });
+    }
   });
   setpeers(peers);
 };
@@ -49,9 +57,17 @@ const addPeer = (incomingSignal, callerID, stream) => {
   return peer;
 };
 
-const handleUserJoined = (payload, setpeers, stream) => {
-  const peer = addPeer(payload.signal, payload.id, stream);
-  setpeers((users) => [...users, peer]);
+const handleUserJoined = (payload, setpeers, stream, userID) => {
+  if (payload.id != userID) {
+    let peer = addPeer(payload.signal, payload.id, stream);
+    peer = {
+      peerID: payload.id,
+      peer,
+      muted: false,
+      videoPaused: false,
+    };
+    setpeers((users) => [...users, peer]);
+  }
 };
 
 export { handleUserJoined, connectToAllUsers };

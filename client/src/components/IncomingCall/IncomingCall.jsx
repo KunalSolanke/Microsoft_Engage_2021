@@ -15,7 +15,8 @@ function IncomingCall({user}) {
                     (<UserAvatar20 className="user__avatar"/>)
             }
             <div class="call__actions">
-                <div className="accept_button" onClick={(e)=>context.answerCall()}>
+                <div className="accept_button" onClick={(e)=>{ console.log("answer")
+                  context.answerCall()}}>
                   <PhoneIncomingFilled24  />
                 </div>
                 <div className="decline_button"  onClick={(e)=>context.rejectCall()}>

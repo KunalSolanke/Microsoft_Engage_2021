@@ -1,0 +1,15 @@
+.meetchat__area {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.meetchat__head {
+  padding: 1rem;
+  margin: 1rem 0rem;
+}
+.messages__area {
+  padding: 1rem;
+  overflow: scroll;
+  scrollbar-width: none;
+  flex: 1;
+}

@@ -14,7 +14,7 @@ const DashBoardRoutes = () => (
     <Route exact path="/dashboard" component={DashboardLayout} />
     <Route exact path="/dashboard/meet" component={SearchPage} />
     <Route exact path="/dashboard/calluser" component={CreateCall} />
-    <Route exact path="/dashboard/meet/:meedID" component={MeetPage} />
+    <Route exact path="/dashboard/meet/:meetID" component={MeetPage} />
   </ContextProvider>
 );
 

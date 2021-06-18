@@ -50,7 +50,8 @@ router.route("/github").post(
       console.log(paramsString);
       next();
     } catch (err) {
-      res.status(400).send("error");
+      console.log(err);
+      res.status(400).send(err.message);
     }
   },
   passport.authenticate("github-token", { session: false }),

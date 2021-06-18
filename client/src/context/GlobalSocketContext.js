@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { createMeet } from "../http/requests";
 import { authCheckState } from "../store/actions/auth";
 import { connectToAllUsers, handleUserJoined } from "./peers";
+import { PreviousFilled16 } from "@carbon/icons-react";
 
 const SocketContext = createContext();
 
@@ -29,16 +30,32 @@ const ContextProvider = ({ children }) => {
   const [callAboarted, setcallAboarted] = useState(false);
   const [peers, setpeers] = useState([]);
   const peersRef = useRef([]);
-  const userVideoStream = useRef();
+  const userVideoRef = useRef();
+  const [userVideoStream, setuserVideoStream] = useState(null);
+  const [currMessages, setcurrMessages] = useState([]);
+  const [unseenMessages, setunseenMessages] = useState([]);
 
-  const handleIncomingCall = ({ call_from, meet }) => {
+  const handleIncomingCall = ({ call_from, meetID }) => {
     console.log("Incoming call .... ");
     setCallData({
       isReceived: true,
       call_from,
-      meet,
+      meetID,
     });
   };
+
+  const handlePrevMessages = (messages) => {
+    console.log("Saving prev messages...");
+    setcurrMessages(messages);
+  };
+
+  const handleNewMessage = (message) => {
+    console.log("Received new message");
+    if (message.chat == currentChat) {
+      setcurrMessages((m) => [...m, message]);
+    } else setunseenMessages((m) => [...m, message]);
+  };
+
   useEffect(() => {
     if (auth.profile && !socket.connected) {
       socket.auth = { token: auth.token };
@@ -46,6 +63,8 @@ const ContextProvider = ({ children }) => {
       socket.on("incoming_call", handleIncomingCall);
       socket.on("callaccepted", handleCallAccepted);
       socket.on("callaborted", handleCallAboart);
+      socket.on("prev_messages", handlePrevMessages);
+      socket.on("new_message", handleNewMessage);
       return () => {
         socket.off("incoming_call", handleIncomingCall);
         socket.off("callaccepted", handleCallAccepted);
@@ -59,34 +78,42 @@ const ContextProvider = ({ children }) => {
     }
   }, [auth.token]);
 
+  useEffect(() => {
+    if (userVideoRef.current) userVideoRef.current.srcObject = userVideoStream;
+  }, [peers]);
+
   //======================== CALLING USER =========================================
 
   const callUser = async ({ user }) => {
     setcallTo(user);
     let meet = await createMeet(user);
-    socket.emit("calluser", { user, meet });
-    setmeet(meet);
+    socket.emit("calluser", { userID: user._id, meetID: meet._id });
+    setmeet(meet._id);
     setcurrentChat(meet.chat);
     history.push("/dashboard/calluser");
   };
 
   const answerCall = () => {
+    console.log("Answering incoming call....");
     setCallAccepted(true);
-    socket.emit("answercall", { meet: CallData.meet, call_from: CallData.call_from });
-    history.push(`/dashboard/meet/${CallData.meet._id}`);
+    socket.emit("answercall", { meetID: CallData.meetID, call_from: CallData.call_from._id });
+    history.push(`/dashboard/meet/${CallData.meetID}`);
   };
 
   const rejectCall = () => {
-    socket.emit("rejectcall", { meet: CallData.meet, user: CallData.call_from });
+    console.log("Rejeceing incoming call.....");
+    socket.emit("rejectcall", { meetID: CallData.meetID, userID: CallData.call_from._id });
     setCallData({ isReceived: false });
   };
 
-  const handleCallAccepted = ({ meet }) => {
+  const handleCallAccepted = (meetID) => {
+    console.log("Call accepted....");
     setCallAccepted(true);
-    history.push(`/dashboard/meet/${meet._id}`);
+    history.push(`/dashboard/meet/${meetID}`);
   };
 
-  const handleCallAboart = ({ meet }) => {
+  const handleCallAboart = (meetID) => {
+    console.log("Call aboarted...");
     setcallAboarted(true);
     setcallTo(null);
     setCallData({ isReceived: false });
@@ -94,26 +121,43 @@ const ContextProvider = ({ children }) => {
     setCallAccepted(false);
   };
 
+  const sendMessage = (message) => {
+    socket.emit("new_message", { chatID: currentChat, content: message });
+  };
+
   //================================= VIDEO CALL ==================================
 
-  const initializeVideoCall = () => {
+  const initializeVideoCall = (meetID) => {
+    setmeet(meetID);
     navigator.mediaDevices
       .getUserMedia({
         video: videoConstraints,
         audio: true,
       })
       .then((stream) => {
-        userVideoStream.current.srcObject = stream;
-        socket.on("join_meet", { meet });
+        console.log(meetID);
+        setuserVideoStream(stream);
+        socket.emit("join_meet", meetID);
         socket.on("users_in_meet", (users) => {
-          connectToAllUsers(users, setpeers, peersRef, stream);
+          connectToAllUsers(users, setpeers, peersRef, stream, auth.userID);
         });
-        socket.on("user_joined", (payload) => handleUserJoined(payload, setpeers, stream));
+        socket.on("user_joined", (payload) => {
+          console.log("New user joinded....", payload);
+          handleUserJoined(payload, setpeers, stream, auth.userID);
+        });
         socket.on("receive_signal_back", (payload) => {
+          console.log("Receive signal back", payload);
           const peerRef = peersRef.current.find((p) => p.peerID === payload.id);
           if (peerRef != -1) {
             peerRef.peer.signal(payload.signal);
+          } else {
+            console.log("No peer found");
           }
+        });
+        socket.on("left_chat", (peerID) => {
+          console.log("user left chat", peerID);
+          peersRef.current = peersRef.current.filter((p) => p.peerID != peerID);
+          setpeers((peers) => peers.filter((p) => p.peerID != peerID));
         });
       });
   };
@@ -159,7 +203,10 @@ const ContextProvider = ({ children }) => {
         initializeVideoCall,
         peers,
         peersRef,
-        userVideoStream,
+        userVideoRef,
+        currMessages,
+        unseenMessages,
+        sendMessage,
       }}
     >
       {children}

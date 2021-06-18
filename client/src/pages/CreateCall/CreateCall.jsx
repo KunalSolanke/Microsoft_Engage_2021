@@ -22,7 +22,7 @@ function CreateCall() {
                   }
                    <div class="make_call__actions">
                         <div className="decline_button">
-                        <PhoneBlock24 onClick={(e)=>context.rejectCall()}/>
+                        <PhoneBlockFilled24 onClick={(e)=>context.rejectCall()}/>
                         </div>
                     </div></>)
     }

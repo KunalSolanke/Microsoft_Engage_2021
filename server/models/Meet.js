@@ -6,7 +6,7 @@ const meetSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    particiants: [
+    participants: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",

@@ -26,6 +26,7 @@ const signup = async (req, res) => {
       username: user.username || user.fullName || user.email,
       email: user.email,
       expiry: 3600,
+      userID: user._id,
     });
   } catch (err) {
     console.log(err);
@@ -54,6 +55,7 @@ const login = async (req, res) => {
       token: accessToken,
       username: user.username || user.fullName || user.email,
       email: user.email,
+      userID: user._id,
       expiry: 3600,
     });
   } catch (err) {
@@ -86,6 +88,7 @@ const refresh = async (req, res) => {
         expiry: 3600,
         username: user.username || user.fullName || user.email,
         email: user.email,
+        userID: user._id,
       });
     } else {
       throw new Error("user not found");

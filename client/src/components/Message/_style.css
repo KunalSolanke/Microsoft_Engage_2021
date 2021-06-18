@@ -1,0 +1,36 @@
+.message__wrapper {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+.message__block {
+  flex-basis: 0.8;
+  display: flex;
+  align-items: center;
+}
+.user__profile {
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  object-fit: contain;
+  padding-right: 1rem;
+}
+
+.left {
+  justify-self: flex-end;
+}
+.right {
+  justify-self: flex-start;
+}
+.message__div {
+  color: whitesmoke;
+}
+
+.mymessage {
+  color: #e2e2f0df;
+}
+
+.message__head {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+}
