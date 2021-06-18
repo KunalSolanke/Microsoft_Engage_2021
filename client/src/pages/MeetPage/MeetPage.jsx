@@ -1,6 +1,6 @@
 import { Column, Content, Grid, Row } from 'carbon-components-react'
 import React, { useContext, useEffect } from 'react'
-import { Prompt } from 'react-router-dom'
+import { Prompt, useHistory, useParams } from 'react-router-dom'
 import CallVideo from '../../components/CallVideo/CallVideo'
 import { SocketContext } from '../../context/GlobalSocketContext'
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
@@ -8,8 +8,14 @@ import "./_style.css"
 
 function MeetPage() {
     const context = useContext(SocketContext)
+    const {meetID} = useParams()
     useEffect(() => {
-        context.initializeVideoCall()
+        context.initializeVideoCall(meetID)
+        console.log(meetID)
+
+        return ()=>{
+            context.socket.emit("leave_meet",context.meet);
+        }
     }, [])
     return (
         <DashboardLayout>
@@ -32,9 +38,15 @@ function MeetPage() {
                        <Column sm={4} md={6} lg={9}>
                             <Grid className="video__grid">
                                 <Row className="video__row">
-                                    <Column lg={4}>
-                                      <CallVideo mine={true}/>
+                                    <Column md={4} sm={4} lg={4}>
+                                      <video autoPlay playsInline ref={context.userVideoStream} className="videoplayer">
+          
+                                      </video>
                                     </Column>
+                                    {context.peers.map(peer=>(
+                                    <Column md={4} sm={4} lg={4}>
+                                      <CallVideo peer={peer}/>
+                                    </Column>))}
                                 </Row>
                             </Grid>
                        </Column>
@@ -50,8 +62,3 @@ function MeetPage() {
 }
 
 export default MeetPage
-
-headers = {
-    "content-type":"application/json"
-}
-
