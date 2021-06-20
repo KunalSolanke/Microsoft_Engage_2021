@@ -1,29 +1,30 @@
-import { UserAvatar20 } from '@carbon/icons-react';
+import { UserAvatar16 } from '@carbon/icons-react';
 import React from 'react'
+import { useSelector } from 'react-redux';
 import "./_style.css"
 
 function Message({message}) {
-   const auth = useSelector(state => state.auth)
+   const me = useSelector(state => state.auth.userID)
    const renderUserProfile = ()=>{
-       if(auth.userID==message.author)return null;
-       let user= author;
+       if(me==message.author._id)return null;
+       let user= message.author;
        if(user&&user.image)return (
            <>
            <img src={user.image} className="user__profile"/>
            </>
        )
-       return  (<UserAvatar20 className="user__profile"/>)
+       return  (<UserAvatar16 className="user__profile"/>)
    } 
    return (
         <div className="message__wrapper">
-           <div className={"message__block "+(auth.userID!=author?"left":"right")}>
+           <div className={"message__block "+(me!=message.author._id?"left":"right")}>
                 {renderUserProfile()}
-                <div className={"message__head "+(auth.userID!=author?"user":"mymessage")}>
-                    <div className="message__head">
-                        <p>{message.author.username}</p>
+                <div className={"message__main "+(me!=message.author._id?"user":"mymessage")}>
+                    {me!=message.author._id?(<div className="message__head">
+                        <p style={{fontSize:"0.8rem"}}>{message.author.username}</p>
                         <p>{message.created_at}</p>
-                    </div>
-                    <p>{message.content}</p>
+                    </div>):null}
+                    <p style={{padding:"0rem 0.3rem"}}>{message.content}</p>
                 </div>
             </div>           
         </div>

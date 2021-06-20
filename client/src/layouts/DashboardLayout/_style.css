@@ -9,3 +9,8 @@
   overflow: hidden;
   padding: 0rem 0rem 1.5rem 1.5rem !important;
 }
+
+.root {
+  max-height: 100vh;
+  overflow: hidden;
+}

@@ -34,7 +34,7 @@ function LayoutNav(props) {
         height: "100%",
     };
     return (
-        <div>
+        <div className="root">
                <div className="container" style={{ minHeight: "100vh" }}>
         <HeaderContainer
           render={({ isSideNavExpanded, onClickSideNavExpand }) => (

@@ -1,4 +1,4 @@
-import { PhoneBlock24, UserAvatarFilled20 } from '@carbon/icons-react'
+import { PhoneBlock24, PhoneBlockFilled24, UserAvatarFilled20 } from '@carbon/icons-react'
 import { Content } from 'carbon-components-react'
 import React, { useContext } from 'react'
 import { Prompt } from 'react-router-dom'

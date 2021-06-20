@@ -3,34 +3,41 @@
   margin-bottom: 0.5rem;
 }
 .message__block {
-  flex-basis: 0.8;
+  flex: 1;
   display: flex;
   align-items: center;
 }
 .user__profile {
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   border-radius: 100%;
   object-fit: contain;
-  padding-right: 1rem;
+  margin-right: 0.5rem;
 }
 
 .left {
   justify-self: flex-end;
 }
 .right {
-  justify-self: flex-start;
+  flex-direction: row-reverse;
 }
 .message__div {
   color: whitesmoke;
 }
 
-.mymessage {
-  color: #e2e2f0df;
+.user {
+  background-color: wheat;
 }
 
+.mymessage {
+  background-color: #e2e2f0df;
+}
+.message__main {
+  max-width: 90%;
+  padding: 0.2rem 0.4rem;
+}
 .message__head {
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  padding: 0.1rem 0.5rem;
 }

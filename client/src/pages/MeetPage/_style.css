@@ -5,6 +5,7 @@
 }
 .chatbox {
   background-color: #f3f2f1;
+  height: 94vh !important;
 }
 .meetgrid {
   min-height: 94vh;
@@ -12,19 +13,25 @@
   margin: 0rem !important;
 }
 .meet__row {
-  min-height: 94vh;
+  height: 94vh !important;
 }
 .video__grid {
-  min-height: 94vh;
+  min-height: 94vh !important;
+  max-height: 100vh !important;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
 }
 .video__row {
   min-height: 94vh;
   align-items: center;
   justify-content: center;
 }
+.video__col {
+  padding: 0.5rem !important;
+}
 .videoplayer {
-  min-height: 300px;
-  border-radius: 1rem;
+  min-height: 320px;
+  border-radius: 0.5rem;
   margin: 0.5rem;
   max-height: 500px;
   width: 100%;

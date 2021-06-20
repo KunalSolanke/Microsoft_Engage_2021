@@ -1,4 +1,5 @@
 import Peer from "simple-peer";
+import { connectPeers, addPeer as newPeer } from "../store/actions/socket";
 import { socket } from "./GlobalSocketContext";
 const peerOptions = {
   host: "localhost",
@@ -14,32 +15,32 @@ const createPeer = (userTosignal, caller, stream) => {
     ...peerOptions,
   });
   peer.on("signal", (signal) => {
+    console.log("Sending signal");
     socket.emit("send_signal", { userTosignal, caller, signal });
   });
   return peer;
 };
 
-const connectToAllUsers = (users, setpeers, peersRef, stream, userID) => {
-  console.log(users);
+const connectToAllUsers = (users, dispatch, peersRef, stream, userID) => {
+  console.log(userID);
   const peers = [];
   users.forEach((user) => {
-    if (user != userID) {
-      const peer = createPeer(user, userID, stream);
+    if (user._id != userID) {
+      const peer = createPeer(user._id, userID, stream);
       peersRef.current.push({
-        peerID: user,
+        peerID: user._id,
         peer,
-        muted: false,
-        videoPaused: false,
       });
       peers.push({
-        peerID: user,
+        peerID: user._id,
         peer,
+        user,
         muted: false,
         videoPaused: false,
       });
     }
   });
-  setpeers(peers);
+  dispatch(connectPeers(peers));
 };
 
 const addPeer = (incomingSignal, callerID, stream) => {
@@ -57,7 +58,7 @@ const addPeer = (incomingSignal, callerID, stream) => {
   return peer;
 };
 
-const handleUserJoined = (payload, setpeers, stream, userID) => {
+const handleUserJoined = (payload, dispatch, stream, userID, peersRef) => {
   if (payload.id != userID) {
     let peer = addPeer(payload.signal, payload.id, stream);
     peer = {
@@ -65,8 +66,14 @@ const handleUserJoined = (payload, setpeers, stream, userID) => {
       peer,
       muted: false,
       videoPaused: false,
+      user: payload.user,
     };
-    setpeers((users) => [...users, peer]);
+    peersRef.current.push({
+      peerID: payload.callerID,
+      peer,
+    });
+
+    dispatch(newPeer(peer));
   }
 };
 

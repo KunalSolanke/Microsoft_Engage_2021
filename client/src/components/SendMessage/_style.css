@@ -1,0 +1,12 @@
+.send_message__block {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.send_message__block > svg {
+  margin-left: 0.5rem;
+}
+.send_message__block .send_message {
+  flex: 1;
+}

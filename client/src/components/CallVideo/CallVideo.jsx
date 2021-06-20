@@ -6,11 +6,12 @@ function CallVideo(props) {
      const ref = useRef();
     const context = useContext(SocketContext)
     useEffect(() => {
-        if(!props.mine){
-            props.peer.on("stream", stream => {
-            ref.current.srcObject = stream;
-        })
-    }
+            if(props.peer.streams&&props.peer.streams.length>0){
+                if(ref.current)ref.current.srcObject=props.peer.streams[0];
+            }else {props.peer.on("stream", stream => {
+                if(ref.current)ref.current.srcObject = stream;
+                })
+          }
     }, []);
 
     return (

@@ -5,7 +5,14 @@ import { useHistory } from "react-router-dom";
 import { createMeet } from "../http/requests";
 import { authCheckState } from "../store/actions/auth";
 import { connectToAllUsers, handleUserJoined } from "./peers";
-import { PreviousFilled16 } from "@carbon/icons-react";
+import {
+  leftMeet,
+  newMessage,
+  peerLeft,
+  prevMessages,
+  setChat,
+  setMeet,
+} from "../store/actions/socket";
 
 const SocketContext = createContext();
 
@@ -20,20 +27,17 @@ const ContextProvider = ({ children }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const auth = useSelector((state) => state.auth);
+  const meet = useSelector((state) => state.socket.meet);
+  const currentChat = useSelector((state) => state.socket.chatID);
 
   //==== Socket State =================================
   const [CallData, setCallData] = useState({ isReceived: false });
   const [CallAccepted, setCallAccepted] = useState(false);
-  const [meet, setmeet] = useState(null);
-  const [currentChat, setcurrentChat] = useState(null);
   const [callTo, setcallTo] = useState(null);
   const [callAboarted, setcallAboarted] = useState(false);
-  const [peers, setpeers] = useState([]);
   const peersRef = useRef([]);
   const userVideoRef = useRef();
   const [userVideoStream, setuserVideoStream] = useState(null);
-  const [currMessages, setcurrMessages] = useState([]);
-  const [unseenMessages, setunseenMessages] = useState([]);
 
   const handleIncomingCall = ({ call_from, meetID }) => {
     console.log("Incoming call .... ");
@@ -45,15 +49,12 @@ const ContextProvider = ({ children }) => {
   };
 
   const handlePrevMessages = (messages) => {
-    console.log("Saving prev messages...");
-    setcurrMessages(messages);
+    console.log("Saving prev messages...", messages);
+    dispatch(prevMessages(messages));
   };
 
   const handleNewMessage = (message) => {
-    console.log("Received new message");
-    if (message.chat == currentChat) {
-      setcurrMessages((m) => [...m, message]);
-    } else setunseenMessages((m) => [...m, message]);
+    dispatch(newMessage(message));
   };
 
   useEffect(() => {
@@ -78,18 +79,15 @@ const ContextProvider = ({ children }) => {
     }
   }, [auth.token]);
 
-  useEffect(() => {
-    if (userVideoRef.current) userVideoRef.current.srcObject = userVideoStream;
-  }, [peers]);
-
   //======================== CALLING USER =========================================
 
   const callUser = async ({ user }) => {
     setcallTo(user);
     let meet = await createMeet(user);
     socket.emit("calluser", { userID: user._id, meetID: meet._id });
-    setmeet(meet._id);
-    setcurrentChat(meet.chat);
+    dispatch(setMeet(meet._id));
+    dispatch(setChat(meet.chat));
+
     history.push("/dashboard/calluser");
   };
 
@@ -117,18 +115,19 @@ const ContextProvider = ({ children }) => {
     setcallAboarted(true);
     setcallTo(null);
     setCallData({ isReceived: false });
-    setmeet(null);
     setCallAccepted(false);
   };
 
   const sendMessage = (message) => {
-    socket.emit("new_message", { chatID: currentChat, content: message });
+    let isMeet = meet != null;
+    socket.emit("new_message", { chatID: currentChat, content: message, isMeet, meet });
   };
 
   //================================= VIDEO CALL ==================================
 
   const initializeVideoCall = (meetID) => {
-    setmeet(meetID);
+    console.log(meetID);
+    dispatch(setMeet(meetID));
     navigator.mediaDevices
       .getUserMedia({
         video: videoConstraints,
@@ -138,17 +137,19 @@ const ContextProvider = ({ children }) => {
         console.log(meetID);
         setuserVideoStream(stream);
         socket.emit("join_meet", meetID);
-        socket.on("users_in_meet", (users) => {
-          connectToAllUsers(users, setpeers, peersRef, stream, auth.userID);
+        socket.on("users_in_meet", ({ users, chatID }) => {
+          console.log("Setting new chat", chatID);
+          dispatch(setChat(chatID));
+          connectToAllUsers(users, dispatch, peersRef, stream, auth.userID);
         });
         socket.on("user_joined", (payload) => {
           console.log("New user joinded....", payload);
-          handleUserJoined(payload, setpeers, stream, auth.userID);
+          handleUserJoined(payload, dispatch, stream, auth.userID, peersRef);
         });
         socket.on("receive_signal_back", (payload) => {
           console.log("Receive signal back", payload);
           const peerRef = peersRef.current.find((p) => p.peerID === payload.id);
-          if (peerRef != -1) {
+          if (peerRef != -1 && !peerRef.destroyed) {
             peerRef.peer.signal(payload.signal);
           } else {
             console.log("No peer found");
@@ -157,7 +158,7 @@ const ContextProvider = ({ children }) => {
         socket.on("left_chat", (peerID) => {
           console.log("user left chat", peerID);
           peersRef.current = peersRef.current.filter((p) => p.peerID != peerID);
-          setpeers((peers) => peers.filter((p) => p.peerID != peerID));
+          dispatch(peerLeft(peerID));
         });
       });
   };
@@ -166,16 +167,16 @@ const ContextProvider = ({ children }) => {
   const groupMeet = async (chat_id) => {
     let meet = await createMeet(user, "group");
     socket.emit("create_group_meet", { user, meet, chat_id });
-    setmeet(meet);
+    dispatch(setMeet(meet._id));
   };
 
   const reinitialize = () => {
     setCallData({ isReceived: false });
     setCallAccepted(false);
-    setcurrentChat(null);
-    setmeet(null);
     setcallTo(null);
     setcallAboarted(false);
+    dispatch(leftMeet());
+    peersRef.current = [];
   };
 
   const leaveCall = () => {
@@ -192,21 +193,17 @@ const ContextProvider = ({ children }) => {
         answerCall,
         leaveCall,
         socket,
-        meet,
         callUser,
         groupMeet,
-        currentChat,
         callTo,
         reinitialize,
         rejectCall,
         callAboarted,
         initializeVideoCall,
-        peers,
         peersRef,
         userVideoRef,
-        currMessages,
-        unseenMessages,
         sendMessage,
+        userVideoStream,
       }}
     >
       {children}
