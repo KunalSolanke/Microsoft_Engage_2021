@@ -1,8 +1,10 @@
 import Peer from "simple-peer";
 import { connectPeers, addPeer as newPeer } from "../store/actions/socket";
 import { socket } from "./GlobalSocketContext";
+export const env = process.env.REACT_APP_ENV || "dev";
+const baseURL = env == "dev" ? "localhost" : "engage_backend.voldemort.wtf";
 const peerOptions = {
-  host: "localhost",
+  host: baseURL,
   port: 9000,
   path: "/myapp",
 };

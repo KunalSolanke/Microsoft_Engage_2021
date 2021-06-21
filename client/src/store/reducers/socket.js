@@ -7,6 +7,9 @@ const intialState = {
   currMessages: [],
   chatID: null,
   meet: null,
+  isChatActive: false,
+  isPeopleActive: false,
+  userVideoStream: null,
 };
 
 const newMessage = (state, action) => {
@@ -80,7 +83,20 @@ const reducer = (state = intialState, action) => {
       return UpdatedObj(state, { meet: action.payload });
     case actionTypes.RESET_MEET:
       return UpdatedObj(state, { meet: null });
-
+    case actionTypes.CHAT_ACTIVE:
+      return UpdatedObj(state, {
+        isChatActive: !state.isChatActive,
+        isPeopleActive: false,
+      });
+    case actionTypes.PEOPLE_ACTIVE:
+      return UpdatedObj(state, {
+        isChatActive: false,
+        isPeopleActive: !state.isPeopleActive,
+      });
+    case actionTypes.SET_USER_VIDEO:
+      return UpdatedObj(state, {
+        userVideoStream: action.payload,
+      });
     default:
       return state;
   }

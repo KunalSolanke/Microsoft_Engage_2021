@@ -27,7 +27,7 @@ function SearchPage() {
       const [user, setuser] = useState(null)
     const  onSearchChange=(e)=>{
         setsearchValue(e.target.value)
-        findUsers(e.target.value,auth.token,setresults);
+        if(e.target.value.length>3)findUsers(e.target.value,auth.token,setresults);
     }
     return (        
                 <DashboardLayout>

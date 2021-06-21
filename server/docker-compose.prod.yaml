@@ -32,10 +32,11 @@ services:
       - WAIT_HOSTS_TIMEOUT=300
       - WAIT_SLEEP_INTERVAL=10
       - WAIT_HOST_CONNECT_TIMEOUT=30
-      # - VIRTUAL_HOST=localhost
-      # - VIRTUAL_PORT=3000
-      # - VIRTUAL_PATH=/project
-      # - VIRTUAL_PROTO=http
+      - VIRTUAL_HOST=engage_backend.voldemort.wtf
+      - VIRTUAL_PORT=5000
+      - LETSENCRYPT_HOST=engage_backend.voldemort.wtf
+      - LETSENCRYPT_EMAIL=kunalsolanke1000@gmail.com
+      - NODE_ENV=production
   #Uncomment this block if your project needs to use redis
   # redis :
   #     restart: unless-stopped
@@ -47,10 +48,16 @@ services:
     image: peerjs/peerjs-server
     ports:
       - 9000:9000
+    environment:
+      - VIRTUAL_HOST=engage_peer.voldemort.wtf
+      - VIRTUAL_PORT=9000
+      - LETSENCRYPT_HOST=engage_peer.voldemort.wtf
+      - LETSENCRYPT_EMAIL=kunalsolanke1000@gmail.com
 
 volumes:
   dbdata:
-# networks:
-#   default:
-#     external:
-#       name: nginx-proxy
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

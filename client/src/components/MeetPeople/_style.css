@@ -1,0 +1,27 @@
+.meetchat_area {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+.meetchat__head {
+  padding: 1rem;
+  margin: 1rem 0rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.meetchat__head > div {
+  display: flex;
+  align-items: center;
+}
+.messages__area {
+  padding: 1rem;
+  overflow: scroll;
+  scrollbar-width: none;
+  flex: 1;
+  overflow-x: hidden;
+}
+.meet__chat__icon {
+  margin-right: 0.5rem;
+}

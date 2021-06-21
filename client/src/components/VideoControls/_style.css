@@ -1,0 +1,25 @@
+.video__controls {
+  position: absolute;
+  width: 300px;
+  background-color: #2d2d2d;
+  border-radius: 5px;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  cursor: pointer;
+}
+.end__call {
+  background-color: hsl(359, calc(var(--saturation-factor, 1) * 82.6%), 59.4%);
+}
+
+.video__controls > div {
+  display: grid;
+  place-items: center;
+  padding: 0.9rem;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}

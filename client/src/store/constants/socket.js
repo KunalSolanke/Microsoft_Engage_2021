@@ -8,3 +8,6 @@ export const SET_CHAT = "SET_CHAT";
 export const SET_MEET = "SET_MEET";
 export const RESET_CHAT = "RESET_CHAT";
 export const RESET_MEET = "RESET_MEET";
+export const CHAT_ACTIVE = "CHAT_ACTIVE";
+export const PEOPLE_ACTIVE = "PEOPLE_ACTIVE";
+export const SET_USER_VIDEO = "SET_USER_VIDEO";

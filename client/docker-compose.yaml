@@ -4,25 +4,36 @@
 #
 # See our Developer Handbook for more information:
 # http://docs.divio.com/en/latest/reference/docker-docker-compose.html
-version: '3.8'
+version: "3.8"
 
 services:
-    # The web container is an instance of exactly the same Docker image as your
-    # Cloud application container.
-    web:
-        build: .
-        # Change the port if you'd like to expose your project locally on a
-        # different port, for example if you already use port 8000 for
-        # something else.
-        ports:
-            - '3000:3000'
-        expose:
-            - 3000
-        volumes:
-            - '.:/app:rw'
-        # There is currently a bug: https://github.com/facebook/create-react-app/issues/8688#issuecomment-602149917
-        tty: true
-        # The default command that the container starts with. If you'd like to run
-        # the project locally in Live configuration, you will need to change this.
-        # See https://docs.divio.com/en/latest/how-to/local-in-live-mode
-        command: npm start
+  # The web container is an instance of exactly the same Docker image as your
+  # Cloud application container.
+  web:
+    build: .
+    # Change the port if you'd like to expose your project locally on a
+    # different port, for example if you already use port 8000 for
+    # something else.
+    ports:
+      - "3000:3000"
+    expose:
+      - 3000
+    volumes:
+      - ".:/app:rw"
+    environment:
+      - VIRTUAL_HOST=engage.voldemort.wtf
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST=engage.voldemort.wtf
+      - LETSENCRYPT_EMAIL=kunalsolanke1000@gmail.com
+      - REACT_APP_ENV=production
+    # There is currently a bug: https://github.com/facebook/create-react-app/issues/8688#issuecomment-602149917
+    tty: true
+    # The default command that the container starts with. If you'd like to run
+    # the project locally in Live configuration, you will need to change this.
+    # See https://docs.divio.com/en/latest/how-to/local-in-live-mode
+    command: npm start
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

@@ -13,6 +13,7 @@ import {
   setChat,
   setMeet,
 } from "../store/actions/socket";
+import * as actionTypes from "../store/constants/socket";
 
 const SocketContext = createContext();
 
@@ -36,8 +37,6 @@ const ContextProvider = ({ children }) => {
   const [callTo, setcallTo] = useState(null);
   const [callAboarted, setcallAboarted] = useState(false);
   const peersRef = useRef([]);
-  const userVideoRef = useRef();
-  const [userVideoStream, setuserVideoStream] = useState(null);
 
   const handleIncomingCall = ({ call_from, meetID }) => {
     console.log("Incoming call .... ");
@@ -135,7 +134,10 @@ const ContextProvider = ({ children }) => {
       })
       .then((stream) => {
         console.log(meetID);
-        setuserVideoStream(stream);
+        dispatch({
+          type: actionTypes.SET_USER_VIDEO,
+          payload: stream,
+        });
         socket.emit("join_meet", meetID);
         socket.on("users_in_meet", ({ users, chatID }) => {
           console.log("Setting new chat", chatID);
@@ -182,7 +184,7 @@ const ContextProvider = ({ children }) => {
   const leaveCall = () => {
     reinitialize();
     socket.emit("leavecall", { user: auth.profile });
-    history.push("/dashboard/call");
+    history.push("/dashboard");
   };
 
   return (
@@ -201,9 +203,7 @@ const ContextProvider = ({ children }) => {
         callAboarted,
         initializeVideoCall,
         peersRef,
-        userVideoRef,
         sendMessage,
-        userVideoStream,
       }}
     >
       {children}

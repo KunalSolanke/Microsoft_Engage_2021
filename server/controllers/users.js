@@ -8,11 +8,9 @@ const findUsers = async (req, res) => {
     let regex = new RegExp(search, "i");
     let users = await User.find({
       $or: [
-        {
-          username: { $regex: regex },
-          fullName: { $regex: regex },
-          email: { $regex: regex },
-        },
+        { username: { $regex: regex } },
+        { fullName: { $regex: regex } },
+        { email: { $regex: regex } },
       ],
     });
 
