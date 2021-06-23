@@ -14,12 +14,14 @@
 }
 .meet__row {
   height: 94vh !important;
+  position: relative;
 }
 .video__grid {
   min-height: 94vh !important;
   max-height: 100vh !important;
   padding-left: 0.5rem !important;
   padding-right: 0.5rem !important;
+  position: relative;
 }
 .video__row {
   min-height: 94vh;
@@ -30,10 +32,9 @@
   padding: 0.5rem !important;
 }
 .videoplayer {
-  min-height: 320px;
   border-radius: 0.5rem;
   margin: 0.5rem;
-  max-height: 500px;
+  height: 400px;
   width: 100%;
   object-fit: cover;
   transform: rotateY(180deg);

@@ -5,7 +5,7 @@
 }
 
 .search_page_wrapper {
-  width: clamp(80%, 400px, 400px);
+  width: clamp(80%, 400px, 300px);
   display: flex;
   flex-direction: column;
 }
@@ -23,6 +23,12 @@
   overflow-x: hidden;
   max-height: 50vh;
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.search__results::-webkit-scrollbar {
+  display: none;
+}
+
 .search__image {
   position: absolute;
   bottom: 20%;

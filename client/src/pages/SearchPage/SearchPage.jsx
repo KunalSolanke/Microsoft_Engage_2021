@@ -6,7 +6,7 @@ import { findUsers } from '../../http/requests';
 import "./_style.css"
 import SearchResult from '../../components/SearchResult/SearchResult';
 import UserViewModal from '../../components/UserViewModal/UserViewModal';
-import searchImage from "../../assets/images/searchimg.jpeg"
+import searchImage from "../../assets/images/call.jpg"
 const props = () => ({
   size:  'xl',
   light: false,
@@ -26,8 +26,9 @@ function SearchPage() {
      const [modelopen, setmodelopen] = useState(false)
       const [user, setuser] = useState(null)
     const  onSearchChange=(e)=>{
+        if(e.target.value=="")setresults([])
         setsearchValue(e.target.value)
-        if(e.target.value.length>3)findUsers(e.target.value,auth.token,setresults);
+        if(e.target.value.length>=3)findUsers(e.target.value,auth.token,setresults);
     }
     return (        
                 <DashboardLayout>

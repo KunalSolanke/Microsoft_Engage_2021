@@ -11,3 +11,5 @@ export const RESET_MEET = "RESET_MEET";
 export const CHAT_ACTIVE = "CHAT_ACTIVE";
 export const PEOPLE_ACTIVE = "PEOPLE_ACTIVE";
 export const SET_USER_VIDEO = "SET_USER_VIDEO";
+export const SET_PEER_STREAM = "SET_PEER_STREAM";
+export const REMOVE_PEER_VIDEO = "REMOVE_PEER_VIDEO";

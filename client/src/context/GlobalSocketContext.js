@@ -6,7 +6,7 @@ import { createMeet } from "../http/requests";
 import { authCheckState } from "../store/actions/auth";
 import { connectToAllUsers, handleUserJoined } from "./peers";
 import {
-  leftMeet,
+  leftMeet as peerLeftMeet,
   newMessage,
   peerLeft,
   prevMessages,
@@ -66,8 +66,16 @@ const ContextProvider = ({ children }) => {
       socket.on("prev_messages", handlePrevMessages);
       socket.on("new_message", handleNewMessage);
       return () => {
-        socket.off("incoming_call", handleIncomingCall);
-        socket.off("callaccepted", handleCallAccepted);
+        // socket.off("incoming_call", handleIncomingCall);
+        // socket.off("callaccepted", handleCallAccepted);
+        // socket.off("callaborted", handleCallAboart);
+        // socket.off("prev_messages", handlePrevMessages);
+        // socket.off("new_message", handleNewMessage);
+        socket.removeAllListeners("incoming_call");
+        socket.removeAllListeners("callaccepted");
+        socket.removeAllListeners("prev_messages");
+        socket.removeAllListeners("callaborted");
+        socket.removeAllListeners("new_message");
       };
     }
   }, [auth.profile]);
@@ -124,8 +132,40 @@ const ContextProvider = ({ children }) => {
 
   //================================= VIDEO CALL ==================================
 
+  const leftMeet = (peerID) => {
+    console.log("user left chat", peerID);
+    peersRef.current = peersRef.current.filter((p) => p.peerID != peerID);
+    dispatch(peerLeft(peerID));
+  };
+
+  const allUsers = ({ users, chatID }, stream) => {
+    console.log("Setting new chat", chatID);
+    dispatch(setChat(chatID));
+    connectToAllUsers(users, dispatch, peersRef, stream, auth.userID);
+  };
+
+  const newUser = (payload, stream) => {
+    console.log("New user joinded....", payload);
+    handleUserJoined(payload, dispatch, stream, auth.userID, peersRef);
+  };
+
+  const receiveSignalBack = (payload) => {
+    console.log("Receive signal back", payload);
+    const peerRef = peersRef.current.findIndex((p) => p.peerID === payload.id);
+    console.log("found a user peer to signal to ... ", peerRef);
+    console.log(peersRef);
+    if (peerRef != -1 && !peersRef.current[peerRef].destroyed) {
+      try {
+        peersRef.current[peerRef].peer.signal(payload.signal);
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      console.log("No peer found");
+    }
+  };
+
   const initializeVideoCall = (meetID) => {
-    console.log(meetID);
     dispatch(setMeet(meetID));
     navigator.mediaDevices
       .getUserMedia({
@@ -133,36 +173,31 @@ const ContextProvider = ({ children }) => {
         audio: true,
       })
       .then((stream) => {
-        console.log(meetID);
         dispatch({
           type: actionTypes.SET_USER_VIDEO,
           payload: stream,
         });
         socket.emit("join_meet", meetID);
-        socket.on("users_in_meet", ({ users, chatID }) => {
-          console.log("Setting new chat", chatID);
-          dispatch(setChat(chatID));
-          connectToAllUsers(users, dispatch, peersRef, stream, auth.userID);
-        });
-        socket.on("user_joined", (payload) => {
-          console.log("New user joinded....", payload);
-          handleUserJoined(payload, dispatch, stream, auth.userID, peersRef);
-        });
-        socket.on("receive_signal_back", (payload) => {
-          console.log("Receive signal back", payload);
-          const peerRef = peersRef.current.find((p) => p.peerID === payload.id);
-          if (peerRef != -1 && !peerRef.destroyed) {
-            peerRef.peer.signal(payload.signal);
-          } else {
-            console.log("No peer found");
-          }
-        });
-        socket.on("left_chat", (peerID) => {
-          console.log("user left chat", peerID);
-          peersRef.current = peersRef.current.filter((p) => p.peerID != peerID);
-          dispatch(peerLeft(peerID));
-        });
+        socket.on("users_in_meet", (payload) => allUsers(payload, stream));
+
+        socket.on("user_joined", (payload) => newUser(payload, stream));
+        socket.on("receive_signal_back", receiveSignalBack);
+        socket.on("left_meet", leftMeet);
       });
+
+    const cleanup = () => {
+      socket.removeAllListeners("receive_signal_back");
+      socket.removeAllListeners("left_chat");
+      socket.removeAllListeners("user_joined");
+      socket.removeAllListeners("users_in_meet");
+
+      // socket.off("receive_signal_back", receiveSignalBack);
+      // socket.off("users_in_meet", (payload) => allUsers(payload, stream));
+      // socket.off("user_joined", (payload) => newUser(payload, stream));
+      // socket.off("left_chat", leftChat);
+    };
+
+    return cleanup;
   };
   //=========================== GROUP MEET ====================================
 
@@ -173,11 +208,15 @@ const ContextProvider = ({ children }) => {
   };
 
   const reinitialize = () => {
+    socket.removeAllListeners("receive_signal_back");
+    socket.removeAllListeners("left_meet");
+    socket.removeAllListeners("user_joined");
+    socket.removeAllListeners("users_in_meet");
     setCallData({ isReceived: false });
     setCallAccepted(false);
     setcallTo(null);
     setcallAboarted(false);
-    dispatch(leftMeet());
+    dispatch(peerLeftMeet());
     peersRef.current = [];
   };
 

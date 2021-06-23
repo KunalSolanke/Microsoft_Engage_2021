@@ -9,7 +9,7 @@ function SignUpPage() {
         <HomeLayout>
            <Grid fullWidth={true} >
                <Row flexGrow={true} className="auth__grid">
-                   <Column md={4} sm={12} lg={3}>
+                   <Column md={4} sm={12} lg={4}>
                        <h3>Sign up</h3>
                        <div className="redirect">
                            <Link href="#">Already have an Account ? </Link>
@@ -22,7 +22,7 @@ function SignUpPage() {
                            <Link href="/contact">Support</Link> 
                        </div>
                    </Column>
-                   <Column md={8} sm={12} lg={9}>
+                   <Column md={8} sm={12} lg={12}>
                        <img className="auth__image" src={AuthBanner}/>
                    </Column>
                    

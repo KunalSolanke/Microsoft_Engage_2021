@@ -3,6 +3,7 @@
   width: 100%;
   align-items: center;
   margin-bottom: 0.5rem;
+  max-width: 1000px;
 }
 .send_message__block > svg {
   margin-left: 0.5rem;

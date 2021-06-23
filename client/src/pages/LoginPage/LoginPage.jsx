@@ -10,10 +10,10 @@ function LoginPage() {
         <HomeLayout>
            <Grid fullWidth={true} >
                <Row flexGrow={true} className="auth__grid">
-                   <Column md={8} sm={12} lg={9}>
+                   <Column md={8} sm={12} lg={12}>
                        <img className="auth__image" src={AuthBanner}/>
                    </Column>
-                   <Column md={4} sm={12} lg={3}>
+                   <Column md={4} sm={12} lg={4}>
                        <h3>Log In</h3>
                        <div className="redirect">
                            <Link href="#">Don't have an Account ? </Link>

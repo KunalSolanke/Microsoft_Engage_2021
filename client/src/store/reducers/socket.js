@@ -10,6 +10,7 @@ const intialState = {
   isChatActive: false,
   isPeopleActive: false,
   userVideoStream: null,
+  peerStreams: [],
 };
 
 const newMessage = (state, action) => {
@@ -39,9 +40,7 @@ const addPeer = (state, action) => {
   if (peer == -1) {
     peers = [...peers, action.payload];
   } else {
-    if (!peers[peer].streams || peers[peer].streams.length == 0 || !peers[peer].stream[0].active) {
-      peers[peer] = action.payload;
-    }
+    peers[peer] = action.payload;
   }
   return UpdatedObj(state, {
     peers,
@@ -61,6 +60,24 @@ const peerLeft = (state, action) => {
   });
 };
 
+const setPeerStream = (state, action) => {
+  let connectedPeerStreams = state.peerStreams;
+  let streamIndex = connectedPeerStreams.findIndex(
+    (stream) => stream.peerID == action.payload.peerID
+  );
+  if (streamIndex == -1) {
+    connectedPeerStreams = [...connectedPeerStreams, action.payload];
+  } else {
+    connectedPeerStreams[streamIndex] = connectedPeerStreams;
+  }
+  return UpdatedObj(state, { peerStreams: connectedPeerStreams });
+};
+
+const removePeerStream = (state, action) => {
+  let peerStreams = state.peerStreams.filter((p) => p.peerID != action.payload);
+  return UpdatedObj(state, { peerStreams });
+};
+
 const reducer = (state = intialState, action) => {
   switch (action.type) {
     case actionTypes.NEW_MESSAGE:
@@ -74,11 +91,11 @@ const reducer = (state = intialState, action) => {
     case actionTypes.PEER_LEFT:
       return peerLeft(state, action);
     case actionTypes.LEFT_MEET:
-      return UpdatedObj(state, { peers: [] });
+      return UpdatedObj(state, { peers: [], peerStreams: [] });
     case actionTypes.SET_CHAT:
       return UpdatedObj(state, { chatID: action.payload });
     case actionTypes.RESET_CHAT:
-      return UpdatedObj(state, { chatID: null });
+      return UpdatedObj(state, { chatID: null, currMessages: [] });
     case actionTypes.SET_MEET:
       return UpdatedObj(state, { meet: action.payload });
     case actionTypes.RESET_MEET:
@@ -97,6 +114,10 @@ const reducer = (state = intialState, action) => {
       return UpdatedObj(state, {
         userVideoStream: action.payload,
       });
+    case actionTypes.SET_PEER_STREAM:
+      return setPeerStream(state, action);
+    case actionTypes.REMOVE_PEER_VIDEO:
+      return removePeerStream(state, action);
     default:
       return state;
   }

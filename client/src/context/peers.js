@@ -20,6 +20,7 @@ const createPeer = (userTosignal, caller, stream) => {
     console.log("Sending signal");
     socket.emit("send_signal", { userTosignal, caller, signal });
   });
+  peer._debug = console.log;
   return peer;
 };
 
@@ -54,6 +55,7 @@ const addPeer = (incomingSignal, callerID, stream) => {
   peer.on("signal", (signal) => {
     socket.emit("return_signal", { signal, callerID });
   });
+  peer._debug = console.log;
 
   peer.signal(incomingSignal);
 
@@ -70,10 +72,25 @@ const handleUserJoined = (payload, dispatch, stream, userID, peersRef) => {
       videoPaused: false,
       user: payload.user,
     };
-    peersRef.current.push({
-      peerID: payload.callerID,
-      peer,
-    });
+
+    let peers = peersRef.current;
+
+    let index = peers.findIndex((p) => p.peerID == peer.peerID);
+    if (index == -1) {
+      peersRef.current = [
+        ...peers,
+        {
+          peer: peer.peer,
+          peerID: peer.peerID,
+        },
+      ];
+    } else {
+      peers[index] = {
+        peer: peer.peer,
+        peerID: peer.peerID,
+      };
+      peersRef.current = peers;
+    }
 
     dispatch(newPeer(peer));
   }

@@ -1,16 +1,14 @@
 FROM node:12.13.0-alpine
 
+WORKDIR /app
 # for caching optimisations
 COPY package*.json /
-RUN yarn add
+RUN yarn install
 # required to serve the react app on the live server
-RUN yarn add -g serve
+RUN yarn global add serve
 
-WORKDIR /app
-COPY . /app
-# noop files for non python projects and local development
-RUN echo "#!/bin/bash" > /app/migrate.sh && chmod +x /app/migrate.sh
-RUN echo "#!/bin/bash" > /usr/local/bin/start && chmod +x /usr/local/bin/start
+COPY . .
+
 
 ENV PATH=/node_modules/.bin:$PATH
 ENV PORT=3000
@@ -21,5 +19,3 @@ EXPOSE 3000
 RUN yarn run build
 
 EXPOSE 80
-
-CMD ["serve", "-s", "build", "-l", "80"]

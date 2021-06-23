@@ -1,11 +1,23 @@
 import * as actionTypes from "../constants/socket";
 
-export const addPeer = (peer) => {
+export const addPeer = (peerObj) => {
   return async (dispatch, getState) => {
     dispatch({
       type: actionTypes.ADD_PEER,
-      payload: peer,
+      payload: peerObj,
     });
+    if (!peerObj.peer.destroyed)
+      peerObj.peer.on("stream", (stream) =>
+        dispatch({
+          type: actionTypes.SET_PEER_STREAM,
+          payload: {
+            peerID: peerObj.peerID,
+            muted: false,
+            video: false,
+            stream,
+          },
+        })
+      );
   };
 };
 
@@ -15,6 +27,21 @@ export const connectPeers = (peers) => {
       type: actionTypes.CONNECT_PEERS,
       payload: peers,
     });
+    for (let peerObj of peers) {
+      if (!peerObj.peer.destroyed) {
+        peerObj.peer.on("stream", (stream) => {
+          dispatch({
+            type: actionTypes.SET_PEER_STREAM,
+            payload: {
+              peerID: peerObj.peerID,
+              muted: false,
+              video: false,
+              stream,
+            },
+          });
+        });
+      }
+    }
   };
 };
 
@@ -40,6 +67,10 @@ export const peerLeft = (peerID) => {
   return async (dispatch, getState) => {
     dispatch({
       type: actionTypes.PEER_LEFT,
+      payload: peerID,
+    });
+    dispatch({
+      type: actionTypes.REMOVE_PEER_VIDEO,
       payload: peerID,
     });
   };

@@ -59,7 +59,6 @@ const configure_socket = (server) => {
       console.log("Joining meet .........", meetID);
       const meet = await getMeet(meetID);
       socket.join(`${meet.chat}`);
-      console.log("rooms: ", io.sockets.adapter.rooms);
       meet.participants = meet.participants.filter((u) => u._id != socket.user._id);
       socket.emit("users_in_meet", { users: meet.participants, chatID: meet.chat });
       addParticipants(meetID, socket.user._id);
@@ -69,16 +68,24 @@ const configure_socket = (server) => {
     });
 
     socket.on("send_signal", (payload) => {
-      console.log("Sending my signal ..", payload.userTosignal);
-      io.in(payload.userTosignal).emit("user_joined", {
-        signal: payload.signal,
-        id: payload.caller,
-        user: socket.user,
-      });
+      console.log("Sending my signal to", payload.userTosignal);
+      const clients = io.sockets.adapter.rooms.get(payload.userTosignal);
+      console.log("rooms: ", io.sockets.adapter.rooms);
+      console.log(clients);
+      for (let clientId of clients) {
+        //this is the socket of each client in the room..log
+        console.log("Sending singal out");
+        const clientSocket = io.sockets.sockets.get(clientId);
+        clientSocket.emit("user_joined", {
+          signal: payload.signal,
+          id: payload.caller,
+          user: socket.user,
+        });
+      }
     });
 
     socket.on("return_signal", (payload) => {
-      console.log("Getting signal from ", payload);
+      console.log("Getting a return signal");
       io.in(payload.callerID).emit("receive_signal_back", {
         signal: payload.signal,
         id: socket.user._id,
@@ -102,7 +109,7 @@ const configure_socket = (server) => {
         const meet = await getMeet(meetID);
         leaveMeet(meetID, socket.user._id);
         console.log("Leaving meet .....", meet);
-        socket.to(`${meet.chat}`).emit("left_chat", socket.user._id);
+        socket.to(`${meet.chat}`).emit("left_meet", socket.user._id);
         socket.leave(`${meet.chat}`);
       }
     });

@@ -25,3 +25,8 @@
 .meet__chat__icon {
   margin-right: 0.5rem;
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.messages__area::-webkit-scrollbar {
+  display: none;
+}

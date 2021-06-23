@@ -1,0 +1,38 @@
+.chatbar__head {
+  padding: 1rem;
+  display: flex;
+}
+.chatbar__head > svg {
+  margin-right: 0.5rem;
+}
+.chattiles__area {
+  flex-grow: 1;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.chatbar {
+  display: flex;
+  flex-direction: column;
+}
+.chat__tile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: all 0.25s ease-in-out;
+  margin-bottom: 0.5rem;
+}
+.chattile__content {
+  flex-grow: 1;
+}
+
+.chat__tile:hover {
+  background-color: #fff;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.chattiles__area::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+}

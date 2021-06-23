@@ -14,18 +14,20 @@ function PeerVideos() {
      const [colLg, setcolLg] = useState(6)
      
     useEffect(()=>{
-      if(peers.length>4)setcolLg(4);
-      else setcolLg(6)
+      if(peers.length>4)setcolLg(5);
+      else setcolLg(8)
     },[peers])
 
     return (
          <Row className="video__row">
             <Column md={4} sm={4} lg={colLg} className="video__col">
+                <p style={{color:"white"}}>You</p>
                <UserVideo/>
             </Column>
             {peers.map((peerObj,i)=>(
             <Column md={4} sm={4} lg={colLg} key={peerObj.peerID} className="video__col">
-                <CallVideo peer={peerObj.peer}/>
+                <p style={{color:"white"}}>{peerObj.user.username}</p>
+                <CallVideo peerID={peerObj.peerID}/>
             </Column>))}
         </Row>
     )

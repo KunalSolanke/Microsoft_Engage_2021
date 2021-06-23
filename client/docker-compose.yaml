@@ -20,20 +20,9 @@ services:
       - 3000
     volumes:
       - ".:/app:rw"
-    environment:
-      - VIRTUAL_HOST=engage.voldemort.wtf
-      - VIRTUAL_PORT=3000
-      - LETSENCRYPT_HOST=engage.voldemort.wtf
-      - LETSENCRYPT_EMAIL=kunalsolanke1000@gmail.com
-      - REACT_APP_ENV=production
     # There is currently a bug: https://github.com/facebook/create-react-app/issues/8688#issuecomment-602149917
-    tty: true
-    # The default command that the container starts with. If you'd like to run
-    # the project locally in Live configuration, you will need to change this.
-    # See https://docs.divio.com/en/latest/how-to/local-in-live-mode
-    command: npm start
-
-networks:
-  default:
-    external:
-      name: nginx-proxy
+    command: serve -s -build -l 3000
+# networks:
+#   default:
+#     external:
+#       name: nginx-proxy

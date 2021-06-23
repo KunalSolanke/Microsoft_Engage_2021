@@ -69,7 +69,7 @@ function VideoControls() {
 
     return(
         <div className="video__controls">
-            {/* <div>
+            <div>
             
             {videoOn?<VideoFilled20 onClick={e=>handleVideoOn(e)}/>:
             <VideoOffFilled20 onClick={e=>handleVideoOff(e)}/>}
@@ -78,7 +78,7 @@ function VideoControls() {
 
             {audioOn?<MicrophoneFilled20 onClick={e=>handleAudioOn(e)}/>:
             <MicrophoneOffFilled20 onClick={e=>handleAudioOff(e)}/>}
-            </div> */}
+            </div>
             <div onClick={(e=>openChat(e))}>
 
             <Chat20/>

@@ -20,7 +20,7 @@ function People(props) {
                 {renderUserProfile()}
                 <div className={"message__main user"}>
                     <div className="message__head">
-                        <p style={{fontSize:"0.8rem"}}>{me==props.user._id?"You":props.user.username}</p>
+                        <p style={{fontSize:"0.8rem"}}>{me==props.user?._id?"You":props.user?.username}</p>
                     </div>
                 </div>
             </div>           
