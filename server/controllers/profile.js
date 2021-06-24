@@ -1,3 +1,4 @@
+const Chat = require("../models/Chat");
 const User = require("../models/User");
 
 const getProfile = async (req, res) => {
@@ -16,7 +17,6 @@ const updateProfile = async (req, res) => {
   try {
     let user = req.user;
     await User.findByIdAndUpdate(user._id, req.body);
-
     if (req.file) {
       user.image = {
         contentType: req.file.url,
@@ -31,7 +31,42 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const getMyContacts = async (req, res) => {
+  console.log("Get my contacts");
+  try {
+    let contacts = await Chat.find({
+      participants: req.user._id,
+      is_group: false,
+      is_meet_chat: false,
+    })
+      .lean()
+      .populate("participants")
+      .populate("messages")
+      .exec();
+    contacts = contacts.map((c) => ({
+      last_message: c.messages.length > 0 ? c.messages[chat.messages.length - 1] : null,
+      chat: (({ messages, ...o }) => o)(c),
+    }));
+    res.send(contacts);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
+const getMyTeams = async (req, res) => {
+  try {
+    let contacts = await Chat.find({ participants: req.user._id, is_group: true });
+    res.send(contacts);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
 module.exports = {
   getProfile,
   updateProfile,
+  getMyContacts,
+  getMyTeams,
 };

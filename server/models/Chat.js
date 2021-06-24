@@ -2,13 +2,14 @@ const mongoose = require("mongoose");
 
 const chatSchema = mongoose.Schema(
   {
+    channel_name: String,
     messages: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Message",
       },
     ],
-    particiants: [
+    participants: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -26,6 +27,12 @@ const chatSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    channels: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Chat",
+      },
+    ],
   },
   {
     timestamps: true,

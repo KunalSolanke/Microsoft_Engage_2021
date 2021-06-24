@@ -28,15 +28,13 @@ const configure_socket = (server) => {
 
     socket.join(`${socket.user._id}`, (err) => console.log(err));
 
-    socket.on("join_chat", (room_name) => {
-      socket.join(room_name);
-      socket.emit("prev_messages", { messages: [] });
+    socket.on("join_chat", async (room_name) => {
+      socket.join(`${room_name}`);
+      const messages = await getMessages(room_name);
+      console.log("Sending old messages ...", messages);
+      socket.emit("prev_messages", messages);
     });
 
-    socket.on("leave_chat", (chatID) => {
-      socket.leave(chatID);
-      socket.to(chatID).emit("left_chat", socket.user._id);
-    });
     //============================  CREATE CALL ==================================
     socket.on("calluser", ({ userID, meetID }) => {
       console.log("calling user...", userID);

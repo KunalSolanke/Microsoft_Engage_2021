@@ -1,13 +1,25 @@
 import { Chat24, Phone20, UserAvatar16, UserProfileAlt24 } from '@carbon/icons-react'
-import { ComposedModal, Link, ModalBody, ModalFooter, ModalHeader } from 'carbon-components-react'
+import { Button, ComposedModal, Link, ModalBody, ModalFooter, ModalHeader } from 'carbon-components-react'
 import React, { createContext, useContext } from 'react'
 import { SocketContext } from '../../context/GlobalSocketContext'
+import { addContact } from '../../http/requests'
+import {useMutation} from "react-query"
 import "./_style.css"
 
 function UserViewModal({user,open,setmodelopen}) {
+    const mutation = useMutation(addContact,{
+        onSuccess:(data,variables,context)=>{
+
+        }
+    });
+
     const context = useContext(SocketContext);
     const onCall = (e)=>{
         context.callUser({user});
+    }
+    const onAddContact = ()=>{
+        console.log("Adding user to contacts")
+        mutation.mutate(user._id)
     }
     return (
         <div>
@@ -33,7 +45,16 @@ function UserViewModal({user,open,setmodelopen}) {
                   </div>
                 </ModalBody>
                }
-                <ModalFooter primaryButtonDisabled secondaryButtonText="Add to Contact" />
+                <ModalFooter primaryButtonDisabled>
+                <Button
+                    kind="secondary"
+                    onClick={() => {
+                         onAddContact();
+                        setmodelopen(false);
+                     }}>
+                    Add to Contact
+                </Button>
+                </ModalFooter>
             </ComposedModal>
         </div>
     )

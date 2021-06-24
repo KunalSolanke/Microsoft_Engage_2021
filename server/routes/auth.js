@@ -12,5 +12,5 @@ router.use(isLoggedIn);
 router.get("/logout", auth.logout);
 router.get("/profile", profile.getProfile);
 router.post("/profile", upload.single("image"), profile.updateProfile);
-
+router.get("/contacts/me", profile.getMyContacts);
 module.exports = router;

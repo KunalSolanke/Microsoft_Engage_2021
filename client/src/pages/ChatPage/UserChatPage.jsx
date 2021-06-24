@@ -1,13 +1,27 @@
 import { Column, Content, Grid, Row } from 'carbon-components-react'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import ChatBar from '../../components/ChatBar/ChatBar'
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
 import "./_styles.css"
 import { UserAvatar16, VideoChat20, VideoChat32 } from '@carbon/icons-react'
 import SendMessage from "../../components/SendMessage/SendMessage"
 import UserChatArea from './UserChatArea'
+import { socket, SocketContext } from '../../context/GlobalSocketContext'
+import { useParams } from 'react-router-dom'
+import * as actionTypes from "../../store/constants/socket"
+import { useDispatch } from 'react-redux'
 
 function UserChatPage(props) {
+    const context = useContext(SocketContext)
+    const {chatID}= useParams()
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        context.socket.emit("join_chat",chatID)
+        dispatch({
+           type:actionTypes.SET_CHAT,
+           payload:chatID
+        })
+    },[])
     return (
         <DashboardLayout>
             <Content

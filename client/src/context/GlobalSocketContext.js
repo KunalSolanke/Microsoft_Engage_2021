@@ -66,11 +66,6 @@ const ContextProvider = ({ children }) => {
       socket.on("prev_messages", handlePrevMessages);
       socket.on("new_message", handleNewMessage);
       return () => {
-        // socket.off("incoming_call", handleIncomingCall);
-        // socket.off("callaccepted", handleCallAccepted);
-        // socket.off("callaborted", handleCallAboart);
-        // socket.off("prev_messages", handlePrevMessages);
-        // socket.off("new_message", handleNewMessage);
         socket.removeAllListeners("incoming_call");
         socket.removeAllListeners("callaccepted");
         socket.removeAllListeners("prev_messages");
@@ -90,6 +85,7 @@ const ContextProvider = ({ children }) => {
 
   const callUser = async ({ user }) => {
     setcallTo(user);
+
     let meet = await createMeet(user);
     socket.emit("calluser", { userID: user._id, meetID: meet._id });
     dispatch(setMeet(meet._id));
@@ -187,14 +183,9 @@ const ContextProvider = ({ children }) => {
 
     const cleanup = () => {
       socket.removeAllListeners("receive_signal_back");
-      socket.removeAllListeners("left_chat");
+      socket.removeAllListeners("left_meet");
       socket.removeAllListeners("user_joined");
       socket.removeAllListeners("users_in_meet");
-
-      // socket.off("receive_signal_back", receiveSignalBack);
-      // socket.off("users_in_meet", (payload) => allUsers(payload, stream));
-      // socket.off("user_joined", (payload) => newUser(payload, stream));
-      // socket.off("left_chat", leftChat);
     };
 
     return cleanup;

@@ -22,24 +22,9 @@ function UserChatArea() {
     return (
        <div className="userchat__area">
                          <div className="chat__messages__area" ref={messageEl}>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
-                             <Message message={{content:"Hello there",author:{_id:1,username:"mew"}}}/>
+                              {messages.map(m=>{
+                                return <Message key={m._id} message={m}/>
+                            })}
 
                         </div>          
         </div>

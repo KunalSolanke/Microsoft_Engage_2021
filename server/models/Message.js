@@ -12,6 +12,7 @@ const messageSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Chat",
     },
+    is_bot: Boolean,
   },
   {
     timestamps: true,

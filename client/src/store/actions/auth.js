@@ -56,6 +56,7 @@ export const updateProfileSuccess = (data) => {
 export const authUpdateState = () => {
   return async (dispatch, getState) => {
     try {
+      axios.defaults.headers["Authorization"] = null;
       const res = await axios.get("/accounts/refresh");
       dispatch(checkauthtimeout((res.data.expiry - 60) * 1000));
       await dispatch(authSuccess(res.data));
@@ -69,6 +70,7 @@ export const authUpdateState = () => {
 export const authCheckState = (history) => {
   return async (dispatch, getState) => {
     try {
+      axios.defaults.headers["Authorization"] = null;
       const res = await axios.get("/accounts/refresh");
       dispatch(checkauthtimeout((res.data.expiry - 60) * 1000));
       await dispatch(authSuccess(res.data));

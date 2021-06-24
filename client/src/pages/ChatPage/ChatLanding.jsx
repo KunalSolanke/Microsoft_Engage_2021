@@ -1,4 +1,4 @@
-import { Column, Content, Grid, Row } from 'carbon-components-react'
+import { Button, Column, Content, Grid, Row } from 'carbon-components-react'
 import React from 'react'
 import ChatBar from '../../components/ChatBar/ChatBar'
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
@@ -18,9 +18,10 @@ function ChatLanding() {
                           </Column>
                           <Column sm={0} md={6} lg={13} style={{height:"100%"}}>
                              <div style={{display:"grid",placeItems:"center",height:"100%"}}>
-                                 <div>
+                                 <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                                 <img src={chatImage} className="chat__landing__img"/>
-                                 <p>Add your friends to your contact list and have hassle free messaging anytime.</p>
+                                 <p>Add your friends to your contact list and have hassle free <br/>messaging anytime.</p>
+                                  <Button kind="danger--tertiary" href="/dashboard/meet">Add Contacts</Button>
                                 </div>
                              </div>
                           </Column>
