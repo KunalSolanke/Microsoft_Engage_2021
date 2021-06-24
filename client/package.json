@@ -17,6 +17,7 @@
     "react-github-login": "^1.0.3",
     "react-google-login": "^5.2.2",
     "react-microsoft-login": "^1.15.0",
+    "react-query": "^3.17.2",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",

@@ -7,6 +7,8 @@ import "./_style.css"
 import SearchResult from '../../components/SearchResult/SearchResult';
 import UserViewModal from '../../components/UserViewModal/UserViewModal';
 import searchImage from "../../assets/images/call.jpg"
+import {useQuery} from "react-query"
+import useDebounce from '../../hooks/useDebounce';
 const props = () => ({
   size:  'xl',
   light: false,
@@ -19,17 +21,24 @@ const props = () => ({
   placeholder:  'Search',
 });
 
+const useFetchUsers = (search)=>{
+    const {data,error,isLoading} = useQuery(["fetchUsers",search],()=>{
+       if(search.length>=2)return findUsers(search)
+       return []
+    });
+    return {results:data,error,isLoading}
+}
+
 function SearchPage() {
-    const [results, setresults] = useState([]);
     const [searchValue, setsearchValue] = useState("")
-    const auth = useSelector(state => state.auth);
-     const [modelopen, setmodelopen] = useState(false)
-      const [user, setuser] = useState(null)
+    const debouncedQuery = useDebounce(searchValue,500)
+    const {results,error,isLoading} = useFetchUsers(debouncedQuery)
+    const [modelopen, setmodelopen] = useState(false)
+    const [user, setuser] = useState(null)
     const  onSearchChange=(e)=>{
-        if(e.target.value=="")setresults([])
-        setsearchValue(e.target.value)
-        if(e.target.value.length>=3)findUsers(e.target.value,auth.token,setresults);
+        setsearchValue(e.target.value);
     }
+    
     return (        
                 <DashboardLayout>
                     <Content
@@ -45,10 +54,12 @@ function SearchPage() {
                                 <Search {...props()} onChange={(e)=>onSearchChange(e)} autoFocus={true} value={searchValue}/>
                                 <div className="search__results">
                                     {
+                                        isLoading?<>Finding users .. </>:(
                                         results&&results.map(user=>(
                                                 <SearchResult key={user.id} user={user} setmodelopen={setmodelopen} setuser={setuser}/>
-                                            ))
-                                        } 
+                                            )) 
+                                        )
+                                    }
                                 </div>
                             </div>
                             <div className="search__image">

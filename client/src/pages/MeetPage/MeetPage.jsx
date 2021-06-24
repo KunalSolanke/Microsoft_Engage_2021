@@ -15,6 +15,7 @@ function MeetPage() {
     const context = useContext(SocketContext)
     const {meetID} = useParams()
     const auth = useSelector(state => state.auth)
+    const  userVideoStream= useSelector(state => state.socket.userVideoStream)
 
     useEffect(() => {
         console.log("Intializing the meet")
@@ -24,6 +25,8 @@ function MeetPage() {
              console.log("Leaving meet... ");
              context.socket.emit("leave_meet", meetID);
              cleanup();
+            //if(userVideoStream)userVideoStream.getVideoTracks[0]?.stop()
+
         }
     }, [auth.userID])
 
@@ -45,6 +48,7 @@ function MeetPage() {
                         console.log("Backing up...")
                         context.reinitialize();
                         context.socket.emit("leave_meet",meetID);
+                       // if(userVideoStream)userVideoStream.getVideoTracks[0]?.stop()
                     }
                     
                     return true;
