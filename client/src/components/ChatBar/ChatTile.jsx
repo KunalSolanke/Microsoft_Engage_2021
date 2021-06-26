@@ -16,11 +16,11 @@ function ChatTile(props) {
                 </>
             :(<UserAvatar16 className="user__profile"/>)}
             <div className="chattile__content">
-                <h6 style={{marginBottom:"0.4rem"}}>{user.username}</h6>
-            {chatID!=props.chat._id&&
+                <h6 style={{marginBottom:"0.4rem"}}>{user?.username}</h6>
+            {chatID!=props.chat._id?
             <p>
                 {props.last_message?<>{props.last_message?.splice(20)}...</>:<>No new message</>}
-            </p>
+            </p>:<p>Current</p>
             }
             </div>
         </div>

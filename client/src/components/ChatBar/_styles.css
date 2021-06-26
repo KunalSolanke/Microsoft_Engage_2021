@@ -21,7 +21,6 @@
   cursor: pointer;
   padding: 0.45rem 1rem;
   transition: all 0.25s ease-in-out;
-  margin-bottom: 0.5rem;
 }
 .chattile__content {
   flex-grow: 1;

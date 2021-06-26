@@ -2,13 +2,13 @@ import React,{useState} from 'react'
 import { Content, Search} from "carbon-components-react";
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout';
 import { useSelector } from 'react-redux';
-import { findUsers } from '../../http/requests';
+
 import "./_style.css"
 import SearchResult from '../../components/SearchResult/SearchResult';
 import UserViewModal from '../../components/UserViewModal/UserViewModal';
 import searchImage from "../../assets/images/call.jpg"
-import {useQuery} from "react-query"
 import useDebounce from '../../hooks/useDebounce';
+import useFetchUsers from '../../hooks/useFecthUsers';
 const props = () => ({
   size:  'xl',
   light: false,
@@ -21,13 +21,6 @@ const props = () => ({
   placeholder:  'Search',
 });
 
-const useFetchUsers = (search)=>{
-    const {data,error,isLoading} = useQuery(["fetchUsers",search],()=>{
-       if(search.length>=2)return findUsers(search)
-       return []
-    });
-    return {results:data,error,isLoading}
-}
 
 function SearchPage() {
     const [searchValue, setsearchValue] = useState("")

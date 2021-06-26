@@ -42,4 +42,12 @@ export const createMeet = async (user) => await postRequest("/meet/create", { us
 export const addContact = async (userID) => await postRequest("/meet/contacts_add", { userID });
 export const getMyContacts = async (token = null) =>
   await getRequest("/accounts/contacts/me", token);
+export const getMyTeams = async (token = null) => await getRequest("/accounts/teams/me", token);
 export const getMyActivity = async () => await getRequest("/activity/me");
+export const getChat = async (chatID) => {
+  return await getRequest(`/meet/chat/${chatID}`);
+};
+export const createTeam = async (data) => await postRequest("/meet/teams_add", data);
+export const getTeam = async (teamID) => {
+  return await getRequest(`/meet/team/${teamID}`);
+};

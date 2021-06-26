@@ -1,6 +1,6 @@
 .dashboard_main_area {
   background-color: #fff !important;
-  min-height: 100vh;
+  height: 94vh;
   margin-left: 1.5rem !important;
   position: relative;
 }

@@ -10,6 +10,7 @@ import CreateCall from "./pages/CreateCall/CreateCall";
 import { ContextProvider } from "./context/GlobalSocketContext";
 import ChatLanding from "./pages/ChatPage/ChatLanding";
 import UserChatPage from "./pages/ChatPage/UserChatPage";
+import TeamsPage from "./pages/TeamPages/TeamsPage";
 
 const DashBoardRoutes = () => (
   <ContextProvider>
@@ -17,6 +18,7 @@ const DashBoardRoutes = () => (
     <Route exact path="/dashboard/meet" component={SearchPage} />
     <Route exact path="/dashboard/calluser" component={CreateCall} />
     <Route exact path="/dashboard/chat" component={ChatLanding} />
+    <Route exact path="/dashboard/teams" component={TeamsPage} />
     <Route exact path="/dashboard/chat/:chatID" component={UserChatPage} />
     <Route exact path="/dashboard/meet/:meetID" component={MeetPage} />
   </ContextProvider>
