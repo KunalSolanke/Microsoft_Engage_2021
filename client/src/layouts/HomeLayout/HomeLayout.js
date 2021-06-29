@@ -10,52 +10,73 @@ import {
   HeaderGlobalAction,
   SkipToContent,
   HeaderContainer,
+  Content,
 } from "carbon-components-react";
 import { AppSwitcher20 } from "@carbon/icons-react";
+import DotcomShell from "@carbon/ibmdotcom-react/es/components/DotcomShell/DotcomShell";
 
 function HomeLayout(props) {
   return (
-    <div
-      className="container"
-      style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
+    <DotcomShell
+      footerProps={{
+        type: "micro",
+      }}
+      mastheadProps={{
+        platform: {
+          name: "Connect",
+          url: "/",
+        },
+        customProfileLogin: "/accounts/login",
+        hasSearch: false,
+        navigation: [
+          {
+            hasMenu: true,
+            title: "Accounts",
+            menuSections: [
+              {
+                menuItems: [
+                  {
+                    title: "My Dashboard",
+                    url: "/dashboard",
+                  },
+                  {
+                    title: "Login",
+                    url: "/accounts/login",
+                  },
+                  {
+                    title: "Signup",
+                    url: "/accounts/signup",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            hasMenu: false,
+            title: "Services",
+            url: "#services",
+            menuSections: [],
+          },
+          {
+            hasMenu: false,
+            title: "Contact us",
+            url: "/contacts",
+            menuSections: [],
+          },
+          {
+            hasMenu: false,
+            title: "About",
+            url: "/about",
+            menuSections: [],
+          },
+        ],
+        hasProfile: false,
+      }}
     >
-      <HeaderContainer
-        render={() => (
-          <>
-            <Header aria-label="Connect Platform Name">
-              <SkipToContent />
-              <HeaderMenuButton
-                aria-label="Open menu"
-                isCollapsible
-                onClick={() => {}}
-                isActive={false}
-              />
-              <HeaderName href="/" prefix="Connect" />
-              <HeaderNavigation aria-label="Connect">
-                <HeaderMenuItem href="#">Services</HeaderMenuItem>
-                <HeaderMenu aria-label="Link 4" menuLinkName="Accounts">
-                  <HeaderMenuItem href="/dashboard">My Dashboard</HeaderMenuItem>
-                  <HeaderMenuItem href="/accounts/login">Login</HeaderMenuItem>
-                  <HeaderMenuItem href="/accounts/signup">Signup</HeaderMenuItem>
-                </HeaderMenu>
-                <HeaderMenuItem href="#">About</HeaderMenuItem>
-                <HeaderMenuItem href="#">Contact</HeaderMenuItem>
-              </HeaderNavigation>
-              <HeaderGlobalBar>
-                <HeaderGlobalAction
-                  aria-label="App Switcher"
-                  onClick={() => {}}
-                  tooltipAlignment="end"
-                >
-                  <AppSwitcher20 />
-                </HeaderGlobalAction>
-              </HeaderGlobalBar>
-            </Header>
-          </>
-        )}
-      />
-      <div style={{ flexGrow: 1, marginTop: "3rem" }}>{props.children}</div>
-    </div>
+      <main id="main-content">
+        <div style={{ paddingTop: "0rem" }}>{props.children}</div>
+      </main>
+    </DotcomShell>
   );
 }
 

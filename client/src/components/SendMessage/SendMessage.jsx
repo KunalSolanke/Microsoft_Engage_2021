@@ -8,10 +8,9 @@ const TextInputProps= () => ({
     labelText: "Send message",
     placeholder: "Type your message here",
     hideLabel: true,
-    light:false,
     id:"sine-id"
   })
-function SendMessage() {
+function SendMessage({light}) {
     const context = useContext(SocketContext)
     const [text, settext] = useState("")
     return (
@@ -19,6 +18,7 @@ function SendMessage() {
             <TextInput
             tabIndex="0"
             className="send_message"
+            light={light}
             type="text"
             {...TextInputProps()}
             value={text}

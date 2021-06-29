@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@carbon/ibm-cloud-cognitive": "^0.50.1",
     "@carbon/ibmdotcom-react": "^1.20.0",
     "@carbon/icons-react": "^10.33.0",
     "@sentry/react": "^6.5.1",

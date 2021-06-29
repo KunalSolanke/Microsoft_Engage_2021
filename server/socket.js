@@ -31,7 +31,6 @@ const configure_socket = (server) => {
     socket.on("join_chat", async (room_name) => {
       socket.join(`${room_name}`);
       const messages = await getMessages(room_name);
-      console.log("Sending old messages ...", messages);
       socket.emit("prev_messages", messages);
     });
 
@@ -61,7 +60,6 @@ const configure_socket = (server) => {
       socket.emit("users_in_meet", { users: meet.participants, chatID: meet.chat });
       addParticipants(meetID, socket.user._id);
       const messages = await getMessages(meet.chat);
-      console.log("Sending old messages ...", messages);
       socket.emit("prev_messages", messages);
     });
 
@@ -112,14 +110,26 @@ const configure_socket = (server) => {
       }
     });
 
-    socket.on("new_message", async ({ content, chatID, isMeet, meet }) => {
+    socket.on("new_message", async ({ content, chatID, isMeet, meet, reply_to }) => {
       if (isMeet) {
         meet = await getMeet(meet);
         chatID = meet.chat;
       }
       console.log("Sending new message in ", chatID, meet, isMeet);
-      let message = await createNewMessage(content, socket.user, chatID);
-      console.log(message);
+      let message = await createNewMessage(content, socket.user, chatID, reply_to);
+      if (message) io.in(`${chatID}`).emit("new_message", message);
+    });
+
+    socket.on("create_group_meet", async ({ meetID, chatID }) => {
+      console.log("Creating a meet");
+      let message = await createNewMessage(
+        `${socket.user.username} has started a group call`,
+        socket.user,
+        chatID,
+        (meetID = meetID),
+        (reply_to = null),
+        (is_bot = true)
+      );
       if (message) io.in(`${chatID}`).emit("new_message", message);
     });
 
@@ -141,6 +151,7 @@ const getMeet = async (meetID) => {
     return null;
   }
 };
+
 const getChat = async (chatID) => {
   try {
     let chat = await Chat.findById(meetID);
@@ -153,24 +164,40 @@ const getChat = async (chatID) => {
 
 const getMessages = async (chatID) => {
   try {
-    let messages = await Message.find({ chat: chatID }).limit(20).populate("author").exec();
+    let messages = await Message.find({ chat: chatID })
+      .limit(20)
+      .populate("author")
+      .populate("reply_to")
+      .exec();
     return messages;
   } catch (err) {
     console.log(err);
     return [];
   }
 };
-const createNewMessage = async (content, user, room_name) => {
+const createNewMessage = async (
+  content,
+  user,
+  room_name,
+  meetID = null,
+  reply_to = null,
+  is_bot = false
+) => {
   try {
     const chat = await Chat.findById(room_name);
-    let message = await Message.create({
+    let msgData = {
       content: content,
       author: user._id,
       content_type: "text",
       chat: chat._id,
-    });
+      is_bot,
+      meet: meetID,
+    };
+    if (reply_to) msgData = { ...msgData, reply_to };
+    let message = await Message.create(msgData);
     chat.messages.concat(message);
     message.author = user;
+    if (reply_to) message.reply_to = await User.findById(reply_to);
     return message;
   } catch (err) {
     console.log(err);

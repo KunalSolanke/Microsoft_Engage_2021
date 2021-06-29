@@ -5,8 +5,10 @@ import { SocketContext } from '../../context/GlobalSocketContext'
 import { addContact } from '../../http/requests'
 import {useMutation} from "react-query"
 import "./_style.css"
+import { useHistory } from 'react-router-dom'
 
 function UserViewModal({user,open,setmodelopen}) {
+    const history = useHistory();
     const mutation = useMutation(addContact,{
         onSuccess:(data,variables,context)=>{
 

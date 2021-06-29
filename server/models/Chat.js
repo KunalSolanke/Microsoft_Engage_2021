@@ -3,6 +3,12 @@ const mongoose = require("mongoose");
 const chatSchema = mongoose.Schema(
   {
     channel_name: String,
+    team_name: String,
+    description: String,
+    created_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     messages: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -27,6 +33,11 @@ const chatSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    is_channel: {
+      type: Boolean,
+      default: false,
+    },
+
     channels: [
       {
         type: mongoose.Schema.Types.ObjectId,

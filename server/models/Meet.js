@@ -20,6 +20,10 @@ const meetSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Meet",
     },
+    is_group: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

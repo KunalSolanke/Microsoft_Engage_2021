@@ -1,17 +1,12 @@
 $feature-flags: (
   grid-columns-16: true,
 );
-@import "carbon-components/scss/globals/scss/styles.scss";
 
-// @import 'carbon-components/scss/globals/scss/vendor/@carbon/type/scss/font-family.scss';
-// @import 'carbon-components/scss/globals/scss/vendor/@carbon/layout/scss/breakpoint.scss';
-// @import 'carbon-components/scss/globals/scss/typography.scss';
-// @import 'carbon-components/scss/globals/scss/vars.scss';
+@import "carbon-components/scss/globals/scss/styles.scss";
 
 @import "@carbon/type/scss/font-face/mono";
 @import "@carbon/type/scss/font-face/sans";
 @include carbon--font-face-mono();
 @include carbon--font-face-sans();
 
-
-@import '@carbon/ibmdotcom-styles/scss/components/card-group/card-group';
+@import "@carbon/ibmdotcom-styles/scss/components/card-group/card-group";

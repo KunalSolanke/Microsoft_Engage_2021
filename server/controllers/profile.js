@@ -32,12 +32,12 @@ const updateProfile = async (req, res) => {
 };
 
 const getMyContacts = async (req, res) => {
-  console.log("Get my contacts");
   try {
     let contacts = await Chat.find({
       participants: req.user._id,
       is_group: false,
       is_meet_chat: false,
+      is_channel: false,
     })
       .lean()
       .populate("participants")
@@ -56,8 +56,11 @@ const getMyContacts = async (req, res) => {
 
 const getMyTeams = async (req, res) => {
   try {
-    let contacts = await Chat.find({ participants: req.user._id, is_group: true });
-    res.send(contacts);
+    let teams = await Chat.find({
+      participants: req.user._id,
+      is_group: true,
+    }).exec();
+    res.send(teams);
   } catch (err) {
     console.log(err);
     res.status(400).send(err.message);

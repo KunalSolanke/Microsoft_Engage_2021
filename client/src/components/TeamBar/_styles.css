@@ -1,0 +1,14 @@
+.teamsbar::before {
+  background: linear-gradient(to right, transparent, #aaa);
+  content: "";
+  height: 100%;
+  opacity: 0.2;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  width: 0.8rem;
+  z-index: 2;
+}
+.teamsbar {
+  position: relative;
+}

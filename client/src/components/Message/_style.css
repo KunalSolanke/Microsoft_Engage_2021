@@ -2,10 +2,13 @@
   display: flex;
   margin-bottom: 0.5rem;
 }
+.channel__message__wrapper {
+  margin-bottom: 0.5rem;
+}
 .message__block {
-  flex: 1;
   display: flex;
   align-items: center;
+  flex: 1;
 }
 .user__profile {
   width: 30px;
@@ -35,6 +38,39 @@
 .message__main {
   max-width: 90%;
   padding: 0.2rem 0.4rem;
+}
+.channel_message_main {
+  border-bottom: 1px solid #edebe9;
+  border-radius: 0.3rem 0.3rem 0 0;
+  flex: 1;
+  max-width: 90%;
+  max-width: 1000px;
+  width: clamp(80%, 300px, 800px);
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16), 0 2px 4px rgba(0, 0, 0, 0.23);
+}
+.channel_message_main > div {
+  padding: 0rem 1rem;
+}
+.channel__message__foot {
+  background: #fafafa;
+  border: 0.1rem solid #edebe9;
+  border-top: 0;
+  border-radius: 0 0 0.3rem 0.3rem;
+  font-size: 0.6rem;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  text-align: left;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.channel__message__foot:hover {
+  color: rgba(0, 89, 255, 0.698);
+}
+.channel__message__foot > svg {
+  margin: 0 0.2rem 0 1rem;
 }
 .message__head {
   display: flex;

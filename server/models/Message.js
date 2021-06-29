@@ -13,6 +13,14 @@ const messageSchema = mongoose.Schema(
       ref: "Chat",
     },
     is_bot: Boolean,
+    reply_to: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    meet: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Meet",
+    },
   },
   {
     timestamps: true,

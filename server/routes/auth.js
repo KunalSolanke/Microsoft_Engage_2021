@@ -13,4 +13,5 @@ router.get("/logout", auth.logout);
 router.get("/profile", profile.getProfile);
 router.post("/profile", upload.single("image"), profile.updateProfile);
 router.get("/contacts/me", profile.getMyContacts);
+router.get("/teams/me", profile.getMyTeams);
 module.exports = router;

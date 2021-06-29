@@ -36,3 +36,27 @@
   flex: 1;
   text-align: center;
 }
+.teams_landing_head {
+  text-align: center;
+}
+.teams_landing_head > img {
+  width: 11rem;
+  height: 15rem;
+  object-fit: contain;
+  margin: 0 1rem;
+}
+.teamspage__wrapper {
+  background-color: #f5f5f5 !important;
+}
+.join_team_wrapper {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+.join_team_wrapper img {
+  width: 350px;
+  height: 300px;
+  object-fit: contain;
+}

@@ -86,7 +86,7 @@ const ContextProvider = ({ children }) => {
   const callUser = async ({ user }) => {
     setcallTo(user);
 
-    let meet = await createMeet(user);
+    let meet = await createMeet(false);
     socket.emit("calluser", { userID: user._id, meetID: meet._id });
     dispatch(setMeet(meet._id));
     dispatch(setChat(meet.chat));
@@ -121,9 +121,9 @@ const ContextProvider = ({ children }) => {
     setCallAccepted(false);
   };
 
-  const sendMessage = (message) => {
+  const sendMessage = (message, reply_to = null) => {
     let isMeet = meet != null;
-    socket.emit("new_message", { chatID: currentChat, content: message, isMeet, meet });
+    socket.emit("new_message", { chatID: currentChat, content: message, isMeet, meet, reply_to });
   };
 
   //================================= VIDEO CALL ==================================
@@ -192,10 +192,11 @@ const ContextProvider = ({ children }) => {
   };
   //=========================== GROUP MEET ====================================
 
-  const groupMeet = async (chat_id) => {
-    let meet = await createMeet(user, "group");
-    socket.emit("create_group_meet", { user, meet, chat_id });
+  const groupMeet = async (chatID) => {
+    let meet = await createMeet(true);
+    socket.emit("create_group_meet", { meetID: meet._id, chatID });
     dispatch(setMeet(meet._id));
+    history.push("/dashboard/meet/" + meet._id);
   };
 
   const reinitialize = () => {

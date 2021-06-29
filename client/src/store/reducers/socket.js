@@ -93,7 +93,7 @@ const reducer = (state = intialState, action) => {
     case actionTypes.LEFT_MEET:
       return UpdatedObj(state, { peers: [], peerStreams: [] });
     case actionTypes.SET_CHAT:
-      return UpdatedObj(state, { chatID: action.payload });
+      return UpdatedObj(state, { chatID: action.payload, currMessages: [] });
     case actionTypes.RESET_CHAT:
       return UpdatedObj(state, { chatID: null, currMessages: [] });
     case actionTypes.SET_MEET:

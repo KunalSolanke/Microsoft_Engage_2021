@@ -64,8 +64,22 @@
   display: grid;
   place-items: center;
   padding: 0.4rem;
+  color: #242424;
 }
-
+.chat_empty_state {
+  flex-grow: 1;
+  display: grid;
+  place-items: center;
+  padding: 0.4rem;
+  color: #242424;
+  text-align: center;
+}
+.chat_empty_state img {
+  height: 400px;
+  object-fit: contain;
+  width: 400px;
+  border-radius: 100%;
+}
 .chat__messages__area {
   max-width: 1000px;
   width: 100%;

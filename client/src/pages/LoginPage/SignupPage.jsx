@@ -23,7 +23,7 @@ function SignUpPage() {
                        </div>
                    </Column>
                    <Column md={8} sm={12} lg={12}>
-                       <img className="auth__image" src={AuthBanner}/>
+                       <img className="auth__image" src={AuthBanner} style={{marginLeft:"3rem"}}/>
                    </Column>
                    
                </Row>
