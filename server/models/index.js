@@ -2,7 +2,8 @@
 
 module.exports = {
   User: require("./User"),
-  Message:require("./Message"),
+  Message: require("./Message"),
   Chat: require("./Chat"),
   Meet: require("./Meet"),
+  Activity: require("./Activity"),
 };

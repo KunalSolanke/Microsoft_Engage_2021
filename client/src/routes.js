@@ -14,6 +14,8 @@ import TeamsPage from "./pages/TeamPages/TeamsPage";
 import TeamsLandingPage from "./pages/TeamPages/TeamsLandingPage";
 import TeamChatPage from "./pages/TeamPages/TeamChannelPage";
 import JoinTeam from "./pages/TeamPages/JoinTeam";
+import Settings from "./pages/Settings/Settings";
+import Activity from "./pages/Activity/Activity";
 
 const DashBoardRoutes = () => (
   <ContextProvider>
@@ -21,6 +23,8 @@ const DashBoardRoutes = () => (
     <Route exact path="/dashboard/meet" component={SearchPage} />
     <Route exact path="/dashboard/calluser" component={CreateCall} />
     <Route exact path="/dashboard/chat" component={ChatLanding} />
+    <Route exact path="/dashboard/settings" component={Settings} />
+    <Route exact path="/dashboard/activity" component={Activity} />
     <Route exact path="/dashboard/teams" component={TeamsPage} />
     <Route exact path="/dashboard/teams/:teamID" component={TeamsLandingPage} />
     <Route exact path="/dashboard/teams/:teamID/join" component={JoinTeam} />

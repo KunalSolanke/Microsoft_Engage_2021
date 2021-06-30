@@ -21,6 +21,7 @@ const signup = async (req, res) => {
       //sameSite: "none",
       secure: true,
     });
+    await Activity.create({ user: user._id });
     res.status(200).send({
       token: accessToken,
       username: user.username || user.fullName || user.email,

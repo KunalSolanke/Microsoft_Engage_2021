@@ -1,6 +1,14 @@
 const socketAuth = require("./middlewares/socketAuth");
-const { Message, Chat } = require("./models");
-const Meet = require("./models/Meet");
+const { User } = require("./models");
+const {
+  leaveMeet,
+  addParticipants,
+  createNewMessage,
+  getMessages,
+  getChat,
+  getMeet,
+  createLog,
+} = require("./utils");
 
 const configure_socket = (server) => {
   const io = require("socket.io")(server, {
@@ -35,27 +43,33 @@ const configure_socket = (server) => {
     });
 
     //============================  CREATE CALL ==================================
-    socket.on("calluser", ({ userID, meetID }) => {
+    socket.on("calluser", async ({ userID, meetID }) => {
       console.log("calling user...", userID);
+      let user = await User.findById(userID);
+      createLog(socket.user._id, "Started a call with  " + user.username);
       io.in(userID).emit("incoming_call", { call_from: socket.user, meetID });
     });
 
-    socket.on("answercall", ({ meetID, call_from }) => {
+    socket.on("answercall", async ({ meetID, call_from }) => {
       console.log("Answering the call from ... ", call_from);
+      let user = await User.findById(call_from);
+      createLog(socket.user._id, "Received call from  " + user.username);
       addParticipants(meetID, socket.user._id);
       io.in(call_from).emit("callaccepted", meetID);
     });
 
-    socket.on("rejectcall", ({ userID, meetID }) => {
+    socket.on("rejectcall", async ({ userID, meetID }) => {
+      let user = await User.findById(userID);
+      createLog(socket.user._id, "Couldn't receive call from " + user.username);
       console.log("Rejecting the call from ", userID);
       io.in(`${userID}`).emit("callaborted", meetID);
     });
     //=================================== VIDEO CHAT ===============================
 
     socket.on("join_meet", async (meetID) => {
-      console.log("Joining meet .........", meetID);
       const meet = await getMeet(meetID);
       socket.join(`${meet.chat}`);
+      createLog(socket.user._id, "Joined meet started by " + meet.author.username);
       meet.participants = meet.participants.filter((u) => u._id != socket.user._id);
       socket.emit("users_in_meet", { users: meet.participants, chatID: meet.chat });
       addParticipants(meetID, socket.user._id);
@@ -66,10 +80,8 @@ const configure_socket = (server) => {
     socket.on("send_signal", (payload) => {
       console.log("Sending my signal to", payload.userTosignal);
       const clients = io.sockets.adapter.rooms.get(payload.userTosignal);
-      console.log("rooms: ", io.sockets.adapter.rooms);
       console.log(clients);
       for (let clientId of clients) {
-        //this is the socket of each client in the room..log
         console.log("Sending singal out");
         const clientSocket = io.sockets.sockets.get(clientId);
         clientSocket.emit("user_joined", {
@@ -99,11 +111,12 @@ const configure_socket = (server) => {
     });
 
     socket.on("leave_meet", async (meetID) => {
-      console.log("Leaving rooms: ", io.sockets.adapter.rooms);
-      console.log("Leavnig meet....", meetID);
+      // console.log("Leaving rooms: ", io.sockets.adapter.rooms);
+      // console.log("Leavnig meet....", meetID);
       if (meetID) {
         const meet = await getMeet(meetID);
         leaveMeet(meetID, socket.user._id);
+        createLog(socket.user._id, "Left meet started by  " + meet.author.username);
         console.log("Leaving meet .....", meet);
         socket.to(`${meet.chat}`).emit("left_meet", socket.user._id);
         socket.leave(`${meet.chat}`);
@@ -115,13 +128,13 @@ const configure_socket = (server) => {
         meet = await getMeet(meet);
         chatID = meet.chat;
       }
-      console.log("Sending new message in ", chatID, meet, isMeet);
       let message = await createNewMessage(content, socket.user, chatID, reply_to);
       if (message) io.in(`${chatID}`).emit("new_message", message);
     });
 
     socket.on("create_group_meet", async ({ meetID, chatID }) => {
-      console.log("Creating a meet");
+      let chat = await getChat(chatID);
+      createLog(socket.user._id, "Started new group meet in " + chat.channel_name);
       let message = await createNewMessage(
         `${socket.user.username} has started a group call`,
         socket.user,
@@ -140,94 +153,6 @@ const configure_socket = (server) => {
       }
     });
   });
-};
-
-const getMeet = async (meetID) => {
-  try {
-    let meet = await Meet.findById(meetID).populate("participants").exec();
-    return meet;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
-
-const getChat = async (chatID) => {
-  try {
-    let chat = await Chat.findById(meetID);
-    return chat;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
-
-const getMessages = async (chatID) => {
-  try {
-    let messages = await Message.find({ chat: chatID })
-      .limit(20)
-      .populate("author")
-      .populate("reply_to")
-      .exec();
-    return messages;
-  } catch (err) {
-    console.log(err);
-    return [];
-  }
-};
-const createNewMessage = async (
-  content,
-  user,
-  room_name,
-  meetID = null,
-  reply_to = null,
-  is_bot = false
-) => {
-  try {
-    const chat = await Chat.findById(room_name);
-    let msgData = {
-      content: content,
-      author: user._id,
-      content_type: "text",
-      chat: chat._id,
-      is_bot,
-      meet: meetID,
-    };
-    if (reply_to) msgData = { ...msgData, reply_to };
-    let message = await Message.create(msgData);
-    chat.messages.concat(message);
-    message.author = user;
-    if (reply_to) message.reply_to = await User.findById(reply_to);
-    return message;
-  } catch (err) {
-    console.log(err);
-    return null;
-  }
-};
-
-const addParticipants = async (meetID, userID) => {
-  try {
-    let meet = await Meet.findById(meetID);
-    if (!meet.participants.includes(userID)) {
-      meet.participants.push(userID);
-      meet.save();
-    }
-    console.log("New participant", meet);
-  } catch (err) {}
-};
-
-const leaveMeet = async (meetID, userID) => {
-  let meet;
-  console.log("User leaving meet", userID);
-  try {
-    meet = await Meet.findById(meetID);
-    if (meet.participants.includes(`${userID}`)) {
-      console.log("Leaving ");
-      meet.participants = meet.participants.filter((id) => id != `${userID}`);
-      meet.save();
-    }
-  } catch (err) {}
-  console.log("Meet after leaving ", meet);
 };
 
 module.exports = configure_socket;

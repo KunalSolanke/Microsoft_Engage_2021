@@ -1,4 +1,5 @@
-const { Chat, Meet, Message } = require("../models");
+const { Chat, Meet, Message, User } = require("../models");
+const { createLog } = require("../utils");
 
 const createChat = async (req, res) => {
   try {
@@ -10,7 +11,8 @@ const createChat = async (req, res) => {
     })
       .populate("messages")
       .exec();
-
+    let user = await User.findById(user._id);
+    createLog(req.user._id, "Started conversation with " + user.username);
     if (!chat) chat = await Chat.create({ participants: [req.user._id, req.body.userID] });
 
     return res.send(chat);
@@ -49,11 +51,12 @@ const createTeam = async (req, res) => {
     });
     let generalChannel = await Chat.create({
       is_channel: true,
-      channel_name: "general",
+      channel_name: "General",
       created_by: req.user._id,
       description: "This is the general channel",
     });
-    team.channels.push(generalChannel);
+    createLog(req.user._id, "Created new team " + team.channel_name);
+    team.channels.push(generalChannel._id);
     await team.save();
     res.send(team);
   } catch (err) {
@@ -65,10 +68,9 @@ const createTeam = async (req, res) => {
 const getChat = async (req, res) => {
   try {
     let chat = await Chat.findById(req.params.chatID).populate("participants");
-    chat.participants = chat.participants.filter((p) => p._id != req.user._id);
     res.send({
       ...chat,
-      user: chat.participants[0] || null,
+      user: chat.participants.filter((p) => p._id != req.user._id)[0] || null,
     });
   } catch (err) {
     console.log(err);
@@ -93,6 +95,7 @@ const createChannel = async (req, res) => {
       is_channel: true,
     });
     let team = await Chat.findById(req.body.team);
+    createLog(req.user._id, "Created new channel " + channel.channel_name);
     team.channels.push(channel._id);
     await team.save();
     return res.send(channel);
@@ -117,6 +120,7 @@ const joinTeam = async (req, res) => {
   try {
     let team = await Chat.findById(req.params.teamID);
     team.participants.push(req.user._id);
+    createLog(req.user._id, "Joined team " + team.team_name);
     team.save();
     res.send(team);
   } catch (err) {

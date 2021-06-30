@@ -6,7 +6,7 @@ const configure_db = () => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     retryWrites: true,
-    useFindAndModify: true,
+    useFindAndModify: false,
   });
   const conn = mongoose.connection;
   conn.on("error", (err) => {

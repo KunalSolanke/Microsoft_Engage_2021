@@ -6,7 +6,7 @@ import {
   SideNavMenu,
   SideNavMenuItem,
 } from "carbon-components-react";
-import { Chat20, Settings20, Activity20, Video20, Group20 } from "@carbon/icons-react";
+import { Chat20, Settings20, Activity20, Video20, Group20, Dashboard16 } from "@carbon/icons-react";
 
 function SidenavBar({ isSideNavExpanded, onClickSideNavExpand }) {
   return (
@@ -18,13 +18,9 @@ function SidenavBar({ isSideNavExpanded, onClickSideNavExpand }) {
         onOverlayClick={onClickSideNavExpand}
       >
         <SideNavItems>
-          {/* <SideNavMenu renderIcon={Fade16} title="Category title">
-            <SideNavMenuItem href="javascript:void(0)">Link</SideNavMenuItem>
-            <SideNavMenuItem aria-current="page" href="javascript:void(0)">
-              Link
-            </SideNavMenuItem>
-            <SideNavMenuItem href="javascript:void(0)">Link</SideNavMenuItem>
-          </SideNavMenu> */}
+          <SideNavLink renderIcon={Dashboard16} href="/dashboard">
+            Dashboard
+          </SideNavLink>
           <SideNavLink renderIcon={Video20} href="/dashboard/meet">
             Call
           </SideNavLink>

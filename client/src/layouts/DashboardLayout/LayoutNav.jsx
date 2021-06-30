@@ -49,10 +49,10 @@ function LayoutNav(props) {
                 />
                 <HeaderName href="/" prefix="Connect" />
                 <HeaderGlobalBar>
-                  <HeaderGlobalAction aria-label="Search" onClick={onClickSideNavExpand}>
+                  <HeaderGlobalAction aria-label="Search" onClick={()=>history.push("/dashboard/meet")}>
                     <Search20 />
                   </HeaderGlobalAction>
-                  <HeaderGlobalAction aria-label="Profile" onClick={onClickSideNavExpand}>
+                  <HeaderGlobalAction aria-label="Profile" onClick={()=>history.push("/dashboard/settings")}>
                     <UserAvatar20 />
                   </HeaderGlobalAction>
                   {/* <HeaderGlobalAction aria-label="Notifications" onClick={onClickSideNavExpand}>

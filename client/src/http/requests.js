@@ -58,3 +58,7 @@ export const getChannel = async (channelID) => {
 export const joinTeam = async (teamID) => {
   return await getRequest(`/meet/team/${teamID}/join`);
 };
+export const updateProfile = async (data) => await postRequest("/accounts/profile", data);
+export const getActivity = async () => {
+  return await getRequest(`/accounts/activity`);
+};

@@ -1,6 +1,6 @@
 const Chat = require("../models/Chat");
 const User = require("../models/User");
-
+const Activity = require("../models/Activity");
 const getProfile = async (req, res) => {
   try {
     const user = req.user;
@@ -12,15 +12,11 @@ const getProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  const token = req.get("Authorization").split(" ")[1];
-  console.log("token is ", token);
   try {
     let user = req.user;
     await User.findByIdAndUpdate(user._id, req.body);
     if (req.file) {
-      user.image = {
-        contentType: req.file.url,
-      };
+      user.image = req.file.url;
       await user.save();
     }
     user = await User.findById(user._id);
@@ -67,9 +63,21 @@ const getMyTeams = async (req, res) => {
   }
 };
 
+const getMyLogs = async (req, res) => {
+  try {
+    let myLogTable = await Activity.findOne({ user: req.user._id });
+    if (!myLogTable) myLogTable = await Activity.create({ user: req.user._id });
+    res.send(myLogTable);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
 module.exports = {
   getProfile,
   updateProfile,
   getMyContacts,
   getMyTeams,
+  getMyLogs,
 };

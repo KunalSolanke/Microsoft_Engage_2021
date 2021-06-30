@@ -48,7 +48,7 @@ function UserChatPage(props) {
                              <div className="chatpage_head">
                                 <div>
                                     {data?.user&&data?.user?.image? <>
-                                    <img src={user?.image} className="user__profile"/>
+                                    <img src={data?.user?.image} className="user__profile"/>
                                     </>
                                 :(<UserAvatar16 className="user__profile"/>)}
                                     <h5>{data?.user?.username}</h5>

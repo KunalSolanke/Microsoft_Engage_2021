@@ -1,0 +1,25 @@
+.settings__wrapper {
+  display: grid;
+  place-items: center;
+  overflow-y: scroll;
+  margin-bottom: 1rem;
+}
+.profile__page {
+  width: clamp(340px, 80%, 900px);
+}
+.profile__in__head {
+  display: flex;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+}
+.profile__avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 100%;
+  object-fit: cover;
+  object-position: center;
+  margin-right: 2rem;
+}
