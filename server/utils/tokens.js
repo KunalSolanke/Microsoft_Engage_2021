@@ -9,12 +9,18 @@ module.exports = {
   sendToken: async function (req, res) {
     let user = req.user;
     res.setHeader("Cache-control", "private");
-    res.cookie("refresh_token", req.refreshToken, {
+    let cookieOpts = {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
-	    //  sameSite: "none",
       secure: true,
-    });
+    };
+    if (process.env.NODE_ENV == "production") {
+      cookieOpts = {
+        ...cookieOpts,
+        sameSite: "none",
+      };
+    }
+    res.cookie("refresh_token", refreshToken, cookieOpts);
     user.refreshTokens = user.refreshTokens.concat([req.refreshToken]);
     await user.save();
     return res.status(200).send({

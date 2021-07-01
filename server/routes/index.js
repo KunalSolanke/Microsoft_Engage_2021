@@ -9,13 +9,13 @@ const indexController = require("../controllers/index");
 const authMiddleware = require("../middlewares/auth");
 
 /* GET CONTROLLER */
-router.use(authMiddleware);
 router.get("/", indexController.indexView);
+router.use(authMiddleware);
 
 //= ==================================== DECLARE ALL YOUR ROUTERS HERE ==================================
 
-router.use("/accounts", authRouter);
 router.use("/auth/social", socialRouter);
+router.use("/accounts", authRouter);
 router.use("/users", userRouter);
 router.use("/meet", meetRouter);
 
