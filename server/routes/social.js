@@ -11,7 +11,7 @@ router.route("/google").post(
   function (req, res, next) {
     console.log(req.body);
     if (!req.user) {
-      return res.status(401).send("User Not Authenticated");
+      return res.status(400).send("User Not Authenticated");
     }
     req.auth = {
       id: req.user.id,
@@ -57,7 +57,7 @@ router.route("/github").post(
   passport.authenticate("github-token", { session: false }),
   function (req, res, next) {
     if (!req.user) {
-      return res.send(401, "User Not Authenticated");
+      return res.status(400).send("User Not Authenticated");
     }
     req.auth = {
       id: req.user.id,
@@ -73,7 +73,7 @@ router.route("/microsoft").post(
   passport.authenticate("oauth-bearer", { session: false }),
   function (req, res, next) {
     if (!req.user) {
-      return res.send(401, "User Not Authenticated");
+      return res.status(400).send("User Not Authenticated");
     }
     req.auth = {
       id: req.user.id,

@@ -20,7 +20,7 @@ module.exports = {
         sameSite: "none",
       };
     }
-    res.cookie("refresh_token", refreshToken, cookieOpts);
+    res.cookie("refresh_token", req.refreshToken, cookieOpts);
     user.refreshTokens = user.refreshTokens.concat([req.refreshToken]);
     await user.save();
     return res.status(200).send({
