@@ -11,7 +11,6 @@ const userSchema = mongoose.Schema(
     image: String,
     username: {
       type: String,
-      minLength: 4,
     },
     fullName: {
       type: String,
@@ -21,7 +20,6 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      minLength: 6,
     },
     role: {
       type: String,
