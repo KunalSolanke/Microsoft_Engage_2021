@@ -189,7 +189,7 @@ const ContextProvider = ({ children }) => {
     navigator.mediaDevices
       .getUserMedia({
         video: videoConstraints,
-        audio: {},
+        audio: true,
       })
       .then((stream) => {
         console.log("My video stream ", stream);
