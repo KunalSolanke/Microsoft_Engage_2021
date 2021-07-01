@@ -19,7 +19,7 @@ const authStart = (state, action) => {
 };
 
 const authSucces = (state, action) => {
-  //console.log("in authsuccess action", action.payload);
+  console.log("in authsuccess action", action.payload);
   return UpdatedObj(state, {
     token: action.payload.token,
     loading: false,
@@ -52,7 +52,7 @@ const updateProfileSuccess = (state, action) => {
 };
 
 const getProfileSuccess = (state, action) => {
-  //console.log(action.payload);
+  console.log(action.payload);
   return UpdatedObj(state, {
     loading: false,
     error: null,

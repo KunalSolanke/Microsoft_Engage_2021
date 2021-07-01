@@ -84,7 +84,7 @@ export const authCheckState = (history) => {
 
 export const logout = () => {
   return async (dispatch, getState) => {
-    //console.log("hree");
+    console.log("hree");
     try {
       const token = await getState().auth.token;
 
@@ -96,7 +96,7 @@ export const logout = () => {
       axios.get(`/accounts/logout`);
       dispatch(authLogout());
     } catch (err) {
-      //console.log(err);
+      console.log(err);
       dispatch(authLogout());
       await dispatch(authFail(err));
     }
@@ -107,7 +107,7 @@ let wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 export const checkauthtimeout = (expiry) => {
   return async (dispatch, getState) => {
     await wait(expiry);
-    //console.log(expiry, "here");
+    console.log(expiry, "here");
     try {
       await dispatch(authUpdateState());
     } catch (err) {
@@ -128,17 +128,17 @@ export const getProfile = () => {
       const response = await axios.get(`/accounts/profile`);
       dispatch(getProfileSuccess(response.data));
     } catch (err) {
-      //console.log(err);
+      console.log(err);
       await dispatch(authFail(err));
     }
   };
 };
 
 export const updateProfile = (data) => {
-  //console.log("entering here");
+  console.log("entering here");
   return async (dispatch, getState) => {
     dispatch(updateProfileRequest());
-    //console.log("entering here");
+    console.log("entering here");
     const token = await getState().auth.token;
     if (!token) {
       return;
@@ -146,10 +146,10 @@ export const updateProfile = (data) => {
     try {
       axios.defaults.headers["Authorization"] = `Token ${token}`;
       const response = await axios.post(`/accounts/profile`, data);
-      //console.log(response);
+      console.log(response);
       await dispatch(getProfileSuccess(response.data));
     } catch (err) {
-      //console.log(err);
+      console.log(err);
       await dispatch(authFail(err));
     }
   };
@@ -164,7 +164,7 @@ export const authLogin = ({ password, email }) => {
       await dispatch(getProfile());
       dispatch(checkauthtimeout((response.data.expiry - 60) * 1000));
     } catch (err) {
-      //console.log(err);
+      console.log(err);
       await dispatch(authFail(err));
     }
   };
@@ -180,7 +180,7 @@ export const authRegister = ({ username, email, password }) => {
         password,
       });
       let token = response.data.token;
-      //console.log("sennding post req....", response.data);
+      console.log("sennding post req....", response.data);
       const data = {
         username,
         email,
@@ -190,7 +190,7 @@ export const authRegister = ({ username, email, password }) => {
       await dispatch(getProfile());
       dispatch(checkauthtimeout((response.data.expiry - 60) * 1000));
     } catch (err) {
-      //console.log(err);
+      console.log(err);
       await dispatch(authFail(err));
     }
   };
@@ -201,13 +201,13 @@ export const socialAuth = (data, provider) => {
     await dispatch(authStart());
     try {
       const response = await axios.post(`/auth/social/${provider}`, data);
-      //console.log("sennding post req....", response.data);
+      console.log("sennding post req....", response.data);
       const expiry = new Date(new Date().getTime() + (response.data.expiry - 60) * 1000);
       await dispatch(authSuccess(response.data));
       await dispatch(getProfile());
       dispatch(checkauthtimeout((response.data.expiry - 60) * 1000));
     } catch (err) {
-      //console.log(err);
+      console.log(err);
       await dispatch(authFail(err));
     }
   };

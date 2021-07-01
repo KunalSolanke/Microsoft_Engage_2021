@@ -67,7 +67,7 @@ function LandingPage() {
 
 
 function myLanguageCallback(selectedItem) {
-  //console.log(selectedItem); // { "id": "en", "text": "English" }
+  console.log(selectedItem); // { "id": "en", "text": "English" }
 }
     const buttons=[{
         copy:"Join Now",

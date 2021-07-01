@@ -18,7 +18,7 @@ const getRequest = async (url, token = null, secure = true) => {
     let data = response.data;
     return data;
   } catch (err) {
-    //console.log(err);
+    console.log(err);
     throw new Error("Something went wrong");
   }
 };

@@ -29,7 +29,7 @@ const configure_socket = (server) => {
 
   io.use(socketAuth);
   io.on("connection", (socket) => {
-    //console.log("Websocket connection established..........", socket.user._id);
+    console.log("Websocket connection established..........", socket.user._id);
 
     //@property we are adding each user to a seprate room on connection ,which is equal to his userid
     //this way we can send message to any user if he is connected
@@ -44,14 +44,14 @@ const configure_socket = (server) => {
 
     //============================  CREATE CALL ==================================
     socket.on("calluser", async ({ userID, meetID }) => {
-      //console.log("calling user...", userID);
+      console.log("calling user...", userID);
       let user = await User.findById(userID);
       createLog(socket.user._id, "Started a call with  " + user.username);
       io.in(userID).emit("incoming_call", { call_from: socket.user, meetID });
     });
 
     socket.on("answercall", async ({ meetID, call_from }) => {
-      //console.log("Answering the call from ... ", call_from);
+      console.log("Answering the call from ... ", call_from);
       let user = await User.findById(call_from);
       createLog(socket.user._id, "Received call from  " + user.username);
       addParticipants(meetID, socket.user._id);
@@ -62,7 +62,7 @@ const configure_socket = (server) => {
       let user = await User.findById(userID);
       createLog(socket.user._id, "Couldn't receive call from " + user.username);
       createLog(userID, "Couldn't complete call with " + socket.user.username);
-      //console.log("Rejecting the call from ", userID);
+      console.log("Rejecting the call from ", userID);
       io.in(`${userID}`).emit("callaborted", meetID);
     });
 
@@ -86,11 +86,11 @@ const configure_socket = (server) => {
     });
 
     socket.on("send_signal", (payload) => {
-      //console.log("Sending my signal to", payload.userTosignal);
+      console.log("Sending my signal to", payload.userTosignal);
       const clients = io.sockets.adapter.rooms.get(payload.userTosignal);
-      //console.log(clients);
+      console.log(clients);
       for (let clientId of clients) {
-        //console.log("Sending singal out");
+        console.log("Sending singal out");
         const clientSocket = io.sockets.sockets.get(clientId);
         clientSocket.emit("user_joined", {
           signal: payload.signal,
@@ -101,7 +101,7 @@ const configure_socket = (server) => {
     });
 
     socket.on("return_signal", (payload) => {
-      //console.log("Getting a return signal");
+      console.log("Getting a return signal");
       io.in(payload.callerID).emit("receive_signal_back", {
         signal: payload.signal,
         id: socket.user._id,
@@ -119,13 +119,13 @@ const configure_socket = (server) => {
     });
 
     socket.on("leave_meet", async (meetID) => {
-      // //console.log("Leaving rooms: ", io.sockets.adapter.rooms);
-      // //console.log("Leavnig meet....", meetID);
+      // console.log("Leaving rooms: ", io.sockets.adapter.rooms);
+      // console.log("Leavnig meet....", meetID);
       if (meetID) {
         const meet = await getMeet(meetID);
         leaveMeet(meetID, socket.user._id);
         createLog(socket.user._id, "Left meet started by  " + meet.author.username);
-        //console.log("Leaving meet .....", meet);
+        console.log("Leaving meet .....", meet);
         socket.to(`${meet.chat}`).emit("left_meet", socket.user._id);
         socket.leave(`${meet.chat}`);
       }

@@ -6,7 +6,7 @@ const getMeet = async (meetID) => {
     let meet = await Meet.findById(meetID).populate("participants").populate("author").exec();
     return meet;
   } catch (err) {
-    //console.log(err);
+    console.log(err);
     return null;
   }
 };
@@ -16,7 +16,7 @@ const getChat = async (chatID) => {
     let chat = await Chat.findById(chatID);
     return chat;
   } catch (err) {
-    //console.log(err);
+    console.log(err);
     return null;
   }
 };
@@ -30,7 +30,7 @@ const getMessages = async (chatID) => {
       .exec();
     return messages;
   } catch (err) {
-    //console.log(err);
+    console.log(err);
     return [];
   }
 };
@@ -59,7 +59,7 @@ const createNewMessage = async (
     if (reply_to) message.reply_to = await User.findById(reply_to);
     return message;
   } catch (err) {
-    //console.log(err);
+    console.log(err);
     return null;
   }
 };
@@ -71,22 +71,22 @@ const addParticipants = async (meetID, userID) => {
       meet.participants.push(userID);
       meet.save();
     }
-    //console.log("New participant", meet);
+    console.log("New participant", meet);
   } catch (err) {}
 };
 
 const leaveMeet = async (meetID, userID) => {
   let meet;
-  //console.log("User leaving meet", userID);
+  console.log("User leaving meet", userID);
   try {
     meet = await Meet.findById(meetID);
     if (meet.participants.includes(`${userID}`)) {
-      //console.log("Leaving ");
+      console.log("Leaving ");
       meet.participants = meet.participants.filter((id) => id != `${userID}`);
       meet.save();
     }
   } catch (err) {}
-  //console.log("Meet after leaving ", meet);
+  console.log("Meet after leaving ", meet);
 };
 
 const createLog = async (userID, log) => {
@@ -96,7 +96,7 @@ const createLog = async (userID, log) => {
     myLogTable.logs.push(log);
     await myLogTable.save();
   } catch (err) {
-    //console.log(err);
+    console.log(err);
   }
 };
 

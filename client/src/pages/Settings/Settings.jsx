@@ -65,7 +65,7 @@ function Settings() {
    }
 
      const renderUserProfile = ()=>{
-         //console.log(profileImage)
+         console.log(profileImage)
        if(profileImage)return (
            <>
            <img src={profileImage} className="profile__avatar"/>

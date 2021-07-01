@@ -9,20 +9,20 @@ import { socialAuth } from "../../store/actions/auth";
 function SocialAuth() {
     const dispatch = useDispatch();
     const azureAuthHandler =async (err, data) => {
-        //console.log(err, data);
+        console.log(err, data);
         let token = JSON.stringify({access_token: data?.idToken?.rawIdToken})
         await dispatch(socialAuth(token,"microsoft"))
     };
  
 
     const onGithubSuccess = async (response) => {
-       //console.log(response);
+       console.log(response);
     
        await dispatch(socialAuth(response,"github"))
     }
     const onFailure = (response) => console.error(response);
     const responseGoogle = async (response) => {
-        //console.log(response);
+        console.log(response);
         let token = getToken(response)
        await dispatch(socialAuth(token,"google"))
     };

@@ -2,7 +2,7 @@ const { User } = require("../models");
 const jwt = require("jsonwebtoken");
 const auth = async (socket, next) => {
   const token = socket.handshake.auth.token;
-  //console.log(token);
+  console.log(token);
   if (token) {
     let data = null;
     try {

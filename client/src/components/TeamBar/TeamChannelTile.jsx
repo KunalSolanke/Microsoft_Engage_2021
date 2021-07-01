@@ -6,7 +6,7 @@ import {useHistory, useParams} from "react-router-dom"
 function TeamChannelTile({channel}) {
     const history = useHistory()
     const {channelID} = useParams()
-    //console.log(channel)
+    console.log(channel)
     const handleOnClick = e=>{history.push(`/dashboard/channels/${channel._id}`)}
     return (
         <div className={"chat__tile"+(channelID==channel._id?" white":"")} onClick={e=>handleOnClick()}>

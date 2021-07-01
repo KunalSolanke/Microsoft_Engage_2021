@@ -16,7 +16,7 @@ const intialState = {
 const newMessage = (state, action) => {
   let unseenMessages = state.unseenMessages;
   let currMessages = state.currMessages;
-  //console.log(action);
+  console.log(action);
   if (action.payload.chat != state.chatID) {
     unseenMessages = [...unseenMessages, action.payload];
   } else {
