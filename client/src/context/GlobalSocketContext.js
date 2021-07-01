@@ -24,9 +24,7 @@ const videoConstraints = {
   height: window.innerHeight / 2,
   width: window.innerWidth / 2,
   frameRate: 10, //mobile
-  facingMode: {
-    exact: "environment",
-  }, //mobile
+  facingMode: "user",
 };
 
 const ContextProvider = ({ children }) => {
