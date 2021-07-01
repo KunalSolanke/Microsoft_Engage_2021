@@ -1,7 +1,7 @@
 import axios from "axios";
 export const env = process.env.REACT_APP_ENV;
 const backend = ["https://connect-engage.herokuapp.com", "https://engage_backend.voldemort.wtf"];
-const baseURL =
+export const baseURL =
   env == "dev" ? "http://localhost:5000" : backend[parseInt(process.env.REACT_APP_BACKEND)];
 
 const axiosInstance = axios.create({

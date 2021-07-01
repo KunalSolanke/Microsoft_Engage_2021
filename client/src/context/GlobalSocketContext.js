@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createMeet } from "../http/requests";
 import { authCheckState } from "../store/actions/auth";
+import { baseURL } from "../http/api";
 import { connectToAllUsers, handleUserJoined } from "./peers";
 import {
   leftMeet as peerLeftMeet,
@@ -17,7 +18,7 @@ import * as actionTypes from "../store/constants/socket";
 
 const SocketContext = createContext();
 
-const socket = io("http://localhost:5000", { autoConnect: false });
+const socket = io(baseURL, { autoConnect: false });
 
 const videoConstraints = {
   height: window.innerHeight / 2,
