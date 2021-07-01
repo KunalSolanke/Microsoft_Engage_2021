@@ -80,7 +80,7 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.generateAuthToken = async function (expiry) {
   const user = this;
-  const token = jwt.sign({ _id: user._id }, "random words", {
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_KEY, {
     expiresIn: expiry,
   });
   return token;
