@@ -6,7 +6,7 @@ const getProfile = async (req, res) => {
     const user = req.user;
     res.status(200).send(user);
   } catch (err) {
-    console.log(err.message);
+    //console.log(err.message);
     res.status(401).send(err.message);
   }
 };
@@ -22,7 +22,7 @@ const updateProfile = async (req, res) => {
     user = await User.findById(user._id);
     res.status(200).send(user);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(401).send(err.message);
   }
 };
@@ -45,7 +45,7 @@ const getMyContacts = async (req, res) => {
     }));
     res.send(contacts);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400).send(err.message);
   }
 };
@@ -58,7 +58,7 @@ const getMyTeams = async (req, res) => {
     }).exec();
     res.send(teams);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400).send(err.message);
   }
 };
@@ -69,7 +69,7 @@ const getMyLogs = async (req, res) => {
     if (!myLogTable) myLogTable = await Activity.create({ user: req.user._id });
     res.send(myLogTable);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400).send(err.message);
   }
 };

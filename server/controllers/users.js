@@ -2,7 +2,7 @@ const User = require("../models/User");
 
 const findUsers = async (req, res) => {
   const { search } = req.query;
-  console.log(search);
+  //console.log(search);
 
   try {
     let regex = new RegExp(search, "i");

@@ -2,7 +2,7 @@ const User = require("../models/User");
 
 const signup = async (req, res) => {
   const { username, email, password } = req.body;
-  console.log(req.body);
+  //console.log(req.body);
   try {
     const user = await new User({
       username: username,
@@ -30,7 +30,7 @@ const signup = async (req, res) => {
       userID: user._id,
     });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(401);
     res.send("failed");
   }
@@ -38,7 +38,7 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log("email,passowrd on server are...", email, password);
+  //console.log("email,passowrd on server are...", email, password);
   try {
     const user = await User.findByCredentials(email, password);
     let accessToken = await user.generateAuthToken("1h");
@@ -60,7 +60,7 @@ const login = async (req, res) => {
       expiry: 3600,
     });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400);
     res.send("failed");
   }
@@ -95,7 +95,7 @@ const refresh = async (req, res) => {
       throw new Error("user not found");
     }
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.clearCookie("refresh_token");
     res.status(400);
     res.send("failed");

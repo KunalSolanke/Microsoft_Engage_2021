@@ -10,10 +10,10 @@ const configure_db = () => {
   });
   const conn = mongoose.connection;
   conn.on("error", (err) => {
-    console.log(err);
+    //console.log(err);
   });
   conn.on("open", () => {
-    console.log("Db is connected");
+    //console.log("Db is connected");
   });
   return mongoose;
 };

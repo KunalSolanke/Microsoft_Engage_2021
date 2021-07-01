@@ -25,7 +25,7 @@ const createChat = async (req, res) => {
 
     return res.send(chat);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400).send(err.message);
   }
 };
@@ -41,7 +41,7 @@ const createMeet = async (req, res) => {
     await meet.save();
     res.send(meet);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400).send(err.message);
   }
 };
@@ -68,7 +68,7 @@ const createTeam = async (req, res) => {
     await team.save();
     res.send(team);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400).send(err.message);
   }
 };
@@ -81,7 +81,7 @@ const getChat = async (req, res) => {
       user: chat.participants.filter((p) => p._id != req.user._id)[0] || null,
     });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400).send(err.message);
   }
 };
@@ -91,7 +91,7 @@ const getTeam = async (req, res) => {
     let team = await Chat.findById(req.params.teamID).populate("participants").populate("channels");
     res.send(team);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400).send(err.message);
   }
 };
@@ -108,7 +108,7 @@ const createChannel = async (req, res) => {
     await team.save();
     return res.send(channel);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400).send(err.message);
   }
 };
@@ -120,7 +120,7 @@ const getChannel = async (req, res) => {
       team: team,
     });
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400).send(err.message);
   }
 };
@@ -132,7 +132,7 @@ const joinTeam = async (req, res) => {
     team.save();
     res.send(team);
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     res.status(400).send(err.message);
   }
 };

@@ -107,7 +107,7 @@ userSchema.statics.findByCredentials = async function (email, password) {
 };
 
 userSchema.statics.upsertAzureUser = async function (token, cb) {
-  console.log(token);
+  //console.log(token);
   var that = this;
   let user = await this.findOne({
     "azureProvider.id": token.oid,
@@ -130,7 +130,7 @@ userSchema.statics.upsertAzureUser = async function (token, cb) {
 
     await newUser.save(function (error, savedUser) {
       if (error) {
-        console.log(error);
+        //console.log(error);
       }
       return cb(error, savedUser);
     });
@@ -145,7 +145,7 @@ userSchema.statics.upsertGoogleUser = async function (accessToken, refreshToken,
     emails = profile.emails.map((e) => e.value);
   }
 
-  console.log(profile);
+  //console.log(profile);
   var that = this;
   let user = await this.findOne({
     "googleProvider.id": profile.id,
@@ -167,7 +167,7 @@ userSchema.statics.upsertGoogleUser = async function (accessToken, refreshToken,
 
     await newUser.save(function (error, savedUser) {
       if (error) {
-        console.log(error);
+        //console.log(error);
       }
       return cb(error, savedUser);
     });
@@ -182,7 +182,7 @@ userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken,
     emails = profile.emails.map((e) => e.value);
   }
 
-  console.log(profile);
+  //console.log(profile);
   var that = this;
   let user = await this.findOne({
     "githubProvider.id": profile.id,
@@ -204,7 +204,7 @@ userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken,
 
     await newUser.save(function (error, savedUser) {
       if (error) {
-        console.log(error);
+        //console.log(error);
       }
       return cb(error, savedUser);
     });
@@ -219,13 +219,13 @@ userSchema.statics.findByRefreshToken = async function (token) {
     let user = await this.findById(_id);
 
     if (user.refreshTokens.includes(token)) {
-      // console.log(user);
+      // //console.log(user);
       return user;
     } else {
       throw new Error("no User found");
     }
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     return null;
   }
 };

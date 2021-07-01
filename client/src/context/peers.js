@@ -17,15 +17,15 @@ const createPeer = (userTosignal, caller, stream) => {
     ...peerOptions,
   });
   peer.on("signal", (signal) => {
-    console.log("Sending signal");
+    //console.log("Sending signal");
     socket.emit("send_signal", { userTosignal, caller, signal });
   });
-  peer._debug = console.log;
+  //peer._debug = console.log;
   return peer;
 };
 
 const connectToAllUsers = (users, dispatch, peersRef, stream, userID) => {
-  console.log(userID);
+  //console.log(userID);
   const peers = [];
   users.forEach((user) => {
     if (user._id != userID) {
@@ -55,9 +55,7 @@ const addPeer = (incomingSignal, callerID, stream) => {
   peer.on("signal", (signal) => {
     socket.emit("return_signal", { signal, callerID });
   });
-  peer._debug = console.log;
-
-  peer.signal(incomingSignal);
+  peer.signal(incomingSignal); //console.log;
 
   return peer;
 };

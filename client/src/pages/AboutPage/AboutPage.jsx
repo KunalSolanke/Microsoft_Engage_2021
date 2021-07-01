@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import HomeLayout from '../../layouts/HomeLayout'
 import { LightboxMediaViewer } from '@carbon/ibmdotcom-react';
 import ldImag from "../../assets/images/about_us.jpg"
 import { useHistory } from 'react-router-dom';
 function AboutPage() {
+    const [open, setopen] = useState(true)
     const history = useHistory();
     return (
         <HomeLayout>
@@ -19,8 +20,10 @@ function AboutPage() {
             want to make sure everyone is reached and connected",
             type: 'image',
             }}
-            open={true}
-            onClose={()=>history.push("/")}
+            open={open}
+            onClose={()=>{
+                setopen(false)
+                history.push("/")}}
         />
         </HomeLayout>
     )

@@ -8,23 +8,23 @@ function CallVideo(props) {
     const [currUserStream, setcurrUserStream] = useState(null)
     const peerStreams= useSelector(state => state.socket.peerStreams)
     // useEffect(() => {
-    //     console.log("CallVideo mount ...")
+    //     //console.log("CallVideo mount ...")
     //     props.peer.on("stream", stream => {
-    //         console.log("Gettig user stream", stream)
+    //         //console.log("Gettig user stream", stream)
     //         setcurrUserStream(stream)
     //         if (ref.current) ref.current.srcObject = stream;
     //     })
     // }, []);
     useEffect(()=>{
-        console.log(peerStreams)
+        //console.log(peerStreams)
       let peerStream = peerStreams.find(p=>p.peerID==props.peerID)
       if(peerStream)setcurrUserStream(peerStream.stream)
     },[peerStreams])
 
     useEffect(()=>{
-        console.log(currUserStream)
+        //console.log(currUserStream)
         if(currUserStream&&ref.current&&ref.current.srcObject==null)ref.current.srcObject=currUserStream;
-        console.log(ref)
+        //console.log(ref)
     },[currUserStream])
 
     return (

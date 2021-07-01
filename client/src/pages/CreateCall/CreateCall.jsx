@@ -36,7 +36,7 @@ function CreateCall() {
                <Prompt
                     message={(location, action) => {
                     if (action === 'POP') {
-                        console.log("Backing up...")
+                        //console.log("Backing up...")
                         context.reinitialize();
                     }
 

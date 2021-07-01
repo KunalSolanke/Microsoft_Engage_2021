@@ -39,7 +39,7 @@ const ContextProvider = ({ children }) => {
   const peersRef = useRef([]);
 
   const handleIncomingCall = ({ call_from, meetID }) => {
-    console.log("Incoming call .... ");
+    //console.log("Incoming call .... ");
     setCallData({
       isReceived: true,
       call_from,
@@ -48,7 +48,7 @@ const ContextProvider = ({ children }) => {
   };
 
   const handlePrevMessages = (messages) => {
-    console.log("Saving prev messages...", messages);
+    //console.log("Saving prev messages...", messages);
     dispatch(prevMessages(messages));
   };
 
@@ -101,20 +101,20 @@ const ContextProvider = ({ children }) => {
   };
 
   const answerCall = () => {
-    console.log("Answering incoming call....");
+    //console.log("Answering incoming call....");
     setCallAccepted(true);
     socket.emit("answercall", { meetID: CallData.meetID, call_from: CallData.call_from._id });
     history.push(`/dashboard/meet/${CallData.meetID}`);
   };
 
   const rejectCall = () => {
-    console.log("Rejeceing incoming call.....");
+    //console.log("Rejeceing incoming call.....");
     socket.emit("rejectcall", { meetID: CallData.meetID, userID: CallData.call_from._id });
     setCallData({ isReceived: false });
   };
 
   const endCall = () => {
-    console.log("Ending current call....");
+    //console.log("Ending current call....");
     socket.emit("end_call", callTo._id);
     setCallData({ isReceived: false });
     setcallTo(null);
@@ -122,13 +122,13 @@ const ContextProvider = ({ children }) => {
   };
 
   const handleCallAccepted = (meetID) => {
-    console.log("Call accepted....");
+    //console.log("Call accepted....");
     setCallAccepted(true);
     history.push(`/dashboard/meet/${meetID}`);
   };
 
   const handleCallAboart = (meetID) => {
-    console.log("Call aboarted...");
+    //console.log("Call aboarted...");
     setcallAboarted(true);
     setcallTo(null);
     setCallData({ isReceived: false });
@@ -143,35 +143,35 @@ const ContextProvider = ({ children }) => {
   //================================= VIDEO CALL ==================================
 
   const leftMeet = (peerID) => {
-    console.log("user left chat", peerID);
+    //console.log("user left chat", peerID);
     peersRef.current = peersRef.current.filter((p) => p.peerID != peerID);
     dispatch(peerLeft(peerID));
   };
 
   const allUsers = ({ users, chatID }, stream) => {
-    console.log("Setting new chat", chatID);
+    //console.log("Setting new chat", chatID);
     dispatch(setChat(chatID));
     connectToAllUsers(users, dispatch, peersRef, stream, auth.userID);
   };
 
   const newUser = (payload, stream) => {
-    console.log("New user joinded....", payload);
+    //console.log("New user joinded....", payload);
     handleUserJoined(payload, dispatch, stream, auth.userID, peersRef);
   };
 
   const receiveSignalBack = (payload) => {
-    console.log("Receive signal back", payload);
+    //console.log("Receive signal back", payload);
     const peerRef = peersRef.current.findIndex((p) => p.peerID === payload.id);
-    console.log("found a user peer to signal to ... ", peerRef);
-    console.log(peersRef);
+    //console.log("found a user peer to signal to ... ", peerRef);
+    //console.log(peersRef);
     if (peerRef != -1 && !peersRef.current[peerRef].destroyed) {
       try {
         peersRef.current[peerRef].peer.signal(payload.signal);
       } catch (err) {
-        console.log(err);
+        //console.log(err);
       }
     } else {
-      console.log("No peer found");
+      //console.log("No peer found");
     }
   };
 

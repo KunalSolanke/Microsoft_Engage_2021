@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import HomeLayout from '../../layouts/HomeLayout'
 import { LightboxMediaViewer } from '@carbon/ibmdotcom-react';
 import ldImag from "../../assets/images/c_us.png"
 import { useHistory } from 'react-router-dom';
 function ContactPage() {
-    const history = useHistory();
+    const [open, setopen] = useState(true)
     return (
         <HomeLayout>
             <LightboxMediaViewer
@@ -20,7 +20,10 @@ function ContactPage() {
             type: 'image',
             }}
             open={true}
-            onClose={()=>history.push("/")}
+            onClose={()=>{
+                setopen(false)
+                history.push("/")
+}}
         />
         </HomeLayout>
     )

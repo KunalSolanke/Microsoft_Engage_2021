@@ -16,11 +16,11 @@ function MeetPage() {
     const  userVideoStream= useSelector(state => state.socket.userVideoStream)
 
     useEffect(() => {
-        console.log("Intializing the meet")
+        //console.log("Intializing the meet")
         let cleanup= ()=>{}
         if(auth.userID)cleanup=context.initializeVideoCall(meetID)
         return ()=>{
-             console.log("Leaving meet... ");
+             //console.log("Leaving meet... ");
              context.socket.emit("leave_meet", meetID);
              cleanup();
             //if(userVideoStream)userVideoStream.getVideoTracks[0]?.stop()
@@ -29,7 +29,7 @@ function MeetPage() {
     }, [auth.userID])
 
     useEffect(() => {
-       console.log("parent mount")
+       //console.log("parent mount")
        
     }, [])
 
@@ -43,7 +43,7 @@ function MeetPage() {
             <Prompt
                     message={(location, action) => {
                     if (action === 'POP') {
-                        console.log("Backing up...")
+                        //console.log("Backing up...")
                         context.reinitialize();
                         context.socket.emit("leave_meet",meetID);
                        // if(userVideoStream)userVideoStream.getVideoTracks[0]?.stop()

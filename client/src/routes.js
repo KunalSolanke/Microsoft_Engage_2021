@@ -39,7 +39,7 @@ const DashBoardRoutes = () => (
 );
 
 const Router = () => {
-  console.log("Starting app");
+  //console.log("Starting app");
   return (
     <>
       <BrowserRouter>

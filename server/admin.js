@@ -31,15 +31,11 @@ const configureAdmin = () => {
               email: "admin@gmail.com",
             };
           } else {
-            admin = await models.User.findByCredentials(
-              email,
-              pass,
-              (isAdmin = true)
-            );
+            admin = await models.User.findByCredentials(email, pass, (isAdmin = true));
           }
           return admin;
         } catch (err) {
-          console.log(err);
+          //console.log(err);
           return null;
         }
       },
