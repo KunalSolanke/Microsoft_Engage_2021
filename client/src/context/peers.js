@@ -3,15 +3,15 @@ import { connectPeers, addPeer as newPeer } from "../store/actions/socket";
 import { socket } from "./GlobalSocketContext";
 export const env = process.env.REACT_APP_ENV || "dev";
 const peerOptions = {
-  config: {
-    iceServers: [
-      {
-        urls: ["turn:44.192.12.151:3478:?transport=tcp"],
-        username: "engage",
-        credential: "engage",
-      },
-    ],
-  },
+  // config: {
+  //   iceServers: [
+  //     {
+  //       urls: ["turn:44.192.12.151:3478:?transport=tcp"],
+  //       username: "engage",
+  //       credential: "engage",
+  //     },
+  //   ],
+  // },
 };
 
 const createPeer = (userTosignal, caller, stream) => {
