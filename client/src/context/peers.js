@@ -55,7 +55,7 @@ const addPeer = (incomingSignal, callerID, stream) => {
   peer.on("signal", (signal) => {
     socket.emit("return_signal", { signal, callerID });
   });
-  peer.signal(incomingSignal); //console.log;
+  peer.signal(incomingSignal);
 
   return peer;
 };
