@@ -11,7 +11,7 @@ function UserViewModal({user,open,setmodelopen}) {
     const history = useHistory();
     const mutation = useMutation(addContact,{
         onSuccess:(data,variables,context)=>{
-
+              history.push(`/dashboard/chat/${data._id}`)
         }
     });
 
@@ -42,7 +42,10 @@ function UserViewModal({user,open,setmodelopen}) {
                       </div>
                   </div>
                    <div className="modal_actions">
-                       <Chat24 />
+                       <Chat24 onClick={() => {
+                         onAddContact();
+                        setmodelopen(false);
+                     }}/>
                        <Phone20 onClick={(e)=>onCall(e)}/>
                   </div>
                 </ModalBody>

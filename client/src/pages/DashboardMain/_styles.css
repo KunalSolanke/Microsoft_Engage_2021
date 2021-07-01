@@ -1,0 +1,13 @@
+.main__dash {
+  background-color: #fff !important;
+  padding: 0rem 0rem 0rem 3rem !important;
+  height: 94vh !important;
+  display: grid;
+  place-items: center;
+}
+.main__dash img {
+  width: clamp(300px, 80%, 600px) !important;
+  height: 400px;
+  object-fit: contain;
+  object-position: center;
+}

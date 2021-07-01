@@ -11,72 +11,55 @@ import {
   SkipToContent,
   HeaderContainer,
   Content,
+  SideNav,
+  SideNavItems,
+  HeaderSideNavItems,
 } from "carbon-components-react";
 import { AppSwitcher20 } from "@carbon/icons-react";
 import DotcomShell from "@carbon/ibmdotcom-react/es/components/DotcomShell/DotcomShell";
 
 function HomeLayout(props) {
   return (
-    <DotcomShell
-      footerProps={{
-        type: "micro",
-      }}
-      mastheadProps={{
-        platform: {
-          name: "Connect",
-          url: "/",
-        },
-        customProfileLogin: "/accounts/login",
-        hasSearch: false,
-        navigation: [
-          {
-            hasMenu: true,
-            title: "Accounts",
-            menuSections: [
-              {
-                menuItems: [
-                  {
-                    title: "My Dashboard",
-                    url: "/dashboard",
-                  },
-                  {
-                    title: "Login",
-                    url: "/accounts/login",
-                  },
-                  {
-                    title: "Signup",
-                    url: "/accounts/signup",
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            hasMenu: false,
-            title: "Services",
-            url: "#services",
-            menuSections: [],
-          },
-          {
-            hasMenu: false,
-            title: "Contact us",
-            url: "/contacts",
-            menuSections: [],
-          },
-          {
-            hasMenu: false,
-            title: "About",
-            url: "/about",
-            menuSections: [],
-          },
-        ],
-        hasProfile: false,
-      }}
-    >
-      <main id="main-content">
-        <div style={{ paddingTop: "0rem" }}>{props.children}</div>
-      </main>
-    </DotcomShell>
+    <HeaderContainer
+      render={({ isSideNavExpanded, onClickSideNavExpand }) => (
+        <>
+          <Header aria-label="IBM Platform Name">
+            <SkipToContent />
+            <HeaderMenuButton
+              aria-label="Open menu"
+              onClick={onClickSideNavExpand}
+              isActive={isSideNavExpanded}
+            />
+            <HeaderName href="/" prefix="Connect"></HeaderName>
+            <HeaderNavigation aria-label="Connect">
+              {/* <HeaderMenuItem href="#services">Services</HeaderMenuItem> */}
+              <HeaderMenuItem href="/about">About</HeaderMenuItem>
+              <HeaderMenuItem href="/contact">Contact</HeaderMenuItem>
+              <HeaderMenu aria-label="Accounts" menuLinkName="Accounts">
+                <HeaderMenuItem href="/dashboard">Dashboard</HeaderMenuItem>
+                <HeaderMenuItem href="/accounts/login">Login</HeaderMenuItem>
+                <HeaderMenuItem href="/accounts/signup">Signup</HeaderMenuItem>
+              </HeaderMenu>
+            </HeaderNavigation>
+            <SideNav aria-label="Side navigation" expanded={isSideNavExpanded} isPersistent={false}>
+              <SideNavItems>
+                <HeaderSideNavItems>
+                  {/* <HeaderMenuItem href="#services">Services</HeaderMenuItem> */}
+                  <HeaderMenuItem href="/about">About</HeaderMenuItem>
+                  <HeaderMenuItem href="/contact">Contact</HeaderMenuItem>
+                  <HeaderMenu aria-label="Accounts" menuLinkName="Accounts">
+                    <HeaderMenuItem href="/dashboard">Dashboard</HeaderMenuItem>
+                    <HeaderMenuItem href="/accounts/login">Login</HeaderMenuItem>
+                    <HeaderMenuItem href="/accounts/signup">Signup</HeaderMenuItem>
+                  </HeaderMenu>
+                </HeaderSideNavItems>
+              </SideNavItems>
+            </SideNav>
+          </Header>
+          <div style={{ marginTop: "3rem" }}>{props.children}</div>
+        </>
+      )}
+    ></HeaderContainer>
   );
 }
 

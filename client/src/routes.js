@@ -16,10 +16,14 @@ import TeamChatPage from "./pages/TeamPages/TeamChannelPage";
 import JoinTeam from "./pages/TeamPages/JoinTeam";
 import Settings from "./pages/Settings/Settings";
 import Activity from "./pages/Activity/Activity";
+import LandingPage from "./pages/LandingPage/LandingPage";
+import DashboardMain from "./pages/DashboardMain/DashboardMain";
+import AboutPage from "./pages/AboutPage/AboutPage";
+import ContactPage from "./pages/ContactPage/ContactPage";
 
 const DashBoardRoutes = () => (
   <ContextProvider>
-    <Route exact path="/dashboard" component={DashboardLayout} />
+    <Route exact path="/dashboard" component={DashboardMain} />
     <Route exact path="/dashboard/meet" component={SearchPage} />
     <Route exact path="/dashboard/calluser" component={CreateCall} />
     <Route exact path="/dashboard/chat" component={ChatLanding} />
@@ -40,9 +44,11 @@ const Router = () => {
     <>
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" component={HomeLayout} />
+          <Route exact path="/" component={LandingPage} />
           <Route exact path="/accounts/login" component={LoginPage}></Route>
           <Route exact path="/accounts/signup" component={SignUpPage}></Route>
+          <Route exact path="/about" component={AboutPage}></Route>
+          <Route exact path="/contact" component={ContactPage}></Route>
           <DashBoardRoutes />
         </Switch>
       </BrowserRouter>

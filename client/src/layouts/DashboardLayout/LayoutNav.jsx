@@ -49,10 +49,10 @@ function LayoutNav(props) {
                 />
                 <HeaderName href="/" prefix="Connect" />
                 <HeaderGlobalBar>
-                  <HeaderGlobalAction aria-label="Search" onClick={()=>history.push("/dashboard/meet")}>
+                  <HeaderGlobalAction aria-label="Search" onClick={()=>history.push("/dashboard/meet")} style={{background:"#161616"}}>
                     <Search20 />
                   </HeaderGlobalAction>
-                  <HeaderGlobalAction aria-label="Profile" onClick={()=>history.push("/dashboard/settings")}>
+                  <HeaderGlobalAction aria-label="Profile" onClick={()=>history.push("/dashboard/settings")} style={{background:"#161616"}}>
                     <UserAvatar20 />
                   </HeaderGlobalAction>
                   {/* <HeaderGlobalAction aria-label="Notifications" onClick={onClickSideNavExpand}>
@@ -62,6 +62,7 @@ function LayoutNav(props) {
                     aria-label="App Switcher"
                     onClick={onClickSideNavExpand}
                     tooltipAlignment="end"
+                    style={{background:"#161616"}}
                   >
                     <AppSwitcher20 />
                   </HeaderGlobalAction>

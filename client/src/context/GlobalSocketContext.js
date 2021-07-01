@@ -55,6 +55,11 @@ const ContextProvider = ({ children }) => {
   const handleNewMessage = (message) => {
     dispatch(newMessage(message));
   };
+  const handleCallEnded = () => {
+    setCallData({ isReceived: false });
+    setcallTo(null);
+    setCallAccepted(false);
+  };
 
   useEffect(() => {
     if (auth.profile && !socket.connected) {
@@ -65,6 +70,7 @@ const ContextProvider = ({ children }) => {
       socket.on("callaborted", handleCallAboart);
       socket.on("prev_messages", handlePrevMessages);
       socket.on("new_message", handleNewMessage);
+      socket.on("call_ended", handleCallEnded);
       return () => {
         socket.removeAllListeners("incoming_call");
         socket.removeAllListeners("callaccepted");
@@ -105,6 +111,14 @@ const ContextProvider = ({ children }) => {
     console.log("Rejeceing incoming call.....");
     socket.emit("rejectcall", { meetID: CallData.meetID, userID: CallData.call_from._id });
     setCallData({ isReceived: false });
+  };
+
+  const endCall = () => {
+    console.log("Ending current call....");
+    socket.emit("end_call", callTo._id);
+    setCallData({ isReceived: false });
+    setcallTo(null);
+    history.push("/dashboard");
   };
 
   const handleCallAccepted = (meetID) => {
@@ -235,6 +249,7 @@ const ContextProvider = ({ children }) => {
         initializeVideoCall,
         peersRef,
         sendMessage,
+        endCall,
       }}
     >
       {children}

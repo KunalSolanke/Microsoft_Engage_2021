@@ -11,7 +11,15 @@ const createChat = async (req, res) => {
     })
       .populate("messages")
       .exec();
-    let user = await User.findById(user._id);
+    chat = await Chat.findOne({
+      participants: [req.body.userID, req.user._id],
+      is_channel: false,
+      is_group: false,
+      is_meet_chat: false,
+    })
+      .populate("messages")
+      .exec();
+    let user = await User.findById(req.body.userID);
     createLog(req.user._id, "Started conversation with " + user.username);
     if (!chat) chat = await Chat.create({ participants: [req.user._id, req.body.userID] });
 

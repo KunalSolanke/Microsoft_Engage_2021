@@ -61,8 +61,16 @@ const configure_socket = (server) => {
     socket.on("rejectcall", async ({ userID, meetID }) => {
       let user = await User.findById(userID);
       createLog(socket.user._id, "Couldn't receive call from " + user.username);
+      createLog(userID, "Couldn't complete call with " + socket.user.username);
       console.log("Rejecting the call from ", userID);
       io.in(`${userID}`).emit("callaborted", meetID);
+    });
+
+    socket.on("end_call", async (userID) => {
+      let user = await User.findById(userID);
+      createLog(socket.user._id, "Couldn't complete call with " + user.username);
+      createLog(userID, "Couldn't complete call with " + socket.user.username);
+      io.in(`${userID}`).emit("call_ended");
     });
     //=================================== VIDEO CHAT ===============================
 

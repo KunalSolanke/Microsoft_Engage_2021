@@ -21,8 +21,9 @@ function CreateCall() {
                     (<UserAvatarFilled20 className="user__avatar"/>)
                   }
                    <div class="make_call__actions">
-                        <div className="decline_button">
-                        <PhoneBlockFilled24 onClick={(e)=>context.rejectCall()}/>
+                        <div className="decline_button"  onClick={(e)=>context.endCall()}>
+                            <PhoneBlockFilled24 color="white"/>
+                   
                         </div>
                     </div></>)
     }
