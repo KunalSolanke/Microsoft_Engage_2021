@@ -1,4 +1,4 @@
-import { Button, Content, FileUploader, FormGroup, TextArea, TextInput } from 'carbon-components-react'
+import { Button, Content, FileUploader, FormGroup, InlineLoading, TextArea, TextInput } from 'carbon-components-react'
 import React, { useEffect, useState } from 'react'
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
 import { settings } from 'carbon-components';
@@ -30,9 +30,13 @@ const TextAreaProps = () => ({
   rows: 4,
 });
 function Settings() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [description, setDescription] = useState('Saving...');
     const [profileImage, setprofileImage] = useState(null)
     const [profileFile, setprofileFile] = useState(null)
     const profile = useSelector(state => state.auth.profile)
+    const [ariaLive, setAriaLive] = useState('off');
     const dispatch = useDispatch()
     useEffect(() => {
         if(profile?.image)setprofileImage(profile.image)
@@ -43,10 +47,21 @@ function Settings() {
         setprofileImage(URL.createObjectURL(e.target.files[0]));
         setprofileFile(e.target.files[0]);
     }
-   const handleSubmit = (e)=>{
+   const handleSubmit = async (e)=>{
+     setAriaLive('asserative');
+     setIsSubmitting(true)
      let formData = new FormData(e.target)
      if(profileFile)formData.set("image",profileFile)
-     dispatch(updateProfile(formData));
+     await dispatch(updateProfile(formData));
+     setIsSubmitting(false);
+        setSuccess(true);
+        setDescription('Submitted!');
+        setAriaLive('off');
+    setTimeout(() => {
+          setSuccess(false);
+          setDescription('Submitting...');
+          setAriaLive('off');
+        }, 1500);
    }
 
      const renderUserProfile = ()=>{
@@ -114,7 +129,17 @@ function Settings() {
                     />
                     <TextArea {...TextAreaProps()} style={{ marginBottom: '1rem' }} onChange={(e)=>{}} name="bio" defaultValue={profile?.bio||""}/>
                     </FormGroup>
-                    <Button kind="primary" type="submit" className="login__button">Save</Button>
+                    {isSubmitting || success ? (
+            <InlineLoading
+              style={{ marginLeft: '1rem' }}
+              description={description}
+              status={success ? 'finished' : 'active'}
+              aria-live={ariaLive}
+            />
+          ) : (
+            <Button kind="primary" type="submit" className="login__button">Save</Button>
+          )}
+                   
                       
                   </form>
               </div>

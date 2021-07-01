@@ -3,10 +3,11 @@ import HomeLayout from '../../layouts/HomeLayout/HomeLayout'
 import {LeadSpace,FeatureCard,CalloutWithMedia,Footer} from "@carbon/ibmdotcom-react"
 import { ArrowRight16, ArrowRight20 } from '@carbon/icons-react'
 import leadspaceImg1 from "../../assets/images/video_chat.webp"
-import leadspaceImg2 from "../../assets/images/video_chat.webp"
 import "./_styles.css"
 import connectImg from "../../assets/images/connect.png"
+import connectAltImg from "../../assets/images/connect_al.jpg"
 import vLiveImg from "../../assets/images/vlive.png"
+
 const mediaData = {
     heading: 'Connecting with your peers,one click away',
     image: {
@@ -76,7 +77,7 @@ function myLanguageCallback(selectedItem) {
     return (
         <HomeLayout>
             <LeadSpace
-                theme="g100"
+                theme="light"
                 title={"Connect"}
                 copy={"Connect with us and actively engage with your friends anytime"}
                 gradient={true}
@@ -84,11 +85,11 @@ function myLanguageCallback(selectedItem) {
                 image={{
                     sources: [
                     {
-                        src: leadspaceImg1,
+                        src:  "https://s35691.pcdn.co/wp-content/uploads/2020/09/Building-Relationships-How-to-Connect-from-a-Distance.jpg",
                         breakpoint: 'sm',
                     },
                     {
-                        src: "https://s35691.pcdn.co/wp-content/uploads/2020/09/Building-Relationships-How-to-Connect-from-a-Distance.jpg",
+                        src:connectAltImg,
                         breakpoint: 'md',
                     },
                     ],

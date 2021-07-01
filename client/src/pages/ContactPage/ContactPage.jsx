@@ -9,7 +9,7 @@ function ContactPage() {
         <HomeLayout>
             <LightboxMediaViewer
             title='Contact Us'
-            copy='Well at this point me and my laptop are only working members,so yeah,,might as well take up customer support.
+            copy='Well at this point me and my laptop are only working members,so yeah might as well take up customer support.
             Contact us @facebook'
             media={{
             src:ldImag,

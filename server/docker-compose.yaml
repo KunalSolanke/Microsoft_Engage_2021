@@ -43,11 +43,6 @@ services:
   #     expose :
   #     - 6379
 
-  peerjs:
-    image: peerjs/peerjs-server
-    ports:
-      - 9000:9000
-
 volumes:
   dbdata:
 # networks:
