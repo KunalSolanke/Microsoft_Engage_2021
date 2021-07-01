@@ -78,6 +78,7 @@ const ContextProvider = ({ children }) => {
         socket.removeAllListeners("prev_messages");
         socket.removeAllListeners("callaborted");
         socket.removeAllListeners("new_message");
+        socket.removeAllListeners("call_ended");
       };
     }
   }, [auth.profile]);
@@ -184,6 +185,7 @@ const ContextProvider = ({ children }) => {
         audio: true,
       })
       .then((stream) => {
+        console.log("My video stream ", stream);
         dispatch({
           type: actionTypes.SET_USER_VIDEO,
           payload: stream,
@@ -194,6 +196,9 @@ const ContextProvider = ({ children }) => {
         socket.on("user_joined", (payload) => newUser(payload, stream));
         socket.on("receive_signal_back", receiveSignalBack);
         socket.on("left_meet", leftMeet);
+      })
+      .catch((err) => {
+        console.log(err);
       });
 
     const cleanup = () => {

@@ -75,6 +75,7 @@ const configure_socket = (server) => {
     //=================================== VIDEO CHAT ===============================
 
     socket.on("join_meet", async (meetID) => {
+      console.log("Joined meet ", socket.user.username);
       const meet = await getMeet(meetID);
       socket.join(`${meet.chat}`);
       createLog(socket.user._id, "Joined meet started by " + meet.author.username);
