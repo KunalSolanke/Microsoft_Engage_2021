@@ -6,7 +6,7 @@ const peerOptions = {
   config: {
     iceServers: [
       {
-        urls: ["turn:44.193.11.0:3478?transport=udp"],
+        urls: ["turn:44.193.11.0:3478?transport=tcp"],
         username: "engage",
         credential: "engage",
       },
