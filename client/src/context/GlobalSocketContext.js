@@ -23,6 +23,10 @@ const socket = io(baseURL, { autoConnect: false });
 const videoConstraints = {
   height: window.innerHeight / 2,
   width: window.innerWidth / 2,
+  frameRate: 10, //mobile
+  facingMode: {
+    exact: "environment",
+  }, //mobile
 };
 
 const ContextProvider = ({ children }) => {
@@ -178,11 +182,16 @@ const ContextProvider = ({ children }) => {
   };
 
   const initializeVideoCall = (meetID) => {
+    navigator.mediaDevices.getUserMedia =
+      navigator.mediaDevices.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia;
+
     dispatch(setMeet(meetID));
     navigator.mediaDevices
       .getUserMedia({
         video: videoConstraints,
-        audio: true,
+        audio: {},
       })
       .then((stream) => {
         console.log("My video stream ", stream);
