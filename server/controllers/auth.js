@@ -37,8 +37,8 @@ const signup = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(401);
-    res.send("failed");
+    res.status(400);
+    res.send(err.message);
   }
 };
 
@@ -73,7 +73,7 @@ const login = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400);
-    res.send("failed");
+    res.send(err.message);
   }
 };
 
