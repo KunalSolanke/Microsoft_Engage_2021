@@ -2,11 +2,16 @@ import Peer from "simple-peer";
 import { connectPeers, addPeer as newPeer } from "../store/actions/socket";
 import { socket } from "./GlobalSocketContext";
 export const env = process.env.REACT_APP_ENV || "dev";
-const baseURL = env == "dev" ? "localhost" : "engage_backend.voldemort.wtf";
 const peerOptions = {
-  host: baseURL,
-  port: 9000,
-  path: "/myapp",
+  config: {
+    iceServers: [
+      {
+        urls: ["turn:44.192.12.151:3478:?transport=tcp"],
+        username: "engage",
+        credential: "engage",
+      },
+    ],
+  },
 };
 
 const createPeer = (userTosignal, caller, stream) => {
