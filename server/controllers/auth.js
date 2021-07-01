@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const { setResToken } = require("../utils/tokens");
 
 const signup = async (req, res) => {
   const { username, email, password } = req.body;
