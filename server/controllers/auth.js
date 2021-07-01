@@ -15,12 +15,12 @@ const signup = async (req, res) => {
     user.refreshTokens = user.refreshTokens.concat([refreshToken]);
     await user.save();
     res.setHeader("Cache-control", "private");
-    res.cookie("refresh_token", refreshToken, {
+    let cookieOpts = {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      //sameSite: "none",
       secure: true,
-    });
+    };
+    res.cookie("refresh_token", refreshToken, cookieOpts);
     await Activity.create({ user: user._id });
     res.status(200).send({
       token: accessToken,
