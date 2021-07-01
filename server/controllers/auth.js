@@ -15,18 +15,7 @@ const signup = async (req, res) => {
     user.refreshTokens = user.refreshTokens.concat([refreshToken]);
     await user.save();
     res.setHeader("Cache-control", "private");
-    let cookieOpts = {
-      httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      secure: true,
-    };
-    if (process.env.NODE_ENV == "production") {
-      cookieOpts = {
-        ...cookieOpts,
-        sameSite: "none",
-      };
-    }
-    res.cookie("refresh_token", refreshToken, cookieOpts);
+    setResToken(res, refreshToken);
     await Activity.create({ user: user._id });
     res.status(200).send({
       token: accessToken,
@@ -52,24 +41,14 @@ const login = async (req, res) => {
     user.refreshTokens = user.refreshTokens.concat([refreshToken]);
     await user.save();
     res.setHeader("Cache-control", "private");
-    res.cookie("refresh_token", refreshToken, {
-      httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      //sameSite: "none",
-      secure: true,
+    setResToken(res, refreshToken);
+    res.status(200).send({
+      token: accessToken,
+      username: user.username || user.fullName || user.email,
+      email: user.email,
+      userID: user._id,
+      expiry: 3600,
     });
-    let cookieOpts = {
-      httpOnly: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      secure: true,
-    };
-    if (process.env.NODE_ENV == "production") {
-      cookieOpts = {
-        ...cookieOpts,
-        sameSite: "none",
-      };
-    }
-    res.cookie("refresh_token", refreshToken, cookieOpts);
   } catch (err) {
     console.log(err);
     res.status(400);
@@ -87,18 +66,7 @@ const refresh = async (req, res) => {
       let accessToken = await user.generateAuthToken("1h");
       let refreshToken = await user.generateAuthToken("7d");
       res.setHeader("Cache-control", "private");
-      let cookieOpts = {
-        httpOnly: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-        secure: true,
-      };
-      if (process.env.NODE_ENV == "production") {
-        cookieOpts = {
-          ...cookieOpts,
-          sameSite: "none",
-        };
-      }
-      res.cookie("refresh_token", refreshToken, cookieOpts);
+      setResToken(res, refreshToken);
       user.refreshTokens = user.refreshTokens.concat([refreshToken]);
       await user.save();
       res.status(200).send({
@@ -124,12 +92,6 @@ const logout = async (req, res) => {
     httpOnly: true,
     secure: true,
   };
-  if (process.env.NODE_ENV == "production") {
-    cookieOpts = {
-      ...cookieOpts,
-      sameSite: "none",
-    };
-  }
   res.clearCookie("refresh_token", cookieOpts);
   let user = req.user;
   user.refreshTokens = user.refreshTokens.filter((t) => t != req.token);
