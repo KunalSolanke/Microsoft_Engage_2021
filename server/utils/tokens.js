@@ -1,16 +1,12 @@
 const setResToken = (res, token) => {
   let maxAge = 7 * 24 * 60 * 60 * 1000;
-  let expiresDate = new Date();
-  expiresDate.setDate(expiresDate.getDate() + 7);
-  res.setHeader("set-cookie", [
-    "refresh_token=" +
-      token +
-      "; Max-Age=" +
-      +maxAge +
-      "; Path=/; Expires=" +
-      expiresDate.toUTCString() +
-      "; Secure; SameSite=None; HttpOnly",
-  ]);
+  let cookieOpts = {
+    maxAge,
+    secure: true,
+    sameSite: "none",
+    httpOnly: true,
+  };
+  res.cookie("refresh_token", token, cookieOpts);
 };
 module.exports = {
   setResToken,
