@@ -2,10 +2,15 @@ const setResToken = (res, token) => {
   let maxAge = 7 * 24 * 60 * 60 * 1000;
   let cookieOpts = {
     maxAge,
-    // secure: true,
-    // sameSite: "none",
     httpOnly: true,
   };
+  if (process.env.NODE_ENV == "production") {
+    cookieOpts = {
+      secure: true,
+      sameSite: "none",
+      ...cookieOpts,
+    };
+  }
   res.cookie("refresh_token", token, cookieOpts);
 };
 module.exports = {
