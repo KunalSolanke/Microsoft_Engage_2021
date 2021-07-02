@@ -13,6 +13,8 @@ import {
   prevMessages,
   setChat,
   setMeet,
+  startShare,
+  stopShare,
 } from "../store/actions/socket";
 import * as actionTypes from "../store/constants/socket";
 
@@ -33,6 +35,7 @@ const ContextProvider = ({ children }) => {
   const auth = useSelector((state) => state.auth);
   const meet = useSelector((state) => state.socket.meet);
   const currentChat = useSelector((state) => state.socket.chatID);
+  //const userStream = useSelector((state) => state.socket.UserVideoStream);
 
   //==== Socket State =================================
   const [CallData, setCallData] = useState({ isReceived: false });
@@ -197,6 +200,10 @@ const ContextProvider = ({ children }) => {
           type: actionTypes.SET_USER_VIDEO,
           payload: stream,
         });
+        dispatch({
+          type: actionTypes.SET_CAMERA_STREAM,
+          payload: stream,
+        });
         socket.emit("join_meet", meetID);
         socket.on("users_in_meet", (payload) => allUsers(payload, stream));
 
@@ -217,6 +224,23 @@ const ContextProvider = ({ children }) => {
 
     return cleanup;
   };
+
+  //=========================== START SCREEN SHARE ==================
+  const startScreenShare = () => {
+    navigator.mediaDevices
+      .getDisplayMedia({
+        cursor: true,
+      })
+      .then((stream) => {
+        dispatch(startShare(stream));
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const stopScreenShare = () => {
+    dispatch(stopShare());
+  };
+
   //=========================== GROUP MEET ====================================
 
   const groupMeet = async (chatID) => {
@@ -263,6 +287,8 @@ const ContextProvider = ({ children }) => {
         peersRef,
         sendMessage,
         endCall,
+        startScreenShare,
+        stopScreenShare,
       }}
     >
       {children}

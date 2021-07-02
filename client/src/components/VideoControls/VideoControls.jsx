@@ -1,5 +1,5 @@
-import { Chat20, EventsAlt20, FaceActivated20, FaceActivatedAdd20, MicrophoneFilled20, MicrophoneOffFilled20, PhoneBlockFilled20, Share20,VideoFilled20, VideoOffFilled20 } from '@carbon/icons-react'
-import React, { useContext, useState } from 'react'
+import { Chat20, EventsAlt20, FaceActivated20, FaceActivatedAdd20, MicrophoneFilled20, MicrophoneOffFilled20, PhoneBlockFilled20, Screen20, ScreenOff20, Share20,VideoFilled20, VideoOffFilled20 } from '@carbon/icons-react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { SocketContext } from '../../context/GlobalSocketContext';
 import * as actionTypes from "../../store/constants/socket"
@@ -9,6 +9,7 @@ import "./_style.css"
 function VideoControls() {
     const [videoOn, setVideoOn] = useState(true)
     const [audioOn, setaudioOn] = useState(true)
+    const screenOn = useSelector(state=>state.socket.screenOn);    
     const meet = useSelector(state=>state.socket.meet);
     const context = useContext(SocketContext)
     const userVideoStream = useSelector(state=>state.socket.userVideoStream);
@@ -17,36 +18,32 @@ function VideoControls() {
     const handleVideoOff = (e)=>{
        if(userVideoStream)userVideoStream.getVideoTracks()[0].enabled=true;
         setVideoOn(true);
-        dispatch({
-            type:actionTypes.SET_USER_VIDEO,
-            payload:userVideoStream
-        })
     }
     const handleVideoOn = (e)=>{
         if(userVideoStream)userVideoStream.getVideoTracks()[0].enabled=false;
         setVideoOn(false);
-        dispatch({
-            type:actionTypes.SET_USER_VIDEO,
-            payload:userVideoStream
-        })
         
     }
     const handleAudioOn = (e)=>{
         if(userVideoStream)userVideoStream.getAudioTracks()[0].enabled=false;
         setaudioOn(false);
-        dispatch({
-            type:actionTypes.SET_USER_VIDEO,
-            payload:userVideoStream
-        })
+      
     }
     const handleAudioOff = (e)=>{
         if(userVideoStream)userVideoStream.getAudioTracks()[0].enabled=true;
         setaudioOn(true);
-        dispatch({
-            type:actionTypes.SET_USER_VIDEO,
-            payload:userVideoStream
-        })
+       
     }
+    const handleScreenOn = (e)=>{
+        context.stopScreenShare();
+      
+    }
+    const handleScreenOff = (e)=>{
+        context.startScreenShare()
+    }
+    useEffect(() => {
+      console.log("Well fuckit")
+    }, [])
 
     const shareLink = (e)=>{
          prompt(
@@ -78,6 +75,11 @@ function VideoControls() {
 
             {audioOn?<MicrophoneFilled20 onClick={e=>handleAudioOn(e)}/>:
             <MicrophoneOffFilled20 onClick={e=>handleAudioOff(e)}/>}
+            </div>
+            <div>
+
+            {screenOn?<ScreenOff20 onClick={e=>handleScreenOn(e)}/>:
+            <Screen20 onClick={e=>handleScreenOff(e)}/>}
             </div>
             <div onClick={(e=>openChat(e))}>
 

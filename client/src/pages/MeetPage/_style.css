@@ -37,7 +37,9 @@
   height: 400px;
   width: 100%;
   object-fit: cover;
-  transform: rotateY(180deg);
+  /* transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg);
   -moz-transform: rotateY(180deg);
+   -webkit-transform: scaleX(-1);
+  transform: scaleX(-1); */
 }

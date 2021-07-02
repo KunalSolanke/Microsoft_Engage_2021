@@ -11,6 +11,8 @@ const intialState = {
   isPeopleActive: false,
   userVideoStream: null,
   peerStreams: [],
+  cameraStream: null,
+  screenOn: false,
 };
 
 const newMessage = (state, action) => {
@@ -118,6 +120,14 @@ const reducer = (state = intialState, action) => {
       return setPeerStream(state, action);
     case actionTypes.REMOVE_PEER_VIDEO:
       return removePeerStream(state, action);
+    case actionTypes.SET_CAMERA_STREAM:
+      return UpdatedObj(state, {
+        cameraStream: action.payload,
+      });
+    case actionTypes.SET_SCREEN:
+      return UpdatedObj(state, {
+        screenOn: action.payload,
+      });
     default:
       return state;
   }

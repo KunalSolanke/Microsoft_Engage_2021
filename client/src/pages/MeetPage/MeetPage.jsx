@@ -13,8 +13,7 @@ function MeetPage() {
     const context = useContext(SocketContext)
     const {meetID} = useParams()
     const auth = useSelector(state => state.auth)
-    const  userVideoStream= useSelector(state => state.socket.userVideoStream)
-
+    
     useEffect(() => {
         console.log("Intializing the meet")
         let cleanup= ()=>{}
