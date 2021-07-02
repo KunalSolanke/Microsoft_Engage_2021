@@ -7,6 +7,7 @@ import {Button} from "carbon-components-react"
 import {useQuery} from "react-query"
 import "./_styles.css"
 import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 const useFetchChats= (token)=>{
     const {data,isLoading,error,refetch} = useQuery("getContacts",()=>getMyContacts(token=token), {
@@ -20,6 +21,7 @@ const useFetchChats= (token)=>{
 function ChatBar() {
     const token = useSelector(state => state.auth.token)
     const {data,isLoading,error,refetch} = useFetchChats(token);
+    const history = useHistory()
     useEffect(() => {
        if(token)refetch();
     }, [token])
@@ -33,7 +35,7 @@ function ChatBar() {
                    <div className="tiles__empty_state">
                        <div>
                     <p>You don't have any contacts yet</p>
-                       <Button isExpressive size="default" renderIcon={Add16} kind="primary" href="/dashboard/meet">
+                       <Button isExpressive size="default" renderIcon={Add16} kind="primary" onClick={()=>history.push("/dashboard/meet")}>
                         Add
                         </Button>
                         </div>

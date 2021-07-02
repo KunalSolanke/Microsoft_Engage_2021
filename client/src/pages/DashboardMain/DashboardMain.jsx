@@ -6,9 +6,11 @@ import {Carousel} from "react-responsive-carousel"
 import chatGall from "../../assets/images/chat_gall.jpg"
 import group from "../../assets/images/group.jpg"
 import vChat from "../../assets/images/video_chat.jpg"
+import { useHistory } from 'react-router-dom'
 
 
 function DashboardMain() {
+    const history = useHistory()
     return (
         <DashboardLayout>
 
@@ -20,17 +22,17 @@ function DashboardMain() {
                 <div>
                     <img src={chatGall} />
                     <p style={{marginBottom:"1rem"}}>Add your friends to your contact list and have hassle free <br/>messaging anytime.</p>
-                                  <Button kind="danger--tertiary" href="/dashboard/chat">Contacts</Button>
+                                  <Button kind="danger--tertiary" onClick={()=>history.push("/dashboard/chat")}>Contacts</Button>
                 </div>
                 <div>
                     <img src={vChat} />
                     <p style={{marginBottom:"1rem"}}>Video chat with friends with in meet chat.</p>
-                   <Button kind="danger--tertiary" href="/dashboard/meet">Video Chat</Button>
+                   <Button kind="danger--tertiary" onClick={()=>history.push("/dashboard/meet")}>Video Chat</Button>
                 </div>
                 <div>
                     <img src={group} />
                     <p style={{marginBottom:"1rem"}}>Create teams  and enjoy <br/>messaging anytime.</p>
-                    <Button kind="danger--tertiary" href="/dashboard/meet">Teams</Button>
+                    <Button kind="danger--tertiary" onClick={()=>history.push("/dashboard/teams")}>Teams</Button>
                 </div>
             </Carousel>
             

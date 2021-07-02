@@ -2,8 +2,8 @@ const setResToken = (res, token) => {
   let maxAge = 7 * 24 * 60 * 60 * 1000;
   let cookieOpts = {
     maxAge,
-    secure: true,
-    sameSite: "none",
+    // secure: true,
+    // sameSite: "none",
     httpOnly: true,
   };
   res.cookie("refresh_token", token, cookieOpts);

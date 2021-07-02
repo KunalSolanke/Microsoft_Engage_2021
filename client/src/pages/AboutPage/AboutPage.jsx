@@ -7,7 +7,6 @@ function AboutPage() {
     const [open, setopen] = useState(true)
     const history = useHistory();
     return (
-        <HomeLayout>
             <LightboxMediaViewer
             title='About Us'
             copy='Connect is a platform meant to serve people by connecting them with their friends and family with single swipe.We\
@@ -25,7 +24,6 @@ function AboutPage() {
                 setopen(false)
                 history.push("/")}}
         />
-        </HomeLayout>
     )
 }
 

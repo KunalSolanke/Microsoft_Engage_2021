@@ -47,7 +47,7 @@ function LayoutNav(props) {
                   onClick={onClickSideNavExpand}
                   isActive={isSideNavExpanded}
                 />
-                <HeaderName href="/" prefix="Connect" />
+                <HeaderName onClick={()=>history.push("/")} prefix="Connect" />
                 <HeaderGlobalBar>
                   <HeaderGlobalAction aria-label="Search" onClick={()=>history.push("/dashboard/meet")} style={{background:"#161616"}}>
                     <Search20 />

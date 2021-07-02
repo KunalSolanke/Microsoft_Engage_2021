@@ -70,7 +70,7 @@ const setPeerStream = (state, action) => {
   if (streamIndex == -1) {
     connectedPeerStreams = [...connectedPeerStreams, action.payload];
   } else {
-    connectedPeerStreams[streamIndex] = connectedPeerStreams;
+    connectedPeerStreams[streamIndex] = action.payload;
   }
   return UpdatedObj(state, { peerStreams: connectedPeerStreams });
 };

@@ -7,6 +7,7 @@ import "./_styles.css"
 import connectImg from "../../assets/images/connect.png"
 import connectAltImg from "../../assets/images/connect_al.jpg"
 import vLiveImg from "../../assets/images/vlive.png"
+import { useHistory } from 'react-router-dom'
 
 const mediaData = {
     heading: 'Connecting with your peers,one click away',
@@ -42,7 +43,6 @@ const card={
             alt: 'Image alt text',
           },
           cta: {
-            href: "/accounts/login",
             icon: {
               src: ArrowRight20,
             },
@@ -74,6 +74,7 @@ function myLanguageCallback(selectedItem) {
         renderIcon:ArrowRight16,
         href:"/accounts/login"
     }]
+    const history=useHistory()
     return (
         <HomeLayout>
             <LeadSpace
@@ -103,7 +104,7 @@ function myLanguageCallback(selectedItem) {
                     <div
                     style={{ paddingTop: '20px' }}
                     className="bx--col-sm-4 bx--col-lg-12 bx--offset-lg-2">
-                    <FeatureCard card={card} size={'medium'} />
+                    <FeatureCard card={card} size={'medium'} onClick={()=>history.push("/accounts/login")} />
                     </div>
                 </div>
             </div>
@@ -111,6 +112,7 @@ function myLanguageCallback(selectedItem) {
         <div className="bx--row ">
             <div className="bx--offset-lg-4 bx--col-lg-12">
             <CalloutWithMedia
+                onClick={()=>history.push("/accounts/login")}
                 mediaData={mediaData}
                 mediaType={"image"}
                 heading={"At connect we aim to join as many people as possible"}

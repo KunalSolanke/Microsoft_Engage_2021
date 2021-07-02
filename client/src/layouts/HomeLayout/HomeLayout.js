@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React from "react";
 import {
   Header,
   HeaderMenuButton,
@@ -6,19 +6,17 @@ import {
   HeaderNavigation,
   HeaderMenu,
   HeaderMenuItem,
-  HeaderGlobalBar,
-  HeaderGlobalAction,
   SkipToContent,
   HeaderContainer,
-  Content,
   SideNav,
   SideNavItems,
   HeaderSideNavItems,
 } from "carbon-components-react";
-import { AppSwitcher20 } from "@carbon/icons-react";
-import DotcomShell from "@carbon/ibmdotcom-react/es/components/DotcomShell/DotcomShell";
+
+import { useHistory } from "react-router-dom";
 
 function HomeLayout(props) {
+  const history = useHistory();
   return (
     <HeaderContainer
       render={({ isSideNavExpanded, onClickSideNavExpand }) => (
@@ -30,28 +28,40 @@ function HomeLayout(props) {
               onClick={onClickSideNavExpand}
               isActive={isSideNavExpanded}
             />
-            <HeaderName href="/" prefix="Connect"></HeaderName>
+            <HeaderName onClick={() => history.push("/")} prefix="Connect"></HeaderName>
             <HeaderNavigation aria-label="Connect">
               {/* <HeaderMenuItem href="#services">Services</HeaderMenuItem> */}
-              <HeaderMenuItem href="/about">About</HeaderMenuItem>
-              <HeaderMenuItem href="/contact">Contact</HeaderMenuItem>
               <HeaderMenu aria-label="Accounts" menuLinkName="Accounts">
-                <HeaderMenuItem href="/dashboard">Dashboard</HeaderMenuItem>
-                <HeaderMenuItem href="/accounts/login">Login</HeaderMenuItem>
-                <HeaderMenuItem href="/accounts/signup">Signup</HeaderMenuItem>
+                <HeaderMenuItem onClick={() => history.push("/dashboard")}>
+                  Dashboard
+                </HeaderMenuItem>
+                <HeaderMenuItem onClick={() => history.push("/accounts/login")}>
+                  Login
+                </HeaderMenuItem>
+                <HeaderMenuItem onClick={() => history.push("/accounts/signup")}>
+                  Signup
+                </HeaderMenuItem>
               </HeaderMenu>
+              <HeaderMenuItem onClick={() => history.push("/about")}>About</HeaderMenuItem>
+              <HeaderMenuItem onClick={() => history.push("/contact")}>Contact</HeaderMenuItem>
             </HeaderNavigation>
             <SideNav aria-label="Side navigation" expanded={isSideNavExpanded} isPersistent={false}>
               <SideNavItems>
                 <HeaderSideNavItems>
                   {/* <HeaderMenuItem href="#services">Services</HeaderMenuItem> */}
-                  <HeaderMenuItem href="/about">About</HeaderMenuItem>
-                  <HeaderMenuItem href="/contact">Contact</HeaderMenuItem>
                   <HeaderMenu aria-label="Accounts" menuLinkName="Accounts">
-                    <HeaderMenuItem href="/dashboard">Dashboard</HeaderMenuItem>
-                    <HeaderMenuItem href="/accounts/login">Login</HeaderMenuItem>
-                    <HeaderMenuItem href="/accounts/signup">Signup</HeaderMenuItem>
+                    <HeaderMenuItem onClick={() => history.push("/dashboard")}>
+                      Dashboard
+                    </HeaderMenuItem>
+                    <HeaderMenuItem onClick={() => history.push("/accounts/login")}>
+                      Login
+                    </HeaderMenuItem>
+                    <HeaderMenuItem onClick={() => history.push("/accounts/signup")}>
+                      Signup
+                    </HeaderMenuItem>
                   </HeaderMenu>
+                  <HeaderMenuItem onClick={() => history.push("/about")}>About</HeaderMenuItem>
+                  <HeaderMenuItem onClick={() => history.push("/contact")}>Contact</HeaderMenuItem>
                 </HeaderSideNavItems>
               </SideNavItems>
             </SideNav>

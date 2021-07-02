@@ -13,17 +13,21 @@ function MeetPage() {
     const context = useContext(SocketContext)
     const {meetID} = useParams()
     const auth = useSelector(state => state.auth)
+
+  const alertUser = e => {
+    e.preventDefault()
+    e.returnValue = ''
+  }
     
     useEffect(() => {
         console.log("Intializing the meet")
-        let cleanup= ()=>{}
-        if(auth.userID)cleanup=context.initializeVideoCall(meetID)
+        if(auth.userID)context.initializeVideoCall(meetID)
+        window.addEventListener('beforeunload', alertUser)
+        window.addEventListener('unload',()=>context.reinitialize(meetID))
         return ()=>{
-             console.log("Leaving meet... ");
-             context.socket.emit("leave_meet", meetID);
-             cleanup();
-            //if(userVideoStream)userVideoStream.getVideoTracks[0]?.stop()
-
+             window.removeEventListener('beforeunload', alertUser)
+             window.removeEventListener('unload',()=>context.reinitialize(meetID));
+             context.reinitialize(meetID)
         }
     }, [auth.userID])
 
@@ -41,14 +45,10 @@ function MeetPage() {
         >
             <Prompt
                     message={(location, action) => {
-                    if (action === 'POP') {
-                        console.log("Backing up...")
-                        context.reinitialize();
-                        context.socket.emit("leave_meet",meetID);
-                       // if(userVideoStream)userVideoStream.getVideoTracks[0]?.stop()
+                    if (action === 'POP'||action=="PUSH") {
+                        context.reinitialize(meetID);
                     }
-                    
-                    return true;
+                    return "Are you sure you want to leave the meet?";
                     }}
                     />
                 <Grid className="meetgrid" fullWidth={true}>

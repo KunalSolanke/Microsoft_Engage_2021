@@ -1,3 +1,4 @@
+import { connectToAllUsers, handleUserJoined } from "../../context/peers";
 import * as actionTypes from "../constants/socket";
 
 export const addPeer = (peerObj) => {
@@ -176,5 +177,22 @@ export const stopShare = () => {
       type: actionTypes.SET_USER_VIDEO,
       payload: cameraStream,
     });
+  };
+};
+
+export const connectAlPeers = ({ users, chatID }, peersRef) => {
+  return async (dispatch, getState) => {
+    console.log("Setting new chat", chatID);
+    let stream = getState().socket.userVideoStream;
+    dispatch(setChat(chatID));
+    connectToAllUsers(users, dispatch, peersRef, stream, getState().auth.userID);
+  };
+};
+
+export const addNewPeer = (payload, peersRef) => {
+  return async (dispatch, getState) => {
+    let stream = getState().socket.userVideoStream;
+    console.log("New user joinded....", payload);
+    handleUserJoined(payload, dispatch, stream, getState().auth.userID, peersRef);
   };
 };

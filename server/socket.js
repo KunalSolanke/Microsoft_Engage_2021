@@ -88,17 +88,11 @@ const configure_socket = (server) => {
 
     socket.on("send_signal", (payload) => {
       console.log("Sending my signal to", payload.userTosignal);
-      const clients = io.sockets.adapter.rooms.get(payload.userTosignal);
-      console.log(clients);
-      for (let clientId of clients) {
-        console.log("Sending singal out");
-        const clientSocket = io.sockets.sockets.get(clientId);
-        clientSocket.emit("user_joined", {
-          signal: payload.signal,
-          id: payload.caller,
-          user: socket.user,
-        });
-      }
+      io.in(payload.userTosignal).emit("user_joined", {
+        signal: payload.signal,
+        id: payload.caller,
+        user: socket.user,
+      });
     });
 
     socket.on("return_signal", (payload) => {

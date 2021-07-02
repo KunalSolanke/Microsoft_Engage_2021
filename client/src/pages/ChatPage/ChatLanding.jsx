@@ -4,8 +4,10 @@ import ChatBar from '../../components/ChatBar/ChatBar'
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
 import chatImage from "../../assets/images/chat.jpg"
 import "./_styles.css"
+import { useHistory } from 'react-router-dom'
 
 function ChatLanding() {
+    const history=useHistory()
     return (
         <DashboardLayout>
             <Content
@@ -21,7 +23,7 @@ function ChatLanding() {
                                  <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
                                 <img src={chatImage} className="chat__landing__img"/>
                                  <p>Add your friends to your contact list and have hassle free <br/>messaging anytime.</p>
-                                  <Button kind="danger--tertiary" href="/dashboard/meet">Add Contacts</Button>
+                                  <Button kind="danger--tertiary" onClick={()=>history.push("/dashboard/meet")}>Add Contacts</Button>
                                 </div>
                              </div>
                           </Column>

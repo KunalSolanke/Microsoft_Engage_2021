@@ -5,8 +5,9 @@ import { useHistory } from "react-router-dom";
 import { createMeet } from "../http/requests";
 import { authCheckState } from "../store/actions/auth";
 import { baseURL } from "../http/api";
-import { connectToAllUsers, handleUserJoined } from "./peers";
 import {
+  addNewPeer,
+  connectAlPeers,
   leftMeet as peerLeftMeet,
   newMessage,
   peerLeft,
@@ -155,17 +156,6 @@ const ContextProvider = ({ children }) => {
     dispatch(peerLeft(peerID));
   };
 
-  const allUsers = ({ users, chatID }, stream) => {
-    console.log("Setting new chat", chatID);
-    dispatch(setChat(chatID));
-    connectToAllUsers(users, dispatch, peersRef, stream, auth.userID);
-  };
-
-  const newUser = (payload, stream) => {
-    console.log("New user joinded....", payload);
-    handleUserJoined(payload, dispatch, stream, auth.userID, peersRef);
-  };
-
   const receiveSignalBack = (payload) => {
     console.log("Receive signal back", payload);
     const peerRef = peersRef.current.findIndex((p) => p.peerID === payload.id);
@@ -205,24 +195,15 @@ const ContextProvider = ({ children }) => {
           payload: stream,
         });
         socket.emit("join_meet", meetID);
-        socket.on("users_in_meet", (payload) => allUsers(payload, stream));
+        socket.on("users_in_meet", (payload) => dispatch(connectAlPeers(payload, peersRef)));
 
-        socket.on("user_joined", (payload) => newUser(payload, stream));
+        socket.on("user_joined", (payload) => dispatch(addNewPeer(payload, peersRef)));
         socket.on("receive_signal_back", receiveSignalBack);
         socket.on("left_meet", leftMeet);
       })
       .catch((err) => {
         console.log(err);
       });
-
-    const cleanup = () => {
-      socket.removeAllListeners("receive_signal_back");
-      socket.removeAllListeners("left_meet");
-      socket.removeAllListeners("user_joined");
-      socket.removeAllListeners("users_in_meet");
-    };
-
-    return cleanup;
   };
 
   //=========================== START SCREEN SHARE ==================
@@ -250,7 +231,9 @@ const ContextProvider = ({ children }) => {
     history.push("/dashboard/meet/" + meet._id);
   };
 
-  const reinitialize = () => {
+  const reinitialize = (meetID) => {
+    console.log("Leaving meet");
+    socket.emit("leave_meet", meetID);
     socket.removeAllListeners("receive_signal_back");
     socket.removeAllListeners("left_meet");
     socket.removeAllListeners("user_joined");
