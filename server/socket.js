@@ -145,13 +145,16 @@ const configure_socket = (server) => {
     });
 
     socket.on("new_message", async ({ content, chatID, isMeet, meet, reply_to }) => {
-      console.log("Received new message in ", chatID);
       if (isMeet) {
         meet = await getMeet(meet);
         chatID = meet.chat;
       }
+      console.log("Received new message in ", chatID);
       let message = await createNewMessage(content, socket.user, chatID, reply_to);
-      if (message) io.in(`${chatID}`).emit("new_message", message);
+      if (message) {
+        console.log("Sending new message in ", chatID);
+        io.in(`${chatID}`).emit("new_message", message);
+      }
     });
 
     socket.on("create_group_meet", async ({ meetID, chatID }) => {

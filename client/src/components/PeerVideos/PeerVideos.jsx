@@ -24,7 +24,7 @@ function PeerVideos() {
                 <p style={{color:"white"}}>You</p>
                <UserVideo/>
             </Column>
-            <Column md={4} sm={4} lg={colLg} className="video__col">
+            {/* <Column md={4} sm={4} lg={colLg} className="video__col">
                 <p style={{color:"white"}}>You</p>
                <UserVideo/>
             </Column>
@@ -39,7 +39,7 @@ function PeerVideos() {
             <Column md={4} sm={4} lg={colLg} className="video__col">
                 <p style={{color:"white"}}>You</p>
                <UserVideo/>
-            </Column>
+            </Column> */}
             {peers.map((peerObj,i)=>(
             <Column md={4} sm={4} lg={colLg} key={peerObj.peerID} className="video__col">
                 <p style={{color:"white"}}>{peerObj.user.username}</p>

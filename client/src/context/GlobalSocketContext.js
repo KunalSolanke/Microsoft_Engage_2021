@@ -60,6 +60,7 @@ const ContextProvider = ({ children }) => {
   };
 
   const handleNewMessage = (message) => {
+    console.log("Saved new message ", message);
     dispatch(newMessage(message));
   };
   const handleCallEnded = () => {
