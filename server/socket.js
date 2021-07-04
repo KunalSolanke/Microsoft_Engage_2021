@@ -26,7 +26,7 @@ let corsOptions = {
 
 const configure_socket = (server) => {
   let io;
-  if ((process.env.REDIS = "redis")) {
+  if (process.env.REDIS == "redis") {
     let redisClient = new Redis({
       port: 6379, // Redis port
       host: process.env.REDIS_HOST, // Redis host
