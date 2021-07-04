@@ -75,7 +75,7 @@ const createTeam = async (req, res) => {
 
 const getChat = async (req, res) => {
   try {
-    let chat = await Chat.findById(req.params.chatID).populate("participants");
+    let chat = await Chat.findById(req.params.chatID).lean().populate("participants");
     res.send({
       ...chat,
       user: chat.participants.filter((p) => p._id != req.user._id)[0] || null,
@@ -88,7 +88,10 @@ const getChat = async (req, res) => {
 
 const getTeam = async (req, res) => {
   try {
-    let team = await Chat.findById(req.params.teamID).populate("participants").populate("channels");
+    let team = await Chat.findById(req.params.teamID)
+      .lean()
+      .populate("participants")
+      .populate("channels");
     res.send(team);
   } catch (err) {
     console.log(err);
@@ -126,7 +129,7 @@ const getChannel = async (req, res) => {
 };
 const joinTeam = async (req, res) => {
   try {
-    let team = await Chat.findById(req.params.teamID);
+    let team = await Chat.findById(req.params.teamID).lean();
     team.participants.push(req.user._id);
     createLog(req.user._id, "Joined team " + team.team_name);
     team.save();

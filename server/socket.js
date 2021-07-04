@@ -56,6 +56,7 @@ const configure_socket = (server) => {
     socket.join(`${socket.user._id}`);
 
     socket.on("join_chat", async (room_name) => {
+      console.log("Joined chat ", room_name);
       socket.join(`${room_name}`);
       const messages = await getMessages(room_name);
       socket.emit("prev_messages", messages);
@@ -124,17 +125,15 @@ const configure_socket = (server) => {
 
     socket.on("pause_video", async ({ userID, meetID }) => {
       const meet = await getMeet(meetID);
-      socket.to(meet.chat).emit("paused_video", { userId, meet });
+      socket.to(`${meet.chat}`).emit("paused_video", { userId });
     });
 
     socket.on("mute_audio", async ({ userId, meetID }) => {
       const meet = await getMeet(meetID);
-      io.to(meet.chat).emit("muted_audio", { userId, meet });
+      io.to(`${meet.chat}`).emit("muted_audio", { userId });
     });
 
     socket.on("leave_meet", async (meetID) => {
-      // console.log("Leaving rooms: ", io.sockets.adapter.rooms);
-      // console.log("Leavnig meet....", meetID);
       if (meetID) {
         const meet = await getMeet(meetID);
         leaveMeet(meetID, socket.user._id);
@@ -146,6 +145,7 @@ const configure_socket = (server) => {
     });
 
     socket.on("new_message", async ({ content, chatID, isMeet, meet, reply_to }) => {
+      console.log("Received new message in ", chatID);
       if (isMeet) {
         meet = await getMeet(meet);
         chatID = meet.chat;
