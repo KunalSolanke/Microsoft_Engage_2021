@@ -6,13 +6,6 @@ const useFetchTeams= (token)=>{
     enabled: false // turned off by default, manual refetch is needed
 })
    data=data||[];
-   data = data.map(team=>({
-        heading:team.channel_name, 
-        copy:team.description,
-        cta:{
-            href:`/dashboard/teams/${team._id}`
-        }
-    }))
     return {data,isLoading,error,refetch}
 }
 

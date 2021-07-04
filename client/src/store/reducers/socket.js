@@ -13,6 +13,8 @@ const intialState = {
   peerStreams: [],
   cameraStream: null,
   screenOn: false,
+  videoPaused: false,
+  audioPaused: false,
 };
 
 const newMessage = (state, action) => {
@@ -127,6 +129,14 @@ const reducer = (state = intialState, action) => {
     case actionTypes.SET_SCREEN:
       return UpdatedObj(state, {
         screenOn: action.payload,
+      });
+    case actionTypes.SET_VIDEO_STATE:
+      return UpdatedObj(state, {
+        videoPaused: action.payload,
+      });
+    case actionTypes.SET_AUDIO_STATE:
+      return UpdatedObj(state, {
+        audioPaused: action.payload,
       });
     default:
       return state;

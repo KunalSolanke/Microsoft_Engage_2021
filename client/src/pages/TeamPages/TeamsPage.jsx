@@ -8,6 +8,7 @@ import searchImage from "../../assets/images/teams.jpeg"
 import CreateTeam from '../../components/CreateTeam/CreateTeam'
 import { useSelector } from 'react-redux'
 import useFetchTeams from '../../hooks/useFetchMyTeams'
+import TeamCard from './TeamCard'
 
 function TeamsPage() {
     const token = useSelector(state => state.auth.token)
@@ -39,7 +40,11 @@ function TeamsPage() {
                         </div>
                         <div className="bx--row">
                             <div className="bx--col-sm-4 bx--col-lg-12 bx--offset-lg-2">
-                            <CardGroup cards={data} />
+                                <div data-autoid="dds--card-group" className="bx--card-group__cards__row bx--row--condensed">
+                                    {data?.map(card=>(
+                                        <TeamCard card={card}/>
+                                    ))}
+                              </div>
                             </div>
                         </div>
                    </div>

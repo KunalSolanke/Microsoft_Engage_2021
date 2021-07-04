@@ -194,6 +194,14 @@ const ContextProvider = ({ children }) => {
           type: actionTypes.SET_CAMERA_STREAM,
           payload: stream,
         });
+        dispatch({
+          type: actionTypes.SET_VIDEO_STATE,
+          payload: true,
+        });
+        dispatch({
+          type: actionTypes.SET_AUDIO_STATE,
+          payload: true,
+        });
         socket.emit("join_meet", meetID);
         socket.on("users_in_meet", (payload) => dispatch(connectAlPeers(payload, peersRef)));
 

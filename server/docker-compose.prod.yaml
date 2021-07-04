@@ -44,15 +44,10 @@ services:
   #     expose :
   #     - 6379
 
-  peerjs:
-    image: peerjs/peerjs-server
+  redis:
+    image: redis:alpine
     ports:
-      - 9000:9000
-    environment:
-      - VIRTUAL_HOST=engage_peer.voldemort.wtf
-      - VIRTUAL_PORT=9000
-      - LETSENCRYPT_HOST=engage_peer.voldemort.wtf
-      - LETSENCRYPT_EMAIL=kunalsolanke1000@gmail.com
+      - "6379:6379"
 
 volumes:
   dbdata:

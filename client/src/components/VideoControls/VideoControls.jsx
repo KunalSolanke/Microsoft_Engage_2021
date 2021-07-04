@@ -18,20 +18,36 @@ function VideoControls() {
     const handleVideoOff = (e)=>{
        if(userVideoStream)userVideoStream.getVideoTracks()[0].enabled=true;
         setVideoOn(true);
+        dispatch({
+            type:actionTypes.SET_VIDEO_STATE,
+            payload:true
+        })
     }
     const handleVideoOn = (e)=>{
         if(userVideoStream)userVideoStream.getVideoTracks()[0].enabled=false;
         setVideoOn(false);
+        dispatch({
+            type:actionTypes.SET_VIDEO_STATE,
+            payload:false
+        })
         
     }
     const handleAudioOn = (e)=>{
         if(userVideoStream)userVideoStream.getAudioTracks()[0].enabled=false;
         setaudioOn(false);
+        dispatch({
+            type:actionTypes.SET_AUDIO_STATE,
+            payload:false
+        })
       
     }
     const handleAudioOff = (e)=>{
         if(userVideoStream)userVideoStream.getAudioTracks()[0].enabled=true;
         setaudioOn(true);
+        dispatch({
+            type:actionTypes.SET_AUDIO_STATE,
+            payload:true
+        })
        
     }
     const handleScreenOn = (e)=>{

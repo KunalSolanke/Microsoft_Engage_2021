@@ -83,7 +83,7 @@ const leaveMeet = async (meetID, userID) => {
     if (meet.participants.includes(`${userID}`)) {
       console.log("Leaving ");
       meet.participants = meet.participants.filter((id) => id != `${userID}`);
-      meet.save();
+      await meet.save();
     }
   } catch (err) {}
   console.log("Meet after leaving ", meet);

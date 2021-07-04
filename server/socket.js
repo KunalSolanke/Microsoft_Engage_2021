@@ -9,23 +9,42 @@ const {
   getMeet,
   createLog,
 } = require("./utils");
+const Redis = require("ioredis");
+let corsOptions = {
+  origin: true,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  exposedHeaders: [
+    "x-auth-token",
+    "set-cookie",
+    "authorization",
+    "content-type",
+    "credentials",
+    "cache-control",
+  ],
+};
 
 const configure_socket = (server) => {
-  const io = require("socket.io")(server, {
-    cors: {
-      origin: true,
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-      credentials: true,
-      exposedHeaders: [
-        "x-auth-token",
-        "set-cookie",
-        "authorization",
-        "content-type",
-        "credentials",
-        "cache-control",
-      ],
-    },
-  });
+  let io;
+  if ((process.env.REDIS = "redis")) {
+    let redisClient = new Redis({
+      port: 6379, // Redis port
+      host: process.env.REDIS_HOST, // Redis host
+      family: 4, // 4 (IPv4) or 6 (IPv6)
+      db: 0,
+    });
+    io = require("socket.io")(server, {
+      cors: corsOptions,
+      adapter: require("socket.io-redis")({
+        pubClient: redisClient,
+        subClient: redisClient.duplicate(),
+      }),
+    });
+  } else {
+    io = require("socket.io")(server, {
+      cors: corsOptions,
+    });
+  }
 
   io.use(socketAuth);
   io.on("connection", (socket) => {
@@ -156,6 +175,8 @@ const configure_socket = (server) => {
       }
     });
   });
+
+  return io;
 };
 
 module.exports = configure_socket;
