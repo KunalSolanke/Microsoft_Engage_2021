@@ -2,8 +2,7 @@ import { Column, Content, Grid, Row } from 'carbon-components-react'
 import React, { useContext, useEffect, useState } from 'react'
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
 import "./_styles.css"
-import { Collaborate16, Events16, UserSimulation16, VideoChat20 } from '@carbon/icons-react'
-import SendMessage from "../../components/SendMessage/SendMessage"
+import { UserSimulation16, Workspace20 } from '@carbon/icons-react'
 import { SocketContext } from '../../context/GlobalSocketContext'
 import { useParams } from 'react-router-dom'
 import * as actionTypes from "../../store/constants/socket"
@@ -13,6 +12,7 @@ import TeamBar from '../../components/TeamBar/TeamBar'
 import useFetchTeam from '../../hooks/useFetchTeam'
 import TeamsLandingPageSection from './TeamsLandingPageSection'
 import CreateChannel from '../../components/CreateTeam/CreateChannel'
+import { setNotification } from '../../store/actions/auth'
 
 
 
@@ -26,6 +26,7 @@ function TeamsLandingPage(props) {
     useEffect(()=>{
         if(token)refetch(teamID);
     },[teamID,token])
+    
     return (
         <DashboardLayout>
             <Content
@@ -33,13 +34,13 @@ function TeamsLandingPage(props) {
             className="chatpage__wrapper teamspage__wrapper">
                   <Grid className="chatpage__grid" fullWidth>
                       <Row className="chatpage__row">
-                          <Column sm={0} md={2} lg={3} className="chat_tabs__area">
+                          <Column sm={4} md={2} lg={3} className="chat_tabs__area">
                              {data&& <TeamBar team={data} setOpen={setmodelOpen}/>}
                           </Column>
                           <Column sm={4} md={6} lg={13} style={{height:"100%",padding:"0rem"}} className="userchat">
                              <div className="chatpage_head">
                                 <div>
-                                    <Collaborate16 className="user__profile"/>
+                                    <Workspace20 className="user__profile"/>
                                     <div>
                                     <h6>{data?.channel_name}</h6>
                                     <p>{data?.description}</p> 
@@ -47,7 +48,7 @@ function TeamsLandingPage(props) {
                                 </div>
                                 
                                 <div className="chathead__call">
-                                    <UserSimulation16/>
+                                    <UserSimulation16 />
                                 </div>
                              </div>
                              <TeamsLandingPageSection setOpen={setmodelOpen}/>

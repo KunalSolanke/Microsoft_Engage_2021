@@ -5,9 +5,15 @@
   position: relative;
 }
 .dark {
-  background-color: #161d29 !important;
-  overflow: hidden;
-  padding: 0rem 0rem 1.5rem 1.5rem !important;
+  background-color: #35373a !important;
+  overflow-y: scroll;
+  padding: 0rem 0rem 0rem 1.5rem !important;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.dark::-webkit-scrollbar {
+  display: none;
 }
 
 .root {

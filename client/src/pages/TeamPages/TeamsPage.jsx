@@ -9,6 +9,7 @@ import CreateTeam from '../../components/CreateTeam/CreateTeam'
 import { useSelector } from 'react-redux'
 import useFetchTeams from '../../hooks/useFetchMyTeams'
 import TeamCard from './TeamCard'
+import LocalLoading from '../../components/Loading/LocalLoading'
 
 function TeamsPage() {
     const token = useSelector(state => state.auth.token)
@@ -39,6 +40,7 @@ function TeamsPage() {
                                 </Button>
                         </div>
                         <div className="bx--row">
+                            {isLoading?<LocalLoading/>:(
                             <div className="bx--col-sm-4 bx--col-lg-12 bx--offset-lg-2">
                                 <div data-autoid="dds--card-group" className="bx--card-group__cards__row bx--row--condensed">
                                     {data?.map(card=>(
@@ -46,6 +48,8 @@ function TeamsPage() {
                                     ))}
                               </div>
                             </div>
+                            )
+                                    }
                         </div>
                    </div>
                    {data&&data.length<=3?<div className="teams__page__banner">

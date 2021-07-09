@@ -28,7 +28,7 @@ function SearchPage() {
     const {results,error,isLoading} = useFetchUsers(debouncedQuery)
     const [modelopen, setmodelopen] = useState(false)
     const [user, setuser] = useState(null)
-    const  onSearchChange=(e)=>{
+    const  onSearchChange=async (e)=>{
         setsearchValue(e.target.value);
     }
     

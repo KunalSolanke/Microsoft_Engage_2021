@@ -4,15 +4,11 @@ const { createLog } = require("../utils");
 const createChat = async (req, res) => {
   try {
     let chat = await Chat.findOne({
-      participants: [req.user._id, req.body.userID],
-      is_channel: false,
-      is_group: false,
-      is_meet_chat: false,
-    })
-      .populate("messages")
-      .exec();
-    chat = await Chat.findOne({
-      participants: [req.body.userID, req.user._id],
+      $and: [
+        { participants: req.user._id },
+        { participants: req.body.userID },
+        { participants: { $size: 2 } },
+      ],
       is_channel: false,
       is_group: false,
       is_meet_chat: false,
@@ -33,11 +29,27 @@ const createChat = async (req, res) => {
 const createMeet = async (req, res) => {
   try {
     let meet = await Meet({ author: req.user, is_group: req.body.is_group });
-    let chat = await Chat.create({
-      meet: meet,
-      is_meet_chat: true,
-    });
-    meet.chat = chat;
+    let chatID = req.body.chatID;
+
+    if (!req.body.chatID) {
+      let chat = await Chat.findOne({
+        $and: [
+          { participants: req.user._id },
+          { participants: req.body.userID },
+          { participants: { $size: 2 } },
+        ],
+        is_channel: false,
+        is_group: false,
+        is_meet_chat: false,
+      });
+      if (!chat)
+        chat = await Chat.create({
+          particpants: [req.body.user._id, req.body.userID],
+        });
+      chatID = chat._id;
+    }
+
+    meet.chat = chatID;
     await meet.save();
     res.send(meet);
   } catch (err) {
@@ -75,10 +87,12 @@ const createTeam = async (req, res) => {
 
 const getChat = async (req, res) => {
   try {
-    let chat = await Chat.findById(req.params.chatID).lean().populate("participants");
+    let chat = await Chat.findById(req.params.chatID)
+      .lean()
+      .populate("participants", "-refreshTokens");
     res.send({
       ...chat,
-      user: chat.participants.filter((p) => p._id != req.user._id)[0] || null,
+      user: chat.participants.filter((p) => `${p._id}` != `${req.user._id}`)[0] || null,
     });
   } catch (err) {
     console.log(err);
@@ -90,7 +104,7 @@ const getTeam = async (req, res) => {
   try {
     let team = await Chat.findById(req.params.teamID)
       .lean()
-      .populate("participants")
+      .populate("participants", "-refreshTokens")
       .populate("channels");
     res.send(team);
   } catch (err) {

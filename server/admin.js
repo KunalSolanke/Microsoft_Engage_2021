@@ -31,7 +31,7 @@ const configureAdmin = () => {
               email: "admin@gmail.com",
             };
           } else {
-            admin = await models.User.findByCredentials(email, pass, (isAdmin = true));
+            admin = await models.User.findByCredentials(email, pass, true);
           }
           return admin;
         } catch (err) {

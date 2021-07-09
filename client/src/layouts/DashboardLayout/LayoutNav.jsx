@@ -12,14 +12,15 @@ import {
   HeaderContainer,
   Content,
 } from "carbon-components-react";
-import { Search20, Notification20, AppSwitcher20, UserAvatar20 } from "@carbon/icons-react";
+import { Search20, Notification20, AppSwitcher20, UserAvatar20, Logout20, Power20 } from "@carbon/icons-react";
 import "./_style.css";
 import { useHistory } from "react-router-dom";
 import SidenavBar from "../../components/Sidenav/SidenavBar";
 import { useSelector, useDispatch } from "react-redux";
-import { authCheckState } from "../../store/actions/auth";
+import { authCheckState, authLogout, logout } from "../../store/actions/auth";
 import IncomingCall from "../../components/IncomingCall/IncomingCall";
 import { SocketContext } from "../../context/GlobalSocketContext";
+import NotificationHelper from "../../components/Notification/Notification";
 
 function LayoutNav(props) {
      const token = useSelector((state) => state.auth.token);
@@ -33,6 +34,10 @@ function LayoutNav(props) {
     const style = {
         height: "100%",
     };
+    const handleLogout = ()=>{
+      dispatch(logout());
+      history.push("/")
+    }
     return (
         <div className="root">
                <div className="container" style={{ minHeight: "100vh" }}>
@@ -59,12 +64,12 @@ function LayoutNav(props) {
                   <Notification20 />
                 </HeaderGlobalAction> */}
                   <HeaderGlobalAction
-                    aria-label="App Switcher"
-                    onClick={onClickSideNavExpand}
+                    aria-label="Logout"
+                    onClick={()=>handleLogout()}
                     tooltipAlignment="end"
                     style={{background:"#161616"}}
                   >
-                    <AppSwitcher20 />
+                    <Power20 />
                   </HeaderGlobalAction>
                 </HeaderGlobalBar>
                 <SidenavBar
@@ -79,6 +84,7 @@ function LayoutNav(props) {
         {!context.CallAccepted && context.CallData.isReceived? (
           <IncomingCall user={context.CallData?.call_from} />
         ) : null}
+         <NotificationHelper/>
       </div>
         </div>
     )

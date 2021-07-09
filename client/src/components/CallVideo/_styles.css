@@ -1,0 +1,100 @@
+.video__col,
+.video__col__card {
+  position: relative;
+  margin-right: 0.5rem;
+}
+.user_video_gizmo,
+.user_video_gizmo__card {
+  position: absolute;
+  display: flex;
+  color: white;
+  border-radius: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  padding: 0.5rem 1rem;
+  align-items: center;
+  justify-content: space-evenly;
+  z-index: -1;
+  pointer-events: none;
+  background-color: rgba(255, 255, 255, 0.783);
+  color: #161616;
+}
+
+.media__state {
+  position: absolute;
+  display: flex;
+  color: white;
+  border-radius: 10px;
+  bottom: 5%;
+  right: 2%;
+  padding: 0.3rem 1rem;
+  align-items: center;
+  justify-content: space-evenly;
+  pointer-events: none;
+  background-color: rgba(255, 255, 255, 0.383);
+  z-index: 100;
+}
+.scroll-menu-arrow {
+  padding: 20px;
+  cursor: pointer;
+}
+.arrow-prev,
+.arrow-next {
+  color: white;
+}
+.user_video_gizmo__card {
+  width: 50px;
+}
+
+.video__col:hover .user__gizmos__active,
+.video__col__card:hover .user__gizmos__active {
+  pointer-events: all;
+  z-index: 100;
+  cursor: pointer;
+}
+
+.media__off {
+  color: red;
+}
+
+.peer__video__card {
+  position: relative;
+}
+
+.videoplayer__card {
+  border-radius: 0.5rem;
+  height: 100px;
+  width: 150px;
+  object-fit: cover;
+  /* transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+   -webkit-transform: scaleX(-1);
+   transform: scaleX(-1); */
+}
+.user__tile__card {
+  width: 150px;
+  background-color: #161616;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  z-index: 1000;
+  height: 100px;
+}
+
+.user__avatar__card {
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
+  object-fit: contain;
+  background-color: white;
+}
+
+.pinned {
+  height: 80vh !important;
+}
+.pinned_deck {
+  height: 65vh !important;
+}

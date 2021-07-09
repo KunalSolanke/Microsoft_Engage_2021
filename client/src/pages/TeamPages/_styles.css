@@ -12,7 +12,22 @@
 .teams__cards::-webkit-scrollbar {
   display: none;
 }
-
+.teams__landing__main {
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+.teams__landing__main::-webkit-scrollbar {
+  display: none;
+}
+.teams_landing_cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.teams_landing_cta > button {
+  margin: 0.5rem;
+}
 .teams__page__head {
   margin-bottom: 2rem;
   display: flex;
@@ -38,6 +53,9 @@
 }
 .teams_landing_head {
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .teams_landing_head > img {
   width: 11rem;
@@ -47,6 +65,7 @@
 }
 .teamspage__wrapper {
   background-color: #f5f5f5 !important;
+  overflow-y: scroll;
 }
 .join_team_wrapper {
   display: grid;

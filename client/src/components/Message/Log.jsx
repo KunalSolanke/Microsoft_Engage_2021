@@ -1,6 +1,8 @@
 import { Activity16 } from '@carbon/icons-react';
 import React from 'react'
 import "./_style.css"
+import { format, formatDistance, formatRelative, subDays } from 'date-fns'
+
 function Log({log}) {
     return (
         <div className="activity__message__wrapper">
@@ -8,10 +10,11 @@ function Log({log}) {
            <div className="activity__message__block">
                 <div className="activity__log__main" style={{marginLeft:"1rem"}}>
                     <div>
-                    <div>
-                        <p style={{fontSize:"0.8rem",padding:"0rem 0.3rem"}}>Connect Bot</p>
+                    <div style={{display:"flex",justifyContent:"space-between"}}>
+                        <p style={{fontSize:"0.8rem",padding:"0rem 0.1rem"}}>Connect Bot</p>
+                        <p style={{fontSize:"0.8rem"}}>{formatDistance(new Date(log?.createdAt), new Date(), { addSuffix: true })}</p>
                     </div>
-                    <p>{log}</p>
+                    <p>{log.log}</p>
                     </div>
                 </div>
             </div> 

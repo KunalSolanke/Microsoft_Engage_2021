@@ -63,6 +63,7 @@ export const authUpdateState = () => {
       await dispatch(getProfile());
     } catch (err) {
       await dispatch(authFail(err));
+      dispatch(setNotification("Login error", "Please login again"));
     }
   };
 };
@@ -78,6 +79,7 @@ export const authCheckState = (history) => {
     } catch (err) {
       await dispatch(authFail(err));
       history.push("/accounts/login");
+      dispatch(setNotification("Login error", "Please login again"));
     }
   };
 };
@@ -95,10 +97,12 @@ export const logout = () => {
       axios.defaults.headers["Authorization"] = `Token ${token}`;
       axios.get(`/accounts/logout`);
       dispatch(authLogout());
+      dispatch(setNotification("Success", "Logged out successfully", "success"));
     } catch (err) {
       console.log(err);
       dispatch(authLogout());
       await dispatch(authFail(err));
+      dispatch(setNotification("Log error", "Please refresh browser", "warning"));
     }
   };
 };
@@ -111,6 +115,14 @@ export const checkauthtimeout = (expiry) => {
     try {
       await dispatch(authUpdateState());
     } catch (err) {
+      dispatch(
+        setNotification(
+          "Session ended",
+          "Your session has ended please signin again/make sure\
+      third party cookies are allowed",
+          "warning"
+        )
+      );
       await dispatch(authLogout());
     }
   };
@@ -130,6 +142,8 @@ export const getProfile = () => {
     } catch (err) {
       console.log(err);
       await dispatch(authFail(err));
+      let errMessage = err.response.data || err.message || err;
+      dispatch(setNotification("Something went wrong", errMessage + "\nPlease try refreshing"));
     }
   };
 };
@@ -151,6 +165,8 @@ export const updateProfile = (data) => {
     } catch (err) {
       console.log(err);
       await dispatch(authFail(err));
+      let errMessage = err.response.data || err.message || err;
+      dispatch(setNotification("Something went wrong", errMessage + "\nPlease try refreshing"));
     }
   };
 };
@@ -163,9 +179,13 @@ export const authLogin = ({ password, email }) => {
       await dispatch(authSuccess(response.data));
       await dispatch(getProfile());
       dispatch(checkauthtimeout((response.data.expiry - 60) * 1000));
+      dispatch(setNotification("Success", "Signed in successfully", "success"));
     } catch (err) {
       console.log(err);
       await dispatch(authFail(err));
+      let errMessage = err.response.data || err.message || err;
+      console.log(errMessage, err.response, err.message);
+      dispatch(setNotification("Something went wrong", errMessage + "\nPlease try refreshing"));
     }
   };
 };
@@ -188,10 +208,13 @@ export const authRegister = ({ username, email, password }) => {
       };
       await dispatch(authSuccess(data));
       await dispatch(getProfile());
+      dispatch(setNotification("Success", "Registered successfully", "success"));
       dispatch(checkauthtimeout((response.data.expiry - 60) * 1000));
     } catch (err) {
       console.log(err);
       await dispatch(authFail(err));
+      let errMessage = err.response?.data || err.message || err;
+      dispatch(setNotification("Something went wrong", errMessage + "\nPlease try refreshing"));
     }
   };
 };
@@ -201,14 +224,43 @@ export const socialAuth = (data, provider) => {
     await dispatch(authStart());
     try {
       const response = await axios.post(`/auth/social/${provider}`, data);
-      console.log("sennding post req....", response.data);
+      console.log("sending post req....", response.data);
       const expiry = new Date(new Date().getTime() + (response.data.expiry - 60) * 1000);
       await dispatch(authSuccess(response.data));
       await dispatch(getProfile());
       dispatch(checkauthtimeout((response.data.expiry - 60) * 1000));
+      dispatch(setNotification("Success", "Signed in successfully", "success"));
     } catch (err) {
       console.log(err);
       await dispatch(authFail(err));
+      let errMessage = err.response.data || err.message || err;
+      dispatch(setNotification("Something went wrong", errMessage + "\nPlease try refreshing"));
     }
+  };
+};
+
+export const setNotification = (title, message, kind = "error") => {
+  return async (dispatch, getState) => {
+    dispatch({
+      type: authActions.SET_NOTIFICATION,
+      payload: {
+        open: true,
+        title,
+        kind,
+        message,
+      },
+    });
+
+    setTimeout(() => {
+      dispatch({
+        type: authActions.SET_NOTIFICATION,
+        payload: {
+          open: false,
+          title: "",
+          message: "",
+          kind: "",
+        },
+      });
+    }, 2000);
   };
 };

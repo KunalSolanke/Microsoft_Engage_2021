@@ -5,7 +5,9 @@
 }
 
 .search_page_wrapper {
-  width: clamp(80%, 400px, 300px);
+  min-width: 300px;
+  width: 90%;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
 }

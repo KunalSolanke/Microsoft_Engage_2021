@@ -1,4 +1,4 @@
-import { Add16, EventsAlt16 } from '@carbon/icons-react'
+import { Add16, Connect16, EventsAlt16 } from '@carbon/icons-react'
 import React from 'react'
 
 import {Button} from "carbon-components-react"
@@ -36,7 +36,7 @@ function TeamBar({team,setOpen}) {
          <p style={{padding:"1rem",cursor:"pointer"}} onClick={()=>history.push("/dashboard/teams")}>Teams</p>
           <hr color="#ededed"/>
           <div className="chatbar__head" style={{cursor:"pointer"}} onClick={()=>history.push(`/dashboard/teams/${team._id}`)}>
-              <EventsAlt16></EventsAlt16>
+              <Connect16/>
              <h6>{team?.channel_name}</h6>
           </div>
           <div className="chattiles__area">

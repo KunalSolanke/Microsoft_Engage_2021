@@ -1,5 +1,5 @@
 import React ,{useState,useEffect} from 'react'
-import { Button, FormGroup, TextInput } from 'carbon-components-react'
+import { Button, FormGroup, InlineLoading, TextInput } from 'carbon-components-react'
 import "./_style.css"
 import SocialAuth from '../SocialAuth/SocialAuth'
 import {authRegister} from "../../store/actions/auth"
@@ -13,13 +13,28 @@ const InvalidPasswordProps = {
     };
 
 function SignUpForm() {
+     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [description, setDescription] = useState('Signing up...');
+    const [ariaLive, setAriaLive] = useState('off');
      const dispatch = useDispatch();
     const auth = useSelector(state=>state.auth)
     const [userData, setuserData] = useState({email:"",password:"",username:""});
     const history = useHistory();
     const handleSubmit=async (e)=>{
-        e.preventDefault();
+        setAriaLive('asserative');
+        setIsSubmitting(true)
+            e.preventDefault();
         await dispatch(authRegister(userData));
+         setIsSubmitting(false);
+        setSuccess(true);
+        setDescription('Submitted!');
+        setAriaLive('off');
+        setTimeout(() => {
+            setSuccess(false);
+            setDescription('Signup up...');
+            setAriaLive('off');
+            }, 1000);
     }
     useEffect(()=>{
        if(auth.token!=null){
@@ -55,7 +70,16 @@ function SignUpForm() {
                     onChange={(e)=>setuserData(user=>({...user,password:e.target.value}))}
                 />
                 </FormGroup>
-                <Button kind="primary" type="submit" className="login__button">SignUp</Button>
+                {isSubmitting || success ? ( <InlineLoading
+              style={{ marginLeft: '1rem' }}
+              description={description}
+              status={success ? 'finished' : 'active'}
+              aria-live={ariaLive}
+            />
+          ) : (
+            <Button kind="primary" type="submit" className="login__button">SignUp</Button>
+          )}
+                
             </form>
             <SocialAuth/>
             <hr color="#ededed" style={{marginBottom:"1rem",marginTop:"1rem"}}/>

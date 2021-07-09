@@ -1,6 +1,8 @@
 import { Reply16, UserAvatar16 } from '@carbon/icons-react';
 import React from 'react'
 import "./_style.css"
+import { format, formatDistance, formatRelative, subDays } from 'date-fns'
+
 function ChannelMessage({message}) {
     const renderUserProfile = ()=>{
        let user= message.author;
@@ -18,8 +20,8 @@ function ChannelMessage({message}) {
                 <div className="channel_message_main">
                     <div>
                     <div>
-                        <p style={{fontSize:"0.8rem",padding:"0rem 0.3rem"}}>{message?.author?.username}</p>
-                        <p>{message?.created_at}</p>
+                        <p style={{fontSize:"0.8rem",padding:"0rem 0.1rem"}}>{message?.author?.username}</p>
+                        <p style={{fontSize:"0.8rem"}}>{formatDistance(new Date(message?.createdAt), new Date(), { addSuffix: true })}</p>
                     </div>
                     <p style={{padding:"0rem 0.3rem"}}>{message?.content}</p>
 

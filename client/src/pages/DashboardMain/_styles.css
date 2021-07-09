@@ -6,7 +6,9 @@
   place-items: center;
 }
 .main__dash img {
-  width: clamp(300px, 80%, 600px) !important;
+  min-width: 300px !important;
+  width: 80% !important;
+  max-width: 600px;
   height: 400px;
   object-fit: contain;
   object-position: center;

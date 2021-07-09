@@ -4,21 +4,24 @@ const { setResToken } = require("../utils/tokens");
 
 const signup = async (req, res) => {
   const { username, email, password } = req.body;
-  console.log(req.body);
   try {
-    const user = await new User({
+    let oldUser = await User.findOne({ email });
+    if (oldUser) {
+      throw new Error("User with email already exists");
+    }
+    const user = await User.create({
       username: username,
       email: email,
-      password: password,
     });
+    user.password = password;
     await user.save();
-    let accessToken = await user.generateAuthToken("1h");
-    let refreshToken = await user.generateAuthToken("7d");
+    let accessToken = await user.generateAuthToken("3d");
+    let refreshToken = await user.generateAuthToken("15d");
     user.refreshTokens = user.refreshTokens.concat([refreshToken]);
     await user.save();
     res.setHeader("Cache-control", "private");
     setResToken(res, refreshToken);
-    await Activity.create({ user: user._id });
+    await Activity.create({ user: user._id, log: "Joined Connect" });
     res.status(200).send({
       token: accessToken,
       username: user.username || user.fullName || user.email,
@@ -29,7 +32,7 @@ const signup = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400);
-    res.send(err.message);
+    res.send("Validation error.Please enter proper/new email");
   }
 };
 
@@ -38,8 +41,8 @@ const login = async (req, res) => {
   console.log("email,passowrd on server are...", email, password);
   try {
     const user = await User.findByCredentials(email, password);
-    let accessToken = await user.generateAuthToken("1h");
-    let refreshToken = await user.generateAuthToken("7d");
+    let accessToken = await user.generateAuthToken("3d");
+    let refreshToken = await user.generateAuthToken("15d");
     user.refreshTokens = user.refreshTokens.concat([refreshToken]);
     await user.save();
     res.setHeader("Cache-control", "private");
@@ -54,7 +57,7 @@ const login = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400);
-    res.send(err.message);
+    res.send("Please check the credentials");
   }
 };
 
@@ -65,8 +68,8 @@ const refresh = async (req, res) => {
     if (user) {
       user.refreshTokens = user.refreshTokens.filter((t) => t != token);
       await user.save();
-      let accessToken = await user.generateAuthToken("1h");
-      let refreshToken = await user.generateAuthToken("7d");
+      let accessToken = await user.generateAuthToken("3d");
+      let refreshToken = await user.generateAuthToken("15d");
       res.setHeader("Cache-control", "private");
       setResToken(res, refreshToken);
       user.refreshTokens = user.refreshTokens.concat([refreshToken]);
@@ -85,7 +88,7 @@ const refresh = async (req, res) => {
     console.log(err);
     res.clearCookie("refresh_token");
     res.status(400);
-    res.send("failed");
+    res.send("Refresh session failed,please login");
   }
 };
 

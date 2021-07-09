@@ -7,7 +7,9 @@ import VideoControls from '../../components/VideoControls/VideoControls'
 import { SocketContext } from '../../context/GlobalSocketContext'
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
 import MeetSidebar from './MeetSidebar'
+import NavigationPrompt from "react-router-navigation-prompt";
 import "./_style.css"
+import LeaveMeet from '../../components/LeaveMeet/LeaveMeet'
 
 function MeetPage() {
     const context = useContext(SocketContext)
@@ -20,22 +22,15 @@ function MeetPage() {
   }
     
     useEffect(() => {
-        console.log("Intializing the meet")
-        if(auth.userID)context.initializeVideoCall(meetID)
+        if(auth.profile)context.initializeVideoCall(meetID)
         window.addEventListener('beforeunload', alertUser)
-        window.addEventListener('unload',()=>context.reinitialize(meetID))
+        window.addEventListener('unload',()=>context.leaveCall(meetID))
         return ()=>{
              window.removeEventListener('beforeunload', alertUser)
-             window.removeEventListener('unload',()=>context.reinitialize(meetID));
-             context.reinitialize(meetID)
+             window.removeEventListener('unload',()=>context.leaveCall(meetID));
+             context.leaveCall(meetID)
         }
-    }, [auth.userID])
-
-    useEffect(() => {
-       console.log("parent mount")
-       
-    }, [])
-
+    }, [auth.profile])
 
     return (
         <DashboardLayout>
@@ -43,20 +38,19 @@ function MeetPage() {
               id="main-content"
               className="dashboard_main_area dark"
         >
-            <Prompt
-                    message={(location, action) => {
-                    if (action === 'POP'||action=="PUSH") {
-                        context.reinitialize(meetID);
-                    }
-                    return "Are you sure you want to leave the meet?";
-                    }}
-                    />
+           <NavigationPrompt when={true}>
+            {({ onConfirm, onCancel }) => (
+                <LeaveMeet
+                onCancel={onCancel}
+                onConfirm={onConfirm}
+                />
+            )}
+            </NavigationPrompt>
                 <Grid className="meetgrid" fullWidth={true}>
-                   <Row className="meet__row">
+                   <Row className="meet__row" condensed>
                        <Column>
-                            <Grid className="video__grid">
+                            <Grid className="video__grid" fullWidth={true}>
                                <PeerVideos/>
-                            <VideoControls/>
                             </Grid>
                        </Column>
                        <MeetSidebar/>

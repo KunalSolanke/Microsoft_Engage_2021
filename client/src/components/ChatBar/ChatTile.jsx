@@ -19,7 +19,7 @@ function ChatTile(props) {
                 <h6 style={{marginBottom:"0.4rem"}}>{user?.username}</h6>
             {chatID!=props.chat._id?
             <p>
-                {props.last_message?<>{props.last_message?.splice(20)}...</>:<>No new message</>}
+                {props.last_message?<>{props.last_message?.slice(0,20)}...</>:<>No new message</>}
             </p>:<p>Current</p>
             }
             </div>

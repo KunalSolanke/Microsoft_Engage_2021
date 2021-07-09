@@ -71,7 +71,8 @@ userSchema.set("toJSON", { getters: true, virtuals: true });
 userSchema.pre("save", async function (next) {
   const user = this;
   if (user.isModified("password")) {
-    user.password = bycrpt.hash(user.password, 8);
+    user.password = await bycrpt.hash(user.password, 8);
+    console.log(user.password);
   }
   next();
 });
@@ -93,8 +94,10 @@ userSchema.statics.findByCredentials = async function (email, password) {
       },
     });
   }
-
-  if (bycrpt.compare(password, user.password)) {
+  console.log(user);
+  let res = await bycrpt.compare(password, user.password);
+  console.log(res);
+  if (res) {
     return user;
   }
   throw new Error({
@@ -151,6 +154,10 @@ userSchema.statics.upsertGoogleUser = async function (accessToken, refreshToken,
 
   if (!user) {
     user = await this.findOne({}).where("email").in(emails);
+    if (user && !user.image) {
+      user.image = profile.picture || null;
+      await user.save();
+    }
   }
   if (!user) {
     var newUser = new that({
@@ -161,6 +168,7 @@ userSchema.statics.upsertGoogleUser = async function (accessToken, refreshToken,
         id: profile.id,
         token: accessToken,
       },
+      image: profile.picture || null,
     });
 
     await newUser.save(function (error, savedUser) {
@@ -188,6 +196,10 @@ userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken,
 
   if (!user) {
     user = await this.findOne({}).where("email").in(emails);
+    if (user && !user.image) {
+      user.image = profile.avatar_url || null;
+      await user.save();
+    }
   }
   if (!user) {
     var newUser = new that({
@@ -198,6 +210,7 @@ userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken,
         id: profile.id,
         token: accessToken,
       },
+      image: profile.avatar_url || null,
     });
 
     await newUser.save(function (error, savedUser) {
@@ -212,12 +225,11 @@ userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken,
 };
 
 userSchema.statics.findByRefreshToken = async function (token) {
+  console.log(token);
   try {
     let { _id } = await jwt.verify(token, process.env.JWT_REFRESH_KEY);
     let user = await this.findById(_id);
-
     if (user.refreshTokens.includes(token)) {
-      // console.log(user);
       return user;
     } else {
       throw new Error("no User found");

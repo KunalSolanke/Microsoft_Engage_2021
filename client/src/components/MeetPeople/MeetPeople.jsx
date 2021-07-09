@@ -8,7 +8,6 @@ import "./_style.css"
 function MeetPeople() {
     const peers= useSelector(state => state.socket.peers)
     const dispatch = useDispatch()
-    const profile = useSelector(state=>state.auth.profile)
     const openChat = (e)=>{dispatch({
         type:actionTypes.PEOPLE_ACTIVE
         })}
@@ -24,7 +23,6 @@ function MeetPeople() {
            </div>
            <hr color="#ededed"></hr>
            <div className="messages__area">
-               <People user={profile}/>
               {peers.map(m=>{
                   return <People key={m.user._id} user={m.user}/>
               })}

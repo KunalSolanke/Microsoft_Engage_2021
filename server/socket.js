@@ -48,12 +48,12 @@ const configure_socket = (server) => {
 
   io.use(socketAuth);
   io.on("connection", (socket) => {
-    console.log("Websocket connection established..........", socket.user._id);
+    if (socket.user) console.log("Websocket connection established..........", socket.user._id);
 
     //@property we are adding each user to a seprate room on connection ,which is equal to his userid
     //this way we can send message to any user if he is connected
 
-    socket.join(`${socket.user._id}`);
+    if (socket.user) socket.join(`${socket.user._id}`);
 
     socket.on("join_chat", async (room_name) => {
       console.log("Joined chat ", room_name);
@@ -123,14 +123,10 @@ const configure_socket = (server) => {
       });
     });
 
-    socket.on("pause_video", async ({ userID, meetID }) => {
+    socket.on("change_media_state", async ({ mediaState, meetID }) => {
+      console.log("received change in mediaState", mediaState, meetID);
       const meet = await getMeet(meetID);
-      socket.to(`${meet.chat}`).emit("paused_video", { userId });
-    });
-
-    socket.on("mute_audio", async ({ userId, meetID }) => {
-      const meet = await getMeet(meetID);
-      io.to(`${meet.chat}`).emit("muted_audio", { userId });
+      io.to(`${meet.chat}`).emit("change_media_state", { mediaState, peerID: socket.user._id });
     });
 
     socket.on("leave_meet", async (meetID) => {
@@ -174,6 +170,7 @@ const configure_socket = (server) => {
     socket.on("disconnect", () => {
       var rooms = io.sockets.adapter.sids[socket.id];
       for (var room in rooms) {
+        socket.to(`${room}`).emit("left_meet", socket.user._id);
         socket.leave(room);
       }
     });

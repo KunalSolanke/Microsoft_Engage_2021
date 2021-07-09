@@ -4,6 +4,20 @@
   height: 89vh;
   object-fit: contain;
 }
+.auth__image.login {
+  margin-left: -2rem;
+}
+.auth__image.signup {
+  margin-left: 3rem;
+}
+@media (max-width: 700px) {
+  .auth__image.login {
+    margin-left: 0rem;
+  }
+  .auth__image.signup {
+    margin-left: 0rem;
+  }
+}
 .auth__grid {
   align-items: center;
 }

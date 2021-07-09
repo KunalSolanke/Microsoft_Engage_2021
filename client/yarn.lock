@@ -1297,6 +1297,11 @@
   resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.18.0.tgz#afdc469948c3be34450b49d826169b9df7479255"
   integrity sha512-tgnUIT0WliaVipk1SjxpcdsaHLOnGIFz3KP+OCE4nZAErufGDQe5EAACrcvXA/DlRc7XIIcAzC5uV2HK78UICg==
 
+"@carbon/icon-helpers@^10.19.0":
+  version "10.19.0"
+  resolved "https://registry.yarnpkg.com/@carbon/icon-helpers/-/icon-helpers-10.19.0.tgz#f6b608b181b4ca4aeeadac72ec11b7cf530b4d1c"
+  integrity sha512-2eIecDuoEEx+nORHtTBmj5lV/N4Q1kP7XCZUkF15WfXxZHx2RI6KhS4HnMPDoylguhavnRjSIK1gl6oG3Z3wSQ==
+
 "@carbon/icons-react@10.33.0", "@carbon/icons-react@^10.33.0":
   version "10.33.0"
   resolved "https://registry.yarnpkg.com/@carbon/icons-react/-/icons-react-10.33.0.tgz#ff3272bfb0d5b75cdf745696ccd8b699eaff8679"
@@ -1325,6 +1330,15 @@
   version "10.19.0"
   resolved "https://registry.yarnpkg.com/@carbon/motion/-/motion-10.19.0.tgz#b016437d8a88848f5412ce9714b65aa5364c62a5"
   integrity sha512-xAV6wFKvUGEO1vCDa2fZsPmF4slotJDB0bwvy7HgSGm9Ss++eBirADrZ6XH9CLw90dI60j/COvu2P2gu1XY0/A==
+
+"@carbon/pictograms-react@^11.12.0":
+  version "11.12.0"
+  resolved "https://registry.yarnpkg.com/@carbon/pictograms-react/-/pictograms-react-11.12.0.tgz#a679dcbb5c59c66860d6ab646a1bce4352188c9e"
+  integrity sha512-rp29qjLNItMDSOgnUPASSmDudVDXmrKINtTYI6yrWjIFf9whedXAPuWbC/nkyaXh19PxsIawqirGAvvDaakbyA==
+  dependencies:
+    "@carbon/icon-helpers" "^10.19.0"
+    "@carbon/telemetry" "0.0.0-alpha.6"
+    prop-types "^15.7.2"
 
 "@carbon/telemetry@0.0.0-alpha.6", "@carbon/telemetry@^0.0.0-alpha.6":
   version "0.0.0-alpha.6"
@@ -2461,6 +2475,11 @@
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
+
+"@zach.codes/react-calendar@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@zach.codes/react-calendar/-/react-calendar-0.2.0.tgz#9c4a35bbb1a1cf5128f1d36c0bd0cc443c15dab0"
+  integrity sha512-55sdJiXp+9fkAU7pXavnv/YDimsVvBNY/f2d+LzP0QNJHeLQvA2cK8swcDww0x21pZ1EGb6/4mPjEaW6T0CU0w==
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.5"
@@ -4392,6 +4411,11 @@ data-urls@^2.0.0:
     abab "^2.0.3"
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
+
+date-fns@^2.22.1:
+  version "2.22.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.22.1.tgz#1e5af959831ebb1d82992bf67b765052d8f0efc4"
+  integrity sha512-yUFPQjrxEmIsMqlHhAhmxkuH769baF21Kk+nZwZGyrMoyLA+LugaQtC0+Tqf9CBUUULWwUJt6Q5ySI3LJDDCGg==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
@@ -9832,6 +9856,11 @@ react-google-login@^5.2.2:
     "@types/react" "*"
     prop-types "^15.6.0"
 
+react-horizontal-scrolling-menu@^0.7.10:
+  version "0.7.10"
+  resolved "https://registry.yarnpkg.com/react-horizontal-scrolling-menu/-/react-horizontal-scrolling-menu-0.7.10.tgz#d5b941ddda459d5d7090f6aab53364e4e4884ba4"
+  integrity sha512-QwoTMIbKwO+K3byB9zr6culXE1lhXZ7hIJJmBt5bHMM7Okl7mCFyZvD5/GkQ8Txp5C4pqRI5Lq/zlWxxyy59nA==
+
 react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.6:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -9906,6 +9935,11 @@ react-router-dom@^5.2.0:
     react-router "5.2.0"
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
+
+react-router-navigation-prompt@^1.8.14:
+  version "1.8.14"
+  resolved "https://registry.yarnpkg.com/react-router-navigation-prompt/-/react-router-navigation-prompt-1.8.14.tgz#d099616ed223fe0e65108ab43b365f96e26818a1"
+  integrity sha512-WDqatk1FJb5EOAJXvBkppY/gqOficIgXTH+lQ8sBJ4H73iveDCWa7za2NKbjZpHgb1owuV3grehvS2QLgnVnBQ==
 
 react-router@5.2.0:
   version "5.2.0"

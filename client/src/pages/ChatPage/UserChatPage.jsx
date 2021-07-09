@@ -28,9 +28,12 @@ function UserChatPage(props) {
         })
         if(token)refetch(chatID);
     },[chatID,token])
-
+    useEffect(()=>{
+        context.socket.emit("join_chat",chatID)
+    },[])
+    
     const makeCall = ()=>{
-        if(data&&data.user)context.callUser({user:data.user})
+        if(data&&data.user)context.callUser({user:data.user},{chatID,userID:data.user._id})
         else alert("Please refresh the page")
     }
 

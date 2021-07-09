@@ -1,28 +1,25 @@
-# This docker-compose.yml file is used to set up your project in the local
-# development environment *only*. It is *not* used in deployment to our cloud
-# servers, and has no effect whatsoever in cloud deployments.
-#
-# See our Developer Handbook for more information:
-# http://docs.divio.com/en/latest/reference/docker-docker-compose.html
 version: "3.8"
 
 services:
-  # The web container is an instance of exactly the same Docker image as your
-  # Cloud application container.
   web:
     build: .
-    # Change the port if you'd like to expose your project locally on a
-    # different port, for example if you already use port 8000 for
-    # something else.
     ports:
       - "3000:3000"
     expose:
       - 3000
     volumes:
       - ".:/app:rw"
-    # There is currently a bug: https://github.com/facebook/create-react-app/issues/8688#issuecomment-602149917
-    command: serve -s -build -l 3000
-# networks:
-#   default:
-#     external:
-#       name: nginx-proxy
+    command: serve build
+    env_file:
+      - .env
+    environment:
+      - VIRTUAL_HOST=connect_engage.voldemort.wtf
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST=connect-engage.voldemort.wtf
+      - LETSENCRYPT_EMAIL=kunalsolanke1000@gmail.com
+      - REACT_APP_ENV=production
+      - REACT_APP_BACKEND=1
+networks:
+  default:
+    external:
+      name: nginx-proxy

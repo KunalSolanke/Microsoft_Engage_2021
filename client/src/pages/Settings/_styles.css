@@ -5,7 +5,10 @@
   margin-bottom: 1rem;
 }
 .profile__page {
-  width: clamp(340px, 80%, 900px);
+  min-width: 300px;
+  max-width: 900px;
+  width: 80%;
+  padding-bottom: 1rem;
 }
 .profile__in__head {
   display: flex;

@@ -3,6 +3,8 @@ import {ComposedModal, Link, ModalBody, ModalFooter, ModalHeader, Tag, TextArea,
 
 import { useMutation } from 'react-query';
 import { createChannel, createTeam } from '../../http/requests';
+import { setNotification } from '../../store/actions/auth';
+import { useDispatch } from 'react-redux';
 
 
 
@@ -18,10 +20,14 @@ const TextAreaProps = () => ({
 function CreateChannel({open,setOpen,refetch,teamID}) {
     const [teamName, setteamName] = useState("")
     const [desc,setdesc] = useState("")
-    
+    const dispatch = useDispatch()
     const mutation = useMutation(createChannel,{
         onSuccess:(data,variables,context)=>{
             refetch()
+            dispatch(setNotification("Success","new channel created succefully","success"))
+        },
+        onError:(error,variables, context)=>{
+            dispatch(setNotification("Error","Couldn't not create new channel"))
         }
     });
     const handleCreateTeam = ()=>{

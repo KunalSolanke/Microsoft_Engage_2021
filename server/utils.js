@@ -3,7 +3,10 @@ const Meet = require("./models/Meet");
 
 const getMeet = async (meetID) => {
   try {
-    let meet = await Meet.findById(meetID).populate("participants").populate("author").exec();
+    let meet = await Meet.findById(meetID)
+      .populate("participants", "-refreshToken")
+      .populate("author", "-refreshTokens")
+      .exec();
     return meet;
   } catch (err) {
     console.log(err);
@@ -25,8 +28,8 @@ const getMessages = async (chatID) => {
   try {
     let messages = await Message.find({ chat: chatID })
       .limit(20)
-      .populate("author")
-      .populate("reply_to")
+      .populate("author", "-refreshTokens")
+      .populate("reply_to", "-refreshTokens")
       .exec();
     return messages;
   } catch (err) {
@@ -91,10 +94,7 @@ const leaveMeet = async (meetID, userID) => {
 
 const createLog = async (userID, log) => {
   try {
-    let myLogTable = await Activity.findOne({ user: userID });
-    if (!myLogTable) myLogTable = await Activity.create({ user: userID });
-    myLogTable.logs.push(log);
-    await myLogTable.save();
+    myLogTable = await Activity.create({ user: userID, log });
   } catch (err) {
     console.log(err);
   }

@@ -3,16 +3,18 @@ import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { createMeet } from "../http/requests";
-import { authCheckState } from "../store/actions/auth";
+import { authCheckState, setNotification } from "../store/actions/auth";
 import { baseURL } from "../http/api";
 import {
   addNewPeer,
   connectAlPeers,
+  enterMeeting,
   leftMeet as peerLeftMeet,
   newMessage,
   peerLeft,
   prevMessages,
   setChat,
+  setmediaState,
   setMeet,
   startShare,
   stopShare,
@@ -24,8 +26,8 @@ const SocketContext = createContext();
 const socket = io(baseURL, { autoConnect: false });
 
 const videoConstraints = {
-  height: window.innerHeight / 2,
-  width: window.innerWidth / 2,
+  height: window.innerHeight,
+  width: window.innerWidth,
   frameRate: 10, //mobile
   facingMode: "user",
 };
@@ -36,7 +38,6 @@ const ContextProvider = ({ children }) => {
   const auth = useSelector((state) => state.auth);
   const meet = useSelector((state) => state.socket.meet);
   const currentChat = useSelector((state) => state.socket.chatID);
-  //const userStream = useSelector((state) => state.socket.UserVideoStream);
 
   //==== Socket State =================================
   const [CallData, setCallData] = useState({ isReceived: false });
@@ -98,10 +99,9 @@ const ContextProvider = ({ children }) => {
 
   //======================== CALLING USER =========================================
 
-  const callUser = async ({ user }) => {
+  const callUser = async ({ user }, data = {}) => {
     setcallTo(user);
-
-    let meet = await createMeet(false);
+    let meet = await createMeet(false, { ...data, userID: user._id });
     socket.emit("calluser", { userID: user._id, meetID: meet._id });
     dispatch(setMeet(meet._id));
     dispatch(setChat(meet.chat));
@@ -186,32 +186,19 @@ const ContextProvider = ({ children }) => {
         audio: true,
       })
       .then((stream) => {
-        console.log("My video stream ", stream);
-        dispatch({
-          type: actionTypes.SET_USER_VIDEO,
-          payload: stream,
-        });
-        dispatch({
-          type: actionTypes.SET_CAMERA_STREAM,
-          payload: stream,
-        });
-        dispatch({
-          type: actionTypes.SET_VIDEO_STATE,
-          payload: true,
-        });
-        dispatch({
-          type: actionTypes.SET_AUDIO_STATE,
-          payload: true,
-        });
+        dispatch(enterMeeting(stream));
         socket.emit("join_meet", meetID);
         socket.on("users_in_meet", (payload) => dispatch(connectAlPeers(payload, peersRef)));
-
         socket.on("user_joined", (payload) => dispatch(addNewPeer(payload, peersRef)));
         socket.on("receive_signal_back", receiveSignalBack);
         socket.on("left_meet", leftMeet);
+        socket.on("change_media_state", ({ mediaState, peerID }) => {
+          dispatch(setmediaState(mediaState, peerID));
+        });
       })
       .catch((err) => {
         console.log(err);
+        dispatch(setNotification("Media Error", `Please make sure media is allowed`, "error"));
       });
   };
 
@@ -232,21 +219,19 @@ const ContextProvider = ({ children }) => {
   };
 
   //=========================== GROUP MEET ====================================
-
   const groupMeet = async (chatID) => {
-    let meet = await createMeet(true);
+    let meet = await createMeet(true, { chatID });
     socket.emit("create_group_meet", { meetID: meet._id, chatID });
     dispatch(setMeet(meet._id));
     history.push("/dashboard/meet/" + meet._id);
   };
 
-  const reinitialize = (meetID) => {
-    console.log("Leaving meet");
-    socket.emit("leave_meet", meetID);
+  const reinitialize = () => {
     socket.removeAllListeners("receive_signal_back");
     socket.removeAllListeners("left_meet");
     socket.removeAllListeners("user_joined");
     socket.removeAllListeners("users_in_meet");
+    socket.removeAllListeners("change_media_state");
     setCallData({ isReceived: false });
     setCallAccepted(false);
     setcallTo(null);
@@ -255,10 +240,10 @@ const ContextProvider = ({ children }) => {
     peersRef.current = [];
   };
 
-  const leaveCall = () => {
-    reinitialize();
-    socket.emit("leavecall", { user: auth.profile });
-    history.push("/dashboard");
+  const leaveCall = (meetID) => {
+    console.log("leaving");
+    socket.emit("leave_meet", meetID);
+    if (meet) reinitialize();
   };
 
   return (

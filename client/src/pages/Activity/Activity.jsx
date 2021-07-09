@@ -27,7 +27,7 @@ function Activity() {
                 <div className="activity__area">
                  <p style={{textAlign:"center"}}>Activities</p>
                  {isLoading?<LocalLoading/>:<>
-                            {data?.logs.map(m=>{
+                            {data?.map(m=>{
                                 return <Log log={m}/>
                             })}
                  </>}

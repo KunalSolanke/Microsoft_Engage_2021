@@ -1,8 +1,3 @@
-.dark {
-  background-color: #35373a !important;
-  overflow: hidden;
-  padding: 0rem 0rem 1.5rem 1.5rem !important;
-}
 .chatbox {
   background-color: #f3f2f1;
   height: 94vh !important;
@@ -13,31 +8,34 @@
   margin: 0rem !important;
 }
 .meet__row {
-  height: 94vh !important;
-  position: relative;
-}
-.video__grid {
   min-height: 94vh !important;
-  max-height: 100vh !important;
-  padding-left: 0.5rem !important;
-  padding-right: 0.5rem !important;
   position: relative;
+  margin: 0rem !important;
+}
+
+.video__grid {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
 }
 .video__row {
-  min-height: 94vh;
+  flex: 1;
   align-items: center;
   justify-content: center;
+  margin: 0rem !important;
 }
 .video__col {
   padding: 0.5rem !important;
 }
 .user__tile {
-  width: 95%;
+  width: 100%;
   background-color: #161616;
   display: grid;
   place-items: center;
   border-radius: 0.5rem;
-  box-shadow: 2px 2px #161616, -2px -2px #161616;
   z-index: 100000;
   height: 400px;
 }
@@ -48,12 +46,18 @@
   object-fit: contain;
   background-color: white;
 }
+.videocontrols__wrapper {
+  display: grid;
+  place-items: center;
+}
+.menu-wrapper {
+  width: 100%;
+}
 
 .videoplayer {
   border-radius: 0.5rem;
-  margin: 0.5rem;
   height: 400px;
-  width: 95%;
+  width: 100%;
   object-fit: cover;
   /* transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg);

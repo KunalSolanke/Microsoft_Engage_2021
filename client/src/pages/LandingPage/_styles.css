@@ -1,6 +1,13 @@
 .full_width {
-  max-width: 100% !important;
   margin: 0rem !important;
-  padding: 0rem !important;
-  margin-top: 2rem !important;
+  margin-top: 4rem !important;
+}
+@media (min-width: 750px) {
+  .full_width {
+    padding: 0rem !important;
+  }
+}
+
+.carousel-root {
+  width: 80vw !important;
 }

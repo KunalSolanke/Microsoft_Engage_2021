@@ -9,6 +9,12 @@ const initialState = {
   username: null,
   email: null,
   userID: null,
+  notification: {
+    open: false,
+    title: "",
+    message: "",
+    kind: "",
+  },
 };
 
 const authStart = (state, action) => {
@@ -95,6 +101,10 @@ const reducer = (state = initialState, action) => {
       return updateProfileRequest(state, action);
     case actionTypes.PROFILE_UPDATE_SUCCESS:
       return updateProfileSuccess(state, action);
+    case actionTypes.SET_NOTIFICATION:
+      return UpdatedObj(state, {
+        notification: action.payload,
+      });
     default:
       return state;
   }

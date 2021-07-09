@@ -5,8 +5,9 @@ import thunk from "redux-thunk";
 
 const configureStore = () => {
   let composeEnhances = compose;
-
-  composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || composeEnhances;
+  if (process.env.REACT_APP_ENV == "dev") {
+    composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || composeEnhances;
+  }
 
   const rootReducer = combineReducers({
     auth: authreducer,

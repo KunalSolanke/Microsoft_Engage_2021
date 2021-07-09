@@ -1,6 +1,6 @@
 import React from 'react'
 import HomeLayout from '../../layouts/HomeLayout/HomeLayout'
-import {LeadSpace,FeatureCard,CalloutWithMedia,Footer} from "@carbon/ibmdotcom-react"
+import {LeadSpace,FeatureCard,CalloutWithMedia,Footer,ContentGroupPictograms} from "@carbon/ibmdotcom-react"
 import { ArrowRight16, ArrowRight20 } from '@carbon/icons-react'
 import leadspaceImg1 from "../../assets/images/video_chat.webp"
 import "./_styles.css"
@@ -8,6 +8,34 @@ import connectImg from "../../assets/images/connect.png"
 import connectAltImg from "../../assets/images/connect_al.jpg"
 import vLiveImg from "../../assets/images/vlive.png"
 import { useHistory } from 'react-router-dom'
+import { Desktop, Pattern, Touch } from '@carbon/pictograms-react';
+
+const pictogramitems=[
+         {
+            heading:"Connect",
+            copy: "Make new connection every day,and expand your circle",
+            pictogram: {
+              src:Desktop,
+              'aria-label': 'Pictogram',
+            },
+          },
+          {
+            heading:"Interact",
+            copy: "Interact with your friends with a simple click",
+            pictogram: {
+              src:Pattern,
+              'aria-label': 'Pictogram',
+            },
+          },
+          {
+            heading:"Collaborte",
+            copy: "Actively engage with your colleagues live",
+            pictogram: {
+              src:Touch,
+              'aria-label': 'Pictogram',
+            },
+          }
+]
 
 const mediaData = {
     heading: 'Connecting with your peers,one click away',
@@ -43,9 +71,7 @@ const card={
             alt: 'Image alt text',
           },
           cta: {
-            icon: {
-              src: ArrowRight20,
-            },
+           
           },
         }
 const navigation={
@@ -108,8 +134,23 @@ function myLanguageCallback(selectedItem) {
                     </div>
                 </div>
             </div>
-            <div className="bx--grid full_width">
-        <div className="bx--row ">
+             <div className="bx--grid" style={{marginTop:"2rem"}}>
+            <div className="bx--row">
+              <ContentGroupPictograms
+                className="
+                  bx--col-sm-4
+                  bx--col-lg-12
+                  bx--offset-lg-4
+                "
+                heading={"Make Every Interaction Matter!"}
+                copy={"connecting people everybody"}
+                items={pictogramitems}
+              />
+            </div>
+          </div>
+            <div className="bx--grid bx--grid--full-width full_width">
+             
+        <div className="bx--row">
             <div className="bx--offset-lg-4 bx--col-lg-12">
             <CalloutWithMedia
                 onClick={()=>history.push("/accounts/login")}

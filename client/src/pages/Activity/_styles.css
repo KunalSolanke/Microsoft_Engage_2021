@@ -10,7 +10,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: clamp(350px, 80%, 900px);
+  min-width: 300px;
+  width: 80%;
+  max-width: 900px;
   margin-bottom: 1rem;
 }
 .activity__wrapper img {

@@ -1,55 +1,43 @@
 import { Chat20, EventsAlt20, FaceActivated20, FaceActivatedAdd20, MicrophoneFilled20, MicrophoneOffFilled20, PhoneBlockFilled20, Screen20, ScreenOff20, Share20,VideoFilled20, VideoOffFilled20 } from '@carbon/icons-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory, useParams } from 'react-router-dom';
 import { SocketContext } from '../../context/GlobalSocketContext';
+import { setmediaState } from '../../store/actions/socket';
 import * as actionTypes from "../../store/constants/socket"
 import "./_style.css"
 
 
 function VideoControls() {
-    const [videoOn, setVideoOn] = useState(true)
-    const [audioOn, setaudioOn] = useState(true)
+    const mediaState = useSelector(state => state.socket.mediaState)
     const screenOn = useSelector(state=>state.socket.screenOn);    
-    const meet = useSelector(state=>state.socket.meet);
+    const {meetID}= useParams()
     const context = useContext(SocketContext)
     const userVideoStream = useSelector(state=>state.socket.userVideoStream);
     const dispatch = useDispatch()
+    const userID = useSelector(state=>state.auth.userID);
+    const history = useHistory()
 
     const handleVideoOff = (e)=>{
        if(userVideoStream)userVideoStream.getVideoTracks()[0].enabled=true;
-        setVideoOn(true);
-        dispatch({
-            type:actionTypes.SET_VIDEO_STATE,
-            payload:true
-        })
+        dispatch(setmediaState({videoPaused:false},userID,context.socket,meetID))
     }
-    const handleVideoOn = (e)=>{
+
+    const handleVideoOn =()=>{
         if(userVideoStream)userVideoStream.getVideoTracks()[0].enabled=false;
-        setVideoOn(false);
-        dispatch({
-            type:actionTypes.SET_VIDEO_STATE,
-            payload:false
-        })
-        
+       dispatch(setmediaState({videoPaused:true},userID,context.socket,meetID))
     }
     const handleAudioOn = (e)=>{
-        if(userVideoStream)userVideoStream.getAudioTracks()[0].enabled=false;
-        setaudioOn(false);
-        dispatch({
-            type:actionTypes.SET_AUDIO_STATE,
-            payload:false
-        })
-      
+        if(userVideoStream&&
+        userVideoStream.getAudioTracks()[0])userVideoStream.getAudioTracks()[0].enabled=false;  
+        dispatch(setmediaState({muted:true},userID,context.socket,meetID))
     }
     const handleAudioOff = (e)=>{
-        if(userVideoStream)userVideoStream.getAudioTracks()[0].enabled=true;
-        setaudioOn(true);
-        dispatch({
-            type:actionTypes.SET_AUDIO_STATE,
-            payload:true
-        })
-       
+        if(userVideoStream
+          &&userVideoStream.getAudioTracks()[0])userVideoStream.getAudioTracks()[0].enabled=true;
+        dispatch(setmediaState({muted:false},userID,context.socket,meetID))
     }
+    
     const handleScreenOn = (e)=>{
         context.stopScreenShare();
       
@@ -57,10 +45,6 @@ function VideoControls() {
     const handleScreenOff = (e)=>{
         context.startScreenShare()
     }
-    useEffect(() => {
-      console.log("Well fuckit")
-    }, [])
-
     const shareLink = (e)=>{
          prompt(
     "Copy this link and send it to people you want to meet with",
@@ -75,21 +59,21 @@ function VideoControls() {
     const openChat = (e)=>{dispatch({
         type:actionTypes.CHAT_ACTIVE
     })}
-
+   
     const leaveMeet = (e)=>{
-       context.leaveCall()
+       history.push("/dashboard")
     }
 
     return(
         <div className="video__controls">
             <div>
             
-            {videoOn?<VideoFilled20 onClick={e=>handleVideoOn(e)}/>:
+            {!mediaState.videoPaused?<VideoFilled20 onClick={e=>handleVideoOn(e)}/>:
             <VideoOffFilled20 onClick={e=>handleVideoOff(e)}/>}
             </div>
             <div>
 
-            {audioOn?<MicrophoneFilled20 onClick={e=>handleAudioOn(e)}/>:
+            {!mediaState.muted?<MicrophoneFilled20 onClick={e=>handleAudioOn(e)}/>:
             <MicrophoneOffFilled20 onClick={e=>handleAudioOff(e)}/>}
             </div>
             <div>

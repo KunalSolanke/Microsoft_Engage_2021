@@ -1,0 +1,6 @@
+.notification__wrapper {
+  position: fixed;
+  top: 3rem;
+  right: 10px;
+  z-index: 10000000000000;
+}

@@ -38,12 +38,13 @@ const postRequest = async (url, data, token = null, secure = true) => {
 };
 
 export const findUsers = async (search) => await getRequest("/users/find?search=" + search);
-export const createMeet = async (is_group) => await postRequest("/meet/create", { is_group });
+export const createMeet = async (is_group, data = {}) =>
+  await postRequest("/meet/create", { is_group, ...data });
 export const addContact = async (userID) => await postRequest("/meet/contacts_add", { userID });
 export const getMyContacts = async (token = null) =>
   await getRequest("/accounts/contacts/me", token);
 export const getMyTeams = async (token = null) => await getRequest("/accounts/teams/me", token);
-export const getMyActivity = async () => await getRequest("/activity/me");
+export const getMyActivity = async (data = {}) => await postRequest("/activity/me", data);
 export const getChat = async (chatID) => {
   return await getRequest(`/meet/chat/${chatID}`);
 };
@@ -59,6 +60,6 @@ export const joinTeam = async (teamID) => {
   return await getRequest(`/meet/team/${teamID}/join`);
 };
 export const updateProfile = async (data) => await postRequest("/accounts/profile", data);
-export const getActivity = async () => {
-  return await getRequest(`/accounts/activity`);
+export const getActivity = async (data = {}) => {
+  return await postRequest(`/accounts/activity`, data);
 };

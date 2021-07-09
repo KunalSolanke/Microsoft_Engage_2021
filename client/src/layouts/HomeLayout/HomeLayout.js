@@ -14,6 +14,7 @@ import {
 } from "carbon-components-react";
 
 import { useHistory } from "react-router-dom";
+import NotificationHelper from "../../components/Notification/Notification";
 
 function HomeLayout(props) {
   const history = useHistory();
@@ -66,7 +67,10 @@ function HomeLayout(props) {
               </SideNavItems>
             </SideNav>
           </Header>
-          <div style={{ marginTop: "3rem" }}>{props.children}</div>
+          <div style={{ marginTop: "3rem", overflowX: "hidden" }}>
+            {props.children}
+            <NotificationHelper />
+          </div>
         </>
       )}
     ></HeaderContainer>

@@ -2,7 +2,7 @@ import { Column, Content, Grid, Row } from 'carbon-components-react'
 import React, { useContext, useEffect } from 'react'
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
 import "./_styles.css"
-import { Collaborate16, Events16, VideoChat20 } from '@carbon/icons-react'
+import { Collaborate16, Events16, VideoChat20, Workspace20 } from '@carbon/icons-react'
 import SendMessage from "../../components/SendMessage/SendMessage"
 import { SocketContext } from '../../context/GlobalSocketContext'
 import { useParams } from 'react-router-dom'
@@ -14,6 +14,7 @@ import useFetchChannel from '../../hooks/useFetchChannel'
 import ChannelMessage from '../../components/Message/ChannelMessage'
 import TeamChatArea from './TeamChatArea'
 import HI from "../../assets/images/team.webp"
+import LocalLoading from '../../components/Loading/LocalLoading'
 
 
 function TeamChatPage(props) {
@@ -30,7 +31,9 @@ function TeamChatPage(props) {
         })
         if(token)refetch(channelID);
     },[channelID,token])
-    
+     useEffect(()=>{
+        context.socket.emit("join_chat",channelID)
+    },[])
     const makeCall = ()=>{
         context.groupMeet(channelID)
     }
@@ -48,7 +51,9 @@ function TeamChatPage(props) {
                           <Column sm={4} md={6} lg={13} style={{height:"100%",padding:"0rem"}} className="userchat">
                              <div className="chatpage_head">
                                 <div>
-                                    <Collaborate16 className="user__profile"/>
+                                    <div className="user__profile">
+                                        <Workspace20 className="user__profile"/>
+                                    </div>
                                     <div>
                                     <h6>{data?.channel?.channel_name}</h6>
                                     <p>{data?.channel.description?.toLowerCase()}</p> 
@@ -58,7 +63,7 @@ function TeamChatPage(props) {
                                   <VideoChat20/>
                                 </div>
                              </div>
-                             <UserChatArea HI={HI}/>
+                             {isLoading?<LocalLoading/>:<UserChatArea HI={HI}/>}
                              <div style={{padding:"1rem",display:"grid",placeItems:"center"}}>
                              <SendMessage light={true}/>
                              </div>

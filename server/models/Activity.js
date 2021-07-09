@@ -11,6 +11,9 @@ const activitySchema = mongoose.Schema(
         type: String,
       },
     ],
+    log: {
+      type: String,
+    },
   },
   {
     timestamps: true,

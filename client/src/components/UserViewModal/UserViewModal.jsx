@@ -6,12 +6,19 @@ import { addContact } from '../../http/requests'
 import {useMutation} from "react-query"
 import "./_style.css"
 import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import {setNotification} from "../../store/actions/auth"
 
 function UserViewModal({user,open,setmodelopen}) {
     const history = useHistory();
+    const dispatch = useDispatch()
     const mutation = useMutation(addContact,{
         onSuccess:(data,variables,context)=>{
+              dispatch(setNotification("Success","new user has been succesfully added","success"))
               history.push(`/dashboard/chat/${data._id}`)
+        },
+         onError:(error,variables, context)=>{
+            dispatch(setNotification("Error","Couldn't not create new contact"))
         }
     });
 

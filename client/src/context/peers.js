@@ -45,6 +45,8 @@ const connectToAllUsers = (users, dispatch, peersRef, stream, userID) => {
         user,
         muted: false,
         videoPaused: false,
+        onDeck: false,
+        isPinned: false,
       });
     }
   });
@@ -61,7 +63,6 @@ const addPeer = (incomingSignal, callerID, stream) => {
     socket.emit("return_signal", { signal, callerID });
   });
   peer.signal(incomingSignal);
-
   return peer;
 };
 
@@ -73,6 +74,8 @@ const handleUserJoined = (payload, dispatch, stream, userID, peersRef) => {
       peer,
       muted: false,
       videoPaused: false,
+      onDeck: false,
+      isPinned: false,
       user: payload.user,
     };
 

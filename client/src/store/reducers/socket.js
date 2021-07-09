@@ -4,32 +4,25 @@ import { UpdatedObj } from "../UpdateObj";
 const intialState = {
   unseenMessages: [],
   peers: [],
+  peerStreams: [],
   currMessages: [],
   chatID: null,
   meet: null,
   isChatActive: false,
   isPeopleActive: false,
   userVideoStream: null,
-  peerStreams: [],
   cameraStream: null,
   screenOn: false,
-  videoPaused: false,
-  audioPaused: false,
+  deck_limit: 2,
+  mediaState: {
+    videoPaused: false,
+    muted: false,
+  },
+  userDeckOn: false,
 };
 
 const newMessage = (state, action) => {
-  let unseenMessages = state.unseenMessages;
-  let currMessages = state.currMessages;
-  console.log(action);
-  if (action.payload.chat != state.chatID) {
-    unseenMessages = [...unseenMessages, action.payload];
-  } else {
-    currMessages = [...currMessages, action.payload];
-  }
-  return UpdatedObj(state, {
-    currMessages,
-    unseenMessages,
-  });
+  return UpdatedObj(state, action.payload);
 };
 
 const prevMessages = (state, action) => {
@@ -41,6 +34,14 @@ const prevMessages = (state, action) => {
 const addPeer = (state, action) => {
   let peers = state.peers;
   let peer = peers.findIndex((p) => p.peerID == action.payload.peerID);
+  let deckCount = peers.filter((p) => p.onDeck).length;
+  let isPinned = peers.findIndex((p) => p.isPinned);
+  if (isPinned == -1 && deckCount < state.deck_limit) {
+    action.payload = {
+      ...action.payload,
+      onDeck: true,
+    };
+  }
   if (peer == -1) {
     peers = [...peers, action.payload];
   } else {
@@ -48,12 +49,13 @@ const addPeer = (state, action) => {
   }
   return UpdatedObj(state, {
     peers,
+    userDeckOn: isPinned != -1 ? true : state.userDeckOn,
   });
 };
 
 const connectPeers = (state, action) => {
   return UpdatedObj(state, {
-    peers: action.payload,
+    peers: [...state.peers, ...action.payload],
   });
 };
 
@@ -66,6 +68,7 @@ const peerLeft = (state, action) => {
 
 const setPeerStream = (state, action) => {
   let connectedPeerStreams = state.peerStreams;
+  console.log(state);
   let streamIndex = connectedPeerStreams.findIndex(
     (stream) => stream.peerID == action.payload.peerID
   );
@@ -95,7 +98,22 @@ const reducer = (state = intialState, action) => {
     case actionTypes.PEER_LEFT:
       return peerLeft(state, action);
     case actionTypes.LEFT_MEET:
-      return UpdatedObj(state, { peers: [], peerStreams: [] });
+      return UpdatedObj(state, {
+        peers: [],
+        peerStreams: [],
+        userVideoStream: null,
+        cameraStream: null,
+        chatID: null,
+        meet: null,
+        mediaState: {
+          videoPaused: false,
+          muted: false,
+        },
+        userDeckOn: false,
+        screenOn: false,
+        isChatActive: false,
+        isPeopleActive: false,
+      });
     case actionTypes.SET_CHAT:
       return UpdatedObj(state, { chatID: action.payload, currMessages: [] });
     case actionTypes.RESET_CHAT:
@@ -130,13 +148,24 @@ const reducer = (state = intialState, action) => {
       return UpdatedObj(state, {
         screenOn: action.payload,
       });
-    case actionTypes.SET_VIDEO_STATE:
+    case actionTypes.UPDATE_PEER_STREAMS:
       return UpdatedObj(state, {
-        videoPaused: action.payload,
+        peerStreams: action.payload,
       });
-    case actionTypes.SET_AUDIO_STATE:
+    case actionTypes.UPDATE_PEERS:
       return UpdatedObj(state, {
-        audioPaused: action.payload,
+        peers: action.payload,
+      });
+    case actionTypes.SET_MEDIA_STATE:
+      return UpdatedObj(state, {
+        mediaState: {
+          ...state.mediaState,
+          ...action.payload,
+        },
+      });
+    case actionTypes.TOGGLE_DECK:
+      return UpdatedObj(state, {
+        userDeckOn: action.payload ? action.payload : !state.userDeckOn,
       });
     default:
       return state;

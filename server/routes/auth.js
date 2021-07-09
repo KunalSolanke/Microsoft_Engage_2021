@@ -11,7 +11,7 @@ const isLoggedIn = require("../middlewares/isLoggedIn");
 router.use(isLoggedIn);
 router.get("/logout", auth.logout);
 router.get("/profile", profile.getProfile);
-router.get("/activity", profile.getMyLogs);
+router.post("/activity", profile.getMyLogs);
 router.post("/profile", upload.single("image"), profile.updateProfile);
 router.get("/contacts/me", profile.getMyContacts);
 router.get("/teams/me", profile.getMyTeams);

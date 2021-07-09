@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { Button, FormGroup, TextInput} from 'carbon-components-react'
+import { Button, FormGroup, InlineLoading, TextInput} from 'carbon-components-react'
 import "./_style.css"
 import SocialAuth from '../SocialAuth/SocialAuth'
 import {authLogin} from "../../store/actions/auth"
@@ -14,13 +14,28 @@ const InvalidPasswordProps = {
 
 
 function LoginForm() {
+     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [description, setDescription] = useState('Signing in...');
+    const [ariaLive, setAriaLive] = useState('off');
     const dispatch = useDispatch();
     const auth = useSelector(state=>state.auth)
     const [userData, setuserData] = useState({email:"",password:""});
     const history = useHistory();
     const handleSubmit=async (e)=>{
+        setAriaLive('asserative');
+        setIsSubmitting(true)
         e.preventDefault();
         await dispatch(authLogin(userData));
+         setIsSubmitting(false);
+        setSuccess(true);
+        setDescription('Submitted!');
+        setAriaLive('off');
+    setTimeout(() => {
+          setSuccess(false);
+          setDescription('Signing in...');
+          setAriaLive('off');
+        }, 1000);
     }
      useEffect(()=>{
        if(auth.token!=null){
@@ -49,7 +64,17 @@ function LoginForm() {
                         onChange={(e)=>setuserData(user=>({...user,password:e.target.value}))}
                     />
                     </FormGroup>
-                    <Button kind="primary" type="submit" className="login__button">Login</Button>
+                    {isSubmitting || success ? (
+            <InlineLoading
+              style={{ marginLeft: '1rem' }}
+              description={description}
+              status={success ? 'finished' : 'active'}
+              aria-live={ariaLive}
+            />
+          ) : (
+            <Button kind="primary" type="submit" className="login__button">Login</Button>
+          )}
+                    
                 </form>
                 <SocialAuth />
             <hr color="#ededed" style={{marginBottom:"1rem",marginTop:"1rem"}}/>

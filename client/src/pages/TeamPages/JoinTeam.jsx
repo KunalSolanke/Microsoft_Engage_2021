@@ -1,6 +1,6 @@
 import { Button, Content } from 'carbon-components-react'
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import useFetchTeam from '../../hooks/useFetchTeam'
 import useJoinTeam from '../../hooks/useJoinTeam'
@@ -8,6 +8,7 @@ import joinTeamImg from "../../assets/images/joint_team.png"
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
 import "./_styles.css"
 import { joinTeam } from '../../http/requests'
+import { setNotification } from '../../store/actions/auth'
 
 function JoinTeam() {
     const {teamID} = useParams();
@@ -15,12 +16,14 @@ function JoinTeam() {
     const {data,isLoading,error,refetch}=useFetchTeam(teamID);
     const joinedTeam = useJoinTeam(teamID)
     const history = useHistory();
+    const dispatch = useDispatch()
     useEffect(()=>{
         if(token)refetch(teamID);
     },[teamID,token])
     const handleJoin = ()=>{
        joinedTeam.refetch(teamID);
        history.push(`/dashboard/teams/${teamID}`)
+       dispatch(setNotification("Success","Successfully joined the team","success"))
     }
     return (
        <DashboardLayout>
@@ -30,7 +33,7 @@ function JoinTeam() {
             <div className="join_team_wrapper">
                 <div>
 
-                <h6>Join team {data?.channel_name} from link below</h6>
+                <p>Join team {data?.channel_name} from link below</p>
                 <div className="teams_landing_head">
                     <img src={joinTeamImg}/>
                 </div>

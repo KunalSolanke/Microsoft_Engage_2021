@@ -6,6 +6,9 @@ import { useMutation } from 'react-query';
 import { createTeam } from '../../http/requests';
 import { useHistory } from 'react-router-dom';
  import { useQuery, useQueryClient } from 'react-query'
+import { setNotification } from '../../store/actions/auth';
+import { useDispatch } from 'react-redux';
+import LocalLoading from '../Loading/LocalLoading';
  
 
 
@@ -33,10 +36,14 @@ function CreateTeam({open,setOpen,refetch}) {
     const [searchValue, setsearchValue] = useState("");
     const debouncedQuery = useDebounce(searchValue,500)
     const {results,error,isLoading} = useFetchUsers(debouncedQuery)
-    
+    const dispatch = useDispatch()
     const mutation = useMutation(createTeam,{
         onSuccess:(data,variables,context)=>{
             refetch()
+            dispatch(setNotification("Success","New Team created successfully","success"))
+        },
+         onError:(error,variables, context)=>{
+            dispatch(setNotification("Error","Couldn't not create new team"))
         }
     });
     const handleCreateTeam = ()=>{
@@ -79,7 +86,7 @@ function CreateTeam({open,setOpen,refetch}) {
                         titleText="Select friends you want to add."
                         helperText="You can send them link to join group later."
                     />
-                    {isLoading?<div>Loading...</div>:null}
+                    {isLoading?<LocalLoading/>:null}
                     <div className="tags">
                          {users&&users.map(u=>(<Tag className="some-class" filter onClose={(e)=>remove(u)}>
                                {u.username||u.email}..

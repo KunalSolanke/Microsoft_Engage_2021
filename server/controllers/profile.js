@@ -4,6 +4,7 @@ const Activity = require("../models/Activity");
 const getProfile = async (req, res) => {
   try {
     const user = req.user;
+    user.refreshTokens = [];
     res.status(200).send(user);
   } catch (err) {
     console.log(err.message);
@@ -20,6 +21,7 @@ const updateProfile = async (req, res) => {
       await user.save();
     }
     user = await User.findById(user._id);
+    user.refreshToken = [];
     res.status(200).send(user);
   } catch (err) {
     console.log(err);
@@ -36,7 +38,7 @@ const getMyContacts = async (req, res) => {
       is_channel: false,
     })
       .lean()
-      .populate("participants")
+      .populate("participants", "-refreshTokens")
       .populate("messages")
       .exec();
     contacts = contacts.map((c) => ({
@@ -62,11 +64,27 @@ const getMyTeams = async (req, res) => {
     res.status(400).send(err.message);
   }
 };
+const getLastDay = function (month, year) {
+  return new Date(year, month + 1, 0);
+};
 
 const getMyLogs = async (req, res) => {
   try {
-    let myLogTable = await Activity.findOne({ user: req.user._id });
-    if (!myLogTable) myLogTable = await Activity.create({ user: req.user._id });
+    let myLogTable;
+    if (req.body.start_month) {
+      let date = new Date(req.body.start_month);
+      let last_date = getLastDay(date.getMonth() + 1, date.getFullYear());
+      console.log(date, last_date);
+      myLogTable = await Activity.find({
+        user: req.user._id,
+        created_at: {
+          $gte: date.toISOString(),
+          $lte: last_date.toISOString(),
+        },
+      });
+    } else {
+      myLogTable = await Activity.find({ user: req.user._id }).sort({ created_at: 1 });
+    }
     res.send(myLogTable);
   } catch (err) {
     console.log(err);

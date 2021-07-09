@@ -1,0 +1,29 @@
+.scroll {
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+.calendar__style {
+  width: 98%;
+  min-width: 300px;
+  font-size: 1rem !important;
+  border-width: 0;
+  border-style: solid;
+  margin-top: 0.5rem;
+  border-color: #e5e7eb;
+}
+.font-medium {
+  font-size: 0.9rem !important;
+}
+.text-gray-500 {
+  font-size: 0.8rem;
+}
+.border-b-2,
+.border-l-2,
+.border-r-2,
+.border-t-2 {
+  border-style: solid;
+  border-color: #e5e7eb;
+}

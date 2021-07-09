@@ -6,7 +6,19 @@ import {
   SideNavMenu,
   SideNavMenuItem,
 } from "carbon-components-react";
-import { Chat20, Settings20, Activity20, Video20, Group20, Dashboard16 } from "@carbon/icons-react";
+import {
+  Chat20,
+  Settings20,
+  Activity20,
+  Video20,
+  Group20,
+  Dashboard16,
+  CalendarHeatMap20,
+  CalendarSettings20,
+  CalendarTools20,
+  Calendar20,
+  ChatLaunch20,
+} from "@carbon/icons-react";
 import { useHistory } from "react-router-dom";
 
 function SidenavBar({ isSideNavExpanded, onClickSideNavExpand }) {
@@ -26,11 +38,14 @@ function SidenavBar({ isSideNavExpanded, onClickSideNavExpand }) {
           <SideNavLink renderIcon={Video20} onClick={() => history.push("/dashboard/meet")}>
             Call
           </SideNavLink>
-          <SideNavLink renderIcon={Chat20} onClick={() => history.push("/dashboard/chat")}>
+          <SideNavLink renderIcon={ChatLaunch20} onClick={() => history.push("/dashboard/chat")}>
             Chat
           </SideNavLink>
           <SideNavLink renderIcon={Group20} onClick={() => history.push("/dashboard/teams")}>
             Teams
+          </SideNavLink>
+          <SideNavLink renderIcon={Calendar20} onClick={() => history.push("/dashboard/calendar")}>
+            Calendar
           </SideNavLink>
           <SideNavLink renderIcon={Activity20} onClick={() => history.push("/dashboard/activity")}>
             Activity

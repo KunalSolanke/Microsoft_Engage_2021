@@ -32,6 +32,7 @@ module.exports = {
       token: req.accessToken,
       username: user.username || user.fullName || user.email,
       email: user.email,
+      userID: user._id,
       expiry: 3600,
     });
   },
