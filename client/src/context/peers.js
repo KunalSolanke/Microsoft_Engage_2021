@@ -2,11 +2,14 @@ import Peer from "simple-peer";
 import { connectPeers, addPeer as newPeer } from "../store/actions/socket";
 import { socket } from "./GlobalSocketContext";
 export const env = process.env.REACT_APP_ENV || "dev";
+const turnUri = process.env.REACT_APP_TURN_URI;
 const peerOptions = {
   config: {
     iceServers: [
+      { urls: "stun:stun.l.google.com:19302" },
+      { urls: "stun:global.stun.twilio.com:3478?transport=udp" },
       {
-        urls: ["turn:44.193.11.0:3478?transport=tcp"],
+        urls: [turnUri],
         username: "engage",
         credential: "engage",
       },
