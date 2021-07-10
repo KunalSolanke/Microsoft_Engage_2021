@@ -22,9 +22,9 @@ services:
       - REACT_APP_ENV=production
       - REACT_APP_BACKEND=1
 
-voulumes:
-  - build
-  - node_modules
+volumes:
+  build:
+  node_modules:
 networks:
   default:
     external:

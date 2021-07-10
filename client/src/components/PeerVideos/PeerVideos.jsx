@@ -4,7 +4,6 @@ import CallVideo from '../CallVideo/CallVideo'
 import { SocketContext } from '../../context/GlobalSocketContext'
 // import useSelectors from '../../hooks/useSelector'
 import { useSelector } from 'react-redux'
-import UserVideo from '../CallVideo/UserVideo'
 import VideoControls from '../VideoControls/VideoControls'
 import TopBar from "./TopBar"
 
