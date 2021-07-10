@@ -4,8 +4,17 @@ import { useSelector } from 'react-redux';
 import "./_style.css"
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
+/**
+ * Messge message component is used to show the 
+ * 1-1 chat or team chat message
+ * @component
+ */
 function Message({message}) {
    const me = useSelector(state => state.auth.userID)
+   /**
+    * Render the user profile based on users image or 
+    * author
+    */
    const renderUserProfile = ()=>{
        if(me==message.author._id)return null;
        let user= message.author;

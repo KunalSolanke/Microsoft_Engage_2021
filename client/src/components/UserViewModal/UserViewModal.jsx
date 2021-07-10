@@ -8,10 +8,17 @@ import "./_style.css"
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import {setNotification} from "../../store/actions/auth"
-
+/**
+ * UserviewModal
+ * after search,either call or add user to contact
+ * @component
+ */
 function UserViewModal({user,open,setmodelopen}) {
     const history = useHistory();
     const dispatch = useDispatch()
+    /**
+     * React query mutattion:Add user to contact
+     */
     const mutation = useMutation(addContact,{
         onSuccess:(data,variables,context)=>{
               dispatch(setNotification("Success","new user has been succesfully added","success"))
@@ -23,6 +30,7 @@ function UserViewModal({user,open,setmodelopen}) {
     });
 
     const context = useContext(SocketContext);
+    /**Calling the selected user */
     const onCall = (e)=>{
         context.callUser({user});
     }

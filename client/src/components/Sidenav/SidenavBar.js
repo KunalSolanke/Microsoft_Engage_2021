@@ -13,14 +13,16 @@ import {
   Video20,
   Group20,
   Dashboard16,
-  CalendarHeatMap20,
-  CalendarSettings20,
-  CalendarTools20,
   Calendar20,
   ChatLaunch20,
 } from "@carbon/icons-react";
 import { useHistory } from "react-router-dom";
 
+/**
+ * SideNav
+ * sidenav bar for dashboard
+ * @component
+ */
 function SidenavBar({ isSideNavExpanded, onClickSideNavExpand }) {
   const history = useHistory();
   return (

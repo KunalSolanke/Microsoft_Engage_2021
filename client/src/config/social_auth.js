@@ -1,4 +1,7 @@
 import { env } from "../http/api";
+/**
+ * Social login configurations
+ */
 const google = {
   clientId: "414598802816-c314i7pb50poh5hgcpvq2donan9hotfq.apps.googleusercontent.com",
   cookiePolicy: "single_host_origin",

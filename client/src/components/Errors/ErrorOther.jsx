@@ -1,6 +1,11 @@
 import { ErrorEmptyState } from '@carbon/ibm-cloud-cognitive/lib/components'
 import React from 'react'
 
+
+/**
+ * Catch all the other errors inside error boundry
+ * @component
+ */
 function ErrorOther() {
     return (
         <div>

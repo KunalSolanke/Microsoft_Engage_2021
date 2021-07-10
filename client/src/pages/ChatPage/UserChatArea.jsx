@@ -2,7 +2,11 @@ import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux';
 import BotMessage from '../../components/Message/BotMessage';
 import Message from '../../components/Message/Message'
-
+/**
+ * UserChatArea
+ * show curr chat messages
+ * @component
+ */
 function UserChatArea({HI}) {
     const messageEl= useRef(null);
     const messages= useSelector(state => state.socket.currMessages)

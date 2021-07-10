@@ -6,21 +6,41 @@ import config from "../../config/social_auth"
 import "./_styles.css"
 import {useDispatch} from "react-redux"
 import { socialAuth } from "../../store/actions/auth";
+
+
+/**
+ * Social auth
+ * Handle social auth from google|outlook|github
+ * @component
+ */
 function SocialAuth() {
     const dispatch = useDispatch();
+
+    /**
+     * Get reponse from azure and send it to social tuh api
+     * @param {*} err 
+     * @param {*} data 
+     */
     const azureAuthHandler =async (err, data) => {
         console.log(err, data);
         let token = JSON.stringify({access_token: data?.idToken?.rawIdToken})
         await dispatch(socialAuth(token,"microsoft"))
     };
  
-
+    /**
+     * Get reponse from github and send it to social tuh api
+     * @param {*} response
+     */
     const onGithubSuccess = async (response) => {
        console.log(response);
     
        await dispatch(socialAuth(response,"github"))
     }
     const onFailure = (response) => console.error(response);
+    /**
+     * Get reponse from google and send it to social tuh api
+     * @param {*} response
+     */
     const responseGoogle = async (response) => {
         console.log(response);
         let token = getToken(response)

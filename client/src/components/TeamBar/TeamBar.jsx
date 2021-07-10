@@ -6,9 +6,18 @@ import TeamChannelTile from './TeamChannelTile';
 import "./_styles.css"
 import { useHistory } from 'react-router-dom';
 
+/**
+ * Teambar component
+ * Sidebar of teams page
+ * @component
+ */
 function TeamBar({team,setOpen}) {
     const data = team?.channels||null;
     const history = useHistory()
+    
+    /**
+     * list the team channel tiles of current team
+     */
     const getTilesArea = ()=>{
         
         if(data&&data.length){
@@ -31,6 +40,8 @@ function TeamBar({team,setOpen}) {
             )
         }
     }
+
+
     return (
         <div style={{"height":"100%"}} className="chatbar teamsbar">
          <p style={{padding:"1rem",cursor:"pointer"}} onClick={()=>history.push("/dashboard/teams")}>Teams</p>

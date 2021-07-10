@@ -3,6 +3,10 @@ import React, { useContext } from 'react'
 import { SocketContext } from '../../context/GlobalSocketContext'
 import "./_style.css"
 
+/**
+ * Incoming call tile.
+ * This component pops up when there is a call 
+ */
 function IncomingCall({user}) {
     const context = useContext(SocketContext)
     return (

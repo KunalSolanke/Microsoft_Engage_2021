@@ -3,7 +3,17 @@ import React from 'react'
 import "./_style.css"
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
+/**
+ * Channel message component is used to show the 
+ * message inside team channel
+ * @component
+ */
+
 function ChannelMessage({message}) {
+    /**
+    * Render the user profile based on users image or 
+    * author
+    */
     const renderUserProfile = ()=>{
        let user= message.author;
        if(user&&user.image)return (

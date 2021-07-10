@@ -22,6 +22,12 @@ const props = () => ({
 });
 
 
+/**
+ * SearchPage
+ * Search users based on query and display them in a list
+ * @component
+ */
+
 function SearchPage() {
     const [searchValue, setsearchValue] = useState("")
     const debouncedQuery = useDebounce(searchValue,500)

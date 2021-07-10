@@ -1,6 +1,20 @@
 import { connectToAllUsers, handleUserJoined } from "../../context/peers";
 import * as actionTypes from "../constants/socket";
 import { setNotification } from "../actions/auth";
+/**
+ * Add new peer to global peers array,
+ * add get stream listener and add stream to peerStreams array
+ * @param {*} peerObj
+ * peerObj is of form {
+ *    muted:false,
+ *    user;{}
+ *    videoPaused:false,
+ *    peer:Peer object
+ *    peerID:userID
+ *    userOnDeck:boolean if user is on main deck
+ *    isPinned: boolean if user is pinned
+ * }
+ */
 export const addPeer = (peerObj) => {
   return async (dispatch, getState) => {
     try {
@@ -38,6 +52,21 @@ export const addPeer = (peerObj) => {
   };
 };
 
+/**
+ * Add peers to global peers array just after joinng the metting,
+ * add get stream listener and add stream to peerStreams array
+ * @param {*} peers
+ * peers is array with elements  of form {
+ *    muted:false,
+ *    user;{}
+ *    videoPaused:false,
+ *    peer:Peer object
+ *    peerID:userID
+ *    userOnDeck:boolean if user is on main deck
+ *    isPinned: boolean if user is pinned
+ * }
+ */
+
 export const connectPeers = (peers) => {
   return async (dispatch, getState) => {
     try {
@@ -47,6 +76,7 @@ export const connectPeers = (peers) => {
           payload: peerObj,
         });
         if (!peerObj.peer.destroyed) {
+          /**Listen to stream listener form peer */
           peerObj.peer.on("stream", (stream) => {
             dispatch({
               type: actionTypes.SET_PEER_STREAM,
@@ -70,6 +100,13 @@ export const connectPeers = (peers) => {
   };
 };
 
+/**
+ * Redux addMessage action,
+ * add getCurrent message and add new message to currMessage | unsessnMessages socket state
+ * based on current chatId
+ * @param {*} message
+ */
+
 export const newMessage = (message) => {
   return async (dispatch, getState) => {
     let unseenMessages = getState().socket.unseenMessages;
@@ -90,6 +127,11 @@ export const newMessage = (message) => {
   };
 };
 
+/**
+ * Set currMessage equal to message on join new chat
+ * @param {Array} messages
+ */
+
 export const prevMessages = (messages) => {
   return async (dispatch, getState) => {
     dispatch({
@@ -99,6 +141,11 @@ export const prevMessages = (messages) => {
   };
 };
 
+/**
+ * handle user left the meet
+ * find user by peerID remove from peers and peerStreams socket state
+ * @param {string} peerID
+ */
 export const peerLeft = (peerID) => {
   return async (dispatch, getState) => {
     try {
@@ -121,6 +168,7 @@ export const peerLeft = (peerID) => {
   };
 };
 
+/**set current chat on click on /joining new chat */
 export const setChat = (chatID) => {
   return async (dispatch) => {
     try {
@@ -156,6 +204,11 @@ export const resetMEET = () => {
     });
 };
 
+/**
+ * handle user left meet
+ * get currentUser stream and cameraStream and stop its track
+ * se socket state to default socket state
+ */
 export const leftMeet = () => {
   return async (dispatch, getState) => {
     try {
@@ -184,6 +237,12 @@ export const leftMeet = () => {
   };
 };
 
+/**
+ * set global userVideoStream:MediaStream to stream
+ * @param {MediaStream} stream
+ * Also replace stream from my peers/peerstreams array
+ * if audioTracks are not availbale(screenShare) add cameraStream's audio track
+ */
 const setUserVideo = (stream) => {
   return async (dispatch, getState) => {
     try {
@@ -222,6 +281,12 @@ const setUserVideo = (stream) => {
   };
 };
 
+/**
+ * Get user screen stream and replace video track of ecah of the
+ * peers and peerstream with screen share stream track
+ * @param {MediaStream} stream
+ * set user stream to screenShare stream
+ */
 export const startShare = (stream) => {
   return async (dispatch, getState) => {
     try {
@@ -238,6 +303,12 @@ export const startShare = (stream) => {
         peer.replaceTrack(track, videoTrack, peer.streams[0]);
       }
 
+      /**
+       * on scren share end
+       * replace video track from each of the peers/peerStrams to
+       * videoTrack from cameraStream
+       * set user stream to cameraStream
+       */
       videoTrack.onended = () => {
         dispatch({
           type: actionTypes.SET_SCREEN,
@@ -262,6 +333,12 @@ export const startShare = (stream) => {
     }
   };
 };
+/**
+ * handle stop screen share button
+ * replace video track from each of the peers/peerStrams to
+ * videoTrack from cameraStream
+ * set user stream to cameraStream
+ */
 
 export const stopShare = () => {
   return async (dispatch, getState) => {
@@ -290,6 +367,11 @@ export const stopShare = () => {
   };
 };
 
+/**
+ * On join meet handle making peer connection to users
+ * @param {*} data   users arary and chat/meetID
+ * @param {*} peersRef
+ */
 export const connectAlPeers = ({ users, chatID }, peersRef) => {
   return async (dispatch, getState) => {
     try {
@@ -308,7 +390,11 @@ export const connectAlPeers = ({ users, chatID }, peersRef) => {
     }
   };
 };
-
+/**
+ * Add new peer joined in meet to global peers array and get its stream
+ * @param {*} payload
+ * @param {*} peersRef
+ */
 export const addNewPeer = (payload, peersRef) => {
   return async (dispatch, getState) => {
     try {
@@ -327,6 +413,11 @@ export const addNewPeer = (payload, peersRef) => {
   };
 };
 
+/**
+ * handle pin user
+ * find peer with userID,and set isPinned:true,useronDeck:true ,false for rest
+ * @param {*} userID user to pin
+ */
 export const pinUser = (userID) => {
   return async (dispatch, getState) => {
     try {
@@ -350,6 +441,12 @@ export const pinUser = (userID) => {
   };
 };
 
+/**
+ * handle unpin user
+ * find peer with userID,and set isPinned:false,useronDeck:false;
+ * set userDeckon true for deckCount :sokcet.deck_limit(2) no. of peers
+ * @param {*} userID user to unpin
+ */
 export const unPinUser = (userID) => {
   return async (dispatch, getState) => {
     try {
@@ -386,6 +483,12 @@ export const unPinUser = (userID) => {
   };
 };
 
+/**
+ * handle add user todeck
+ * set isPinned false is pinned and
+ * set userOnDeck true for peer with userID
+ * @param {*} userID  user to add
+ */
 export const addUsertoDeck = (userID) => {
   return async (dispatch, getState) => {
     try {
@@ -420,6 +523,12 @@ export const addUsertoDeck = (userID) => {
   };
 };
 
+/**
+ * handle change in audio or video state of the peer
+ * if peerchanged is current user broacast set metdia state to whole meeting
+ * change mediaValues of user in peers and peerStreams array
+ * @param {*} userID  user to add
+ */
 export const setmediaState = (mediaState, peerID, socket = null, meetID = null) => {
   return async (dispatch, getState) => {
     try {
@@ -456,6 +565,12 @@ export const setmediaState = (mediaState, peerID, socket = null, meetID = null) 
     }
   };
 };
+
+/**
+ * On entring meet add currentUser stream to peers array and peerStreams array
+ * setChat and setMeet variables
+ * @param {MediaStream} stream
+ */
 
 export const enterMeeting = (stream) => {
   return async (dispatch, getState) => {

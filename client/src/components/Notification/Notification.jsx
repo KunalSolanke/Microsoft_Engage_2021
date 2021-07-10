@@ -8,6 +8,14 @@ const notificationProps = () => ({
   statusIconDescription:"notification",
 });
 
+/**
+ * Notification 
+ * Displays notification componet on top right whenever global state open is 
+ * set to true
+ * @component
+ * 
+ */
+
 function NotificationHelper() {
     const dispatch = useDispatch()
     const handleClose = ()=>{

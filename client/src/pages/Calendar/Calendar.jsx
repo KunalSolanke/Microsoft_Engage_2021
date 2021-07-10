@@ -16,6 +16,12 @@ import LocalLoading from '../../components/Loading/LocalLoading';
 import useFetchActivity from '../../hooks/useFetchActivity';
 import { useSelector } from 'react-redux';
 
+/**
+ * Calendar page component
+ * display user activities
+ * @component
+ */
+
 function Calendar() {
      let [currentMonth, setCurrentMonth] = useState(
     startOfMonth(new Date())

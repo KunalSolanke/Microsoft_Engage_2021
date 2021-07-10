@@ -8,6 +8,10 @@ const props = () => ({
     'Loading data...'
 });
 
+/**
+ * Loading component
+ * @component
+ */
 function LocalLoading() {
     return (
         <div style={{display:"grid",placeItems:"center",width:"100%",height:"100%",marginLeft:"1rem"}}>

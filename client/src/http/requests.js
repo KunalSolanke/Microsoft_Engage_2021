@@ -1,12 +1,22 @@
 import axios from "axios";
 import apiInstance from "./api";
 import store from "../store";
-
+/**
+ * Sets authorization token in axio
+ * @param {string} token Optional token param
+ */
 export const setAuthToken = (token = null) => {
   if (!token) token = store.getState().auth.token;
   apiInstance.defaults.headers["Authorization"] = `Token ${token}`;
   return token;
 };
+
+/**
+ * Get request handler
+ * @param {string} url url to send get request to
+ * @param {string} token authorization token
+ * @param {boolean} secure is protect route
+ */
 
 const getRequest = async (url, token = null, secure = true) => {
   if (secure) token = setAuthToken(token);
@@ -22,6 +32,12 @@ const getRequest = async (url, token = null, secure = true) => {
     throw new Error("Something went wrong");
   }
 };
+/**
+ * post request handler
+ * @param {string} url url to send get request to
+ * @param {string} token authorization token
+ * @param {boolean} secure is protect route
+ */
 const postRequest = async (url, data, token = null, secure = true) => {
   if (secure) token = setAuthToken((token = token));
   if (secure && !token) {
@@ -37,6 +53,10 @@ const postRequest = async (url, data, token = null, secure = true) => {
   }
 };
 
+/**
+ *
+ *List of endpoints begins using aside auth inside application
+ */
 export const findUsers = async (search) => await getRequest("/users/find?search=" + search);
 export const createMeet = async (is_group, data = {}) =>
   await postRequest("/meet/create", { is_group, ...data });

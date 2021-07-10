@@ -3,6 +3,10 @@ import HomeLayout from '../../layouts/HomeLayout'
 import { LightboxMediaViewer } from '@carbon/ibmdotcom-react';
 import ldImag from "../../assets/images/about_us.jpg"
 import { useHistory } from 'react-router-dom';
+/**
+ * About page component
+ * @component
+ */
 function AboutPage() {
     const [open, setopen] = useState(true)
     const history = useHistory();

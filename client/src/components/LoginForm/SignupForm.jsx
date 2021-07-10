@@ -11,7 +11,11 @@ const InvalidPasswordProps = {
     invalidText:
         'Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number.',
     };
-
+/**
+ * Sign form component handles sign form submit
+ * @component
+ * 
+ */
 function SignUpForm() {
      const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -21,6 +25,9 @@ function SignUpForm() {
     const auth = useSelector(state=>state.auth)
     const [userData, setuserData] = useState({email:"",password:"",username:""});
     const history = useHistory();
+    /**
+     * Set and unset local loading based on the status of login
+     */
     const handleSubmit=async (e)=>{
         setAriaLive('asserative');
         setIsSubmitting(true)
@@ -36,6 +43,9 @@ function SignUpForm() {
             setAriaLive('off');
             }, 1000);
     }
+    /**
+     * Redirect user if he is already logged in 
+     */
     useEffect(()=>{
        if(auth.token!=null){
            history.push("/dashboard")

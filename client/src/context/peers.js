@@ -3,6 +3,9 @@ import { connectPeers, addPeer as newPeer } from "../store/actions/socket";
 import { socket } from "./GlobalSocketContext";
 export const env = process.env.REACT_APP_ENV || "dev";
 const turnUri = process.env.REACT_APP_TURN_URI;
+/**
+ * Peer connection options
+ */
 const peerOptions = {
   config: {
     iceServers: [
@@ -17,6 +20,12 @@ const peerOptions = {
   },
 };
 
+/**
+ * Create new peer,and signal it current userStream from camera
+ * @param {signal} userTosignal
+ * @param {object} caller
+ * @param {MediaStream} stream
+ */
 const createPeer = (userTosignal, caller, stream) => {
   const peer = new Peer({
     initiator: true,
@@ -32,6 +41,15 @@ const createPeer = (userTosignal, caller, stream) => {
   return peer;
 };
 
+/**
+ * Handle coonecting to all the users inside meet,on joinng the meet
+ * @param {Array} users
+ * @param {Function} dispatch
+ * @param {Array} peersRef
+ * @param {MediaStream} stream
+ * @param {string} userID
+ * Create peer connecting with each of users and saves their stream inside global state
+ */
 const connectToAllUsers = (users, dispatch, peersRef, stream, userID) => {
   console.log(userID);
   const peers = [];
@@ -56,6 +74,13 @@ const connectToAllUsers = (users, dispatch, peersRef, stream, userID) => {
   dispatch(connectPeers(peers));
 };
 
+/**
+ * Handle new user joining the meeting
+ * @param {Object} incomingSignal
+ * @param {Object} callerID
+ * @param {MediaStream} stream currUserstream
+ * create new peer and add new stream
+ */
 const addPeer = (incomingSignal, callerID, stream) => {
   const peer = new Peer({
     initiator: false,
@@ -69,6 +94,14 @@ const addPeer = (incomingSignal, callerID, stream) => {
   return peer;
 };
 
+/**
+ * New user joining the ground
+ * @param {Object} payload  user data
+ * @param {Function} dispatch
+ * @param {MediaStream} stream MediaStream
+ * @param {string} userID currentUserID
+ * @param {Array} peersRef allpeers
+ */
 const handleUserJoined = (payload, dispatch, stream, userID, peersRef) => {
   if (payload.id != userID) {
     let peer = addPeer(payload.signal, payload.id, stream);

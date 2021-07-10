@@ -7,6 +7,11 @@ import { SocketContext } from '../../context/GlobalSocketContext';
 import { pinUser, unPinUser } from '../../store/actions/socket';
 import "./_styles.css"
 
+/**
+ * This is ther user video compoent of meet page
+ * @component
+ * @param {*} peerObj
+ */
 function CallVideo({peerObj}) {
     const ref = useRef();
     const peerStream= useSelector(state => state.socket.peerStreams.find(p=>p.peerID==peerObj.peerID))
@@ -18,6 +23,10 @@ function CallVideo({peerObj}) {
       if(peerStream&&ref.current)ref.current.srcObject=peerStream.stream;
     },[peerStream])
 
+    /**
+     * Check is video stream is valid or not
+     * by active trakcs and mediaState object of peer
+     */
     const checkVideo = ()=>{
         return (peerStream&&peerStream.stream&&
             peerStream.stream.active
@@ -26,6 +35,10 @@ function CallVideo({peerObj}) {
         )
     }
 
+    /**
+     * Check is audio stream is valid or not
+     * by active trakcs and mediaState object of peer
+     */
     const checkAudio = ()=>{
         
         return (peerStream&&peerStream.stream&&
@@ -36,11 +49,18 @@ function CallVideo({peerObj}) {
 
     }
     const dispatch = useDispatch()
+    /**
+     * check if user has proper image or not
+     */
     const checkUser = ()=>{
         return (
             peerObj&&peerObj.user&&peerObj.user.image
         );
     }
+
+    /**
+     * user gizmos :pin unpin user
+     */
     const pinPeer = ()=>{
         dispatch(pinUser(peerObj.peerID))
     }
@@ -53,6 +73,12 @@ function CallVideo({peerObj}) {
         else pinPeer()
 
     }
+    /**
+     * set scale of userVideo based on the status of
+     * peer
+     * depending on if userBar is open or not,or if user
+     * is pinned or not
+     */
     let colLg = ()=>{
         if(peerObj.isPinned&&userDeckopen)return 12;
         else if(peerObj.isPinned)return 14;

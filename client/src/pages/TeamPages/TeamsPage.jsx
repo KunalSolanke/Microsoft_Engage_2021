@@ -11,6 +11,12 @@ import useFetchTeams from '../../hooks/useFetchMyTeams'
 import TeamCard from './TeamCard'
 import LocalLoading from '../../components/Loading/LocalLoading'
 
+/**
+ * Teams component
+ * display list of user's teams
+ * @component
+ */
+
 function TeamsPage() {
     const token = useSelector(state => state.auth.token)
     const {data,isLoading,error,refetch} = useFetchTeams(token);

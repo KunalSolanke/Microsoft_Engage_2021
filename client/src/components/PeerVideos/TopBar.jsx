@@ -16,17 +16,25 @@ const Arrow = ({ text, className }) => {
 
 const ArrowLeft = Arrow({ text: '<', className: 'arrow-prev' });
 const ArrowRight = Arrow({ text: '>', className: 'arrow-next' });
+
+/**
+ * Topbar
+ * Top horizontal area meeting
+ * @component
+ */
 function TopBar({topPeers}) {
     const topCards = topPeers.map(peerObj=>(
             <TopCard peerObj={peerObj} key={peerObj.peerID}/>
         ))
     const dispatch = useDispatch()
+    /**Toggle user top bar */
     const handleClick=()=>{
       dispatch({
         type:actionTypes.TOGGLE_DECK
       })
     }
     const userDeckOn =useSelector(state=>state.socket.userDeckOn)
+
     return (
         <div style={{padding:"0rem 1rem"}}>
           <div onClick={()=>{

@@ -1,7 +1,11 @@
 import React from "react";
 
 import LayoutNav from "./LayoutNav";
-
+/**
+ * Dashboard base interface
+ * @component
+ * Dashbboard navbar,and basic styles
+ */
 function DashboardLayout(props) {
   return (
     <>

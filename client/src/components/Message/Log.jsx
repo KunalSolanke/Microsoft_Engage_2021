@@ -2,7 +2,10 @@ import { Activity16 } from '@carbon/icons-react';
 import React from 'react'
 import "./_style.css"
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
-
+/**
+ * Log component show user activity log
+ * @component
+ */
 function Log({log}) {
     return (
         <div className="activity__message__wrapper">

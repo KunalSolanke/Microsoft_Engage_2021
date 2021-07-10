@@ -6,7 +6,11 @@ import { SocketContext } from '../../context/GlobalSocketContext';
 import { setmediaState } from '../../store/actions/socket';
 import * as actionTypes from "../../store/constants/socket"
 import "./_style.css"
-
+/**
+ * VideoControls
+ * Display user video chat gizmos inside meet
+ * @component
+ */
 
 function VideoControls() {
     const mediaState = useSelector(state => state.socket.mediaState)
@@ -17,49 +21,53 @@ function VideoControls() {
     const dispatch = useDispatch()
     const userID = useSelector(state=>state.auth.userID);
     const history = useHistory()
-
+    /**start video */
     const handleVideoOff = (e)=>{
        if(userVideoStream)userVideoStream.getVideoTracks()[0].enabled=true;
         dispatch(setmediaState({videoPaused:false},userID,context.socket,meetID))
     }
-
+    /**stop video */
     const handleVideoOn =()=>{
         if(userVideoStream)userVideoStream.getVideoTracks()[0].enabled=false;
        dispatch(setmediaState({videoPaused:true},userID,context.socket,meetID))
     }
+    /**stop audio */
     const handleAudioOn = (e)=>{
         if(userVideoStream&&
         userVideoStream.getAudioTracks()[0])userVideoStream.getAudioTracks()[0].enabled=false;  
         dispatch(setmediaState({muted:true},userID,context.socket,meetID))
     }
+    /**start audio */
     const handleAudioOff = (e)=>{
         if(userVideoStream
           &&userVideoStream.getAudioTracks()[0])userVideoStream.getAudioTracks()[0].enabled=true;
         dispatch(setmediaState({muted:false},userID,context.socket,meetID))
     }
-    
+    /**stop screen */
     const handleScreenOn = (e)=>{
         context.stopScreenShare();
       
     }
+   /**start screen */
     const handleScreenOff = (e)=>{
         context.startScreenShare()
     }
+    /**share link to users */
     const shareLink = (e)=>{
          prompt(
     "Copy this link and send it to people you want to meet with",
     window.location.href
   );
     }
-
+    /**open meetpeople sidebar */
     const openPeople = (e)=>{dispatch({
         type:actionTypes.PEOPLE_ACTIVE
     })}
-
+   /**open chat sidebar */
     const openChat = (e)=>{dispatch({
         type:actionTypes.CHAT_ACTIVE
     })}
-   
+   /**exit meet */
     const leaveMeet = (e)=>{
        history.push("/dashboard")
     }

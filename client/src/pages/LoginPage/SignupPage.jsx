@@ -5,6 +5,10 @@ import {Link} from "react-router-dom"
 import SignUpForm from '../../components/LoginForm/SignupForm';
 import AuthBanner from "../../assets/images/login.jpg"
 import "./_style.css"
+/**
+ *Login page component
+ * @component
+ */
 function SignUpPage() {
     return(
         <HomeLayout>

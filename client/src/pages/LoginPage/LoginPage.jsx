@@ -6,6 +6,12 @@ import {Link} from "react-router-dom"
 import LoginForm from '../../components/LoginForm/LoginForm';
 import AuthBanner from "../../assets/images/login.jpg"
 import "./_style.css"
+
+/**
+ *Login page component
+ * @component
+ */
+
 function LoginPage() {
     return(
         <HomeLayout>

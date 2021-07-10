@@ -25,6 +25,10 @@ const SocketContext = createContext();
 
 const socket = io(baseURL, { autoConnect: false });
 
+/**
+ * @object
+ * user video capture constraints
+ */
 const videoConstraints = {
   height: window.innerHeight,
   width: window.innerWidth,
@@ -32,6 +36,11 @@ const videoConstraints = {
   facingMode: "user",
 };
 
+/**
+ * Context for all socket related events throght the application
+ * @compoent
+ *
+ */
 const ContextProvider = ({ children }) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -39,13 +48,17 @@ const ContextProvider = ({ children }) => {
   const meet = useSelector((state) => state.socket.meet);
   const currentChat = useSelector((state) => state.socket.chatID);
 
-  //==== Socket State =================================
+  /**  Socket state */
   const [CallData, setCallData] = useState({ isReceived: false });
   const [CallAccepted, setCallAccepted] = useState(false);
   const [callTo, setcallTo] = useState(null);
   const [callAboarted, setcallAboarted] = useState(false);
   const peersRef = useRef([]);
 
+  /**
+   * Function that recieve incoming call and sets current call data
+   * @param {*} param
+   */
   const handleIncomingCall = ({ call_from, meetID }) => {
     console.log("Incoming call .... ");
     setCallData({
@@ -55,20 +68,43 @@ const ContextProvider = ({ children }) => {
     });
   };
 
+  /**
+   * On connecting to a chat,get all the prev messages and set inside global state
+   * @param {Array} messages
+   *
+   */
+
   const handlePrevMessages = (messages) => {
     console.log("Saving prev messages...", messages);
     dispatch(prevMessages(messages));
   };
 
+  /**
+   * Handles new message socket event and add new message in global state
+   * @param {} message
+   */
   const handleNewMessage = (message) => {
     console.log("Saved new message ", message);
     dispatch(newMessage(message));
   };
+
+  /**
+   * Resets all the call state to default with 1-1 call in aborted
+   */
   const handleCallEnded = () => {
     setCallData({ isReceived: false });
     setcallTo(null);
     setCallAccepted(false);
   };
+
+  /**
+   * List all the socket events to listen to
+   * incoming call : Show incoming call tile
+   * callaborted ; reset call state
+   * callaccepted: redirect to meeting area
+   * prev message : fetch all previous message of current chat
+   * new message : set new message with corresponding chatID
+   */
 
   useEffect(() => {
     if (auth.profile && !socket.connected) {
@@ -81,6 +117,7 @@ const ContextProvider = ({ children }) => {
       socket.on("new_message", handleNewMessage);
       socket.on("call_ended", handleCallEnded);
       return () => {
+        /** remove event listeners to avoid multiple connections */
         socket.removeAllListeners("incoming_call");
         socket.removeAllListeners("callaccepted");
         socket.removeAllListeners("prev_messages");
@@ -91,6 +128,9 @@ const ContextProvider = ({ children }) => {
     }
   }, [auth.profile]);
 
+  /**
+   * If auth state fails try to refresh the token once before logging user out
+   */
   useEffect(() => {
     if (!auth.token) {
       dispatch(authCheckState(history));
@@ -98,7 +138,12 @@ const ContextProvider = ({ children }) => {
   }, [auth.token]);
 
   //======================== CALLING USER =========================================
-
+  /**
+   * Make call to user,which triggers incoming call for call-to user
+   * Create new meeting with two users
+   * @param {*} {user} user to call to
+   * @param {*} data if chatId is avaiblabe use same chat inside meet
+   */
   const callUser = async ({ user }, data = {}) => {
     setcallTo(user);
     let meet = await createMeet(false, { ...data, userID: user._id });
@@ -109,6 +154,9 @@ const ContextProvider = ({ children }) => {
     history.push("/dashboard/calluser");
   };
 
+  /**
+   * Answer incoming call and sends back callaccepted event to callee
+   */
   const answerCall = () => {
     console.log("Answering incoming call....");
     setCallAccepted(true);
@@ -116,12 +164,15 @@ const ContextProvider = ({ children }) => {
     history.push(`/dashboard/meet/${CallData.meetID}`);
   };
 
+  /**Rejects incoming call and sends back callrejected event to callee */
+
   const rejectCall = () => {
     console.log("Rejeceing incoming call.....");
     socket.emit("rejectcall", { meetID: CallData.meetID, userID: CallData.call_from._id });
     setCallData({ isReceived: false });
   };
 
+  /** End call started by current user */
   const endCall = () => {
     console.log("Ending current call....");
     socket.emit("end_call", callTo._id);
@@ -130,12 +181,20 @@ const ContextProvider = ({ children }) => {
     history.push("/dashboard");
   };
 
+  /** event handler for call accepted,
+   * if person being called accepts,redirect to
+   * meet area
+   */
   const handleCallAccepted = (meetID) => {
     console.log("Call accepted....");
     setCallAccepted(true);
     history.push(`/dashboard/meet/${meetID}`);
   };
 
+  /**
+   * reset meet status aborting the call
+   * @param {*} meetID
+   */
   const handleCallAboart = (meetID) => {
     console.log("Call aboarted...");
     setcallAboarted(true);
@@ -144,6 +203,12 @@ const ContextProvider = ({ children }) => {
     setCallAccepted(false);
   };
 
+  /**
+   * Handle sending message to socket room using global chatId variable
+   * @param {} message
+   * @param {object} reply_to
+   */
+
   const sendMessage = (message, reply_to = null) => {
     let isMeet = meet != null;
     socket.emit("new_message", { chatID: currentChat, content: message, isMeet, meet, reply_to });
@@ -151,12 +216,14 @@ const ContextProvider = ({ children }) => {
 
   //================================= VIDEO CALL ==================================
 
+  /** reset all state to default,handles end call inside meeting */
   const leftMeet = (peerID) => {
     console.log("user left chat", peerID);
     peersRef.current = peersRef.current.filter((p) => p.peerID != peerID);
     dispatch(peerLeft(peerID));
   };
 
+  /** Simple peer event,handle received signal back from the peer initially signalled */
   const receiveSignalBack = (payload) => {
     console.log("Receive signal back", payload);
     const peerRef = peersRef.current.findIndex((p) => p.peerID === payload.id);
@@ -173,6 +240,15 @@ const ContextProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Start video call,get userStream and connect to meeting
+   * @param {string} meetID
+   * substribe to event on join meet,
+   * users_in_meet : get list of users inside meet
+   * user_joined : get new user joined data
+   * left_meet : get user who left meet
+   * change_media_state : get change in media state of peer {audio,video}
+   */
   const initializeVideoCall = (meetID) => {
     navigator.mediaDevices.getUserMedia =
       navigator.mediaDevices.getUserMedia ||
@@ -203,6 +279,7 @@ const ContextProvider = ({ children }) => {
   };
 
   //=========================== START SCREEN SHARE ==================
+  /**Initiate screen share */
   const startScreenShare = () => {
     navigator.mediaDevices
       .getDisplayMedia({
@@ -219,6 +296,11 @@ const ContextProvider = ({ children }) => {
   };
 
   //=========================== GROUP MEET ====================================
+
+  /**Creating group meet api
+   * @param {string} chatID
+   *
+   */
   const groupMeet = async (chatID) => {
     let meet = await createMeet(true, { chatID });
     socket.emit("create_group_meet", { meetID: meet._id, chatID });
@@ -226,6 +308,10 @@ const ContextProvider = ({ children }) => {
     history.push("/dashboard/meet/" + meet._id);
   };
 
+  /**
+   * Function that resets the component state,unsubsribes to all the events
+   * inside intializeMeet on leaving the meet
+   */
   const reinitialize = () => {
     socket.removeAllListeners("receive_signal_back");
     socket.removeAllListeners("left_meet");
@@ -246,6 +332,9 @@ const ContextProvider = ({ children }) => {
     if (meet) reinitialize();
   };
 
+  /**
+   * Provide all the above function to rest to app
+   */
   return (
     <SocketContext.Provider
       value={{

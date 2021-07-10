@@ -4,6 +4,12 @@ import { useHistory } from 'react-router-dom';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
 import "./_style.css"
+
+/**
+ * Bot message component is used to show the 
+ * meet started messages or similar messages
+ * @component
+ */
 function BotMessage({message}) {
     const history=useHistory()
     return (

@@ -6,6 +6,12 @@ import { SocketContext } from '../../context/GlobalSocketContext'
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
 import "./_style.css"
 
+/**
+ * Create call component
+ * Calling user page.
+ * @component
+ */
+
 function CreateCall() {
     const context = useContext(SocketContext)
     const render = ()=>{

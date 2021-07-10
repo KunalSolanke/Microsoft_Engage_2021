@@ -8,6 +8,8 @@ import { UserAvatar16 } from '@carbon/icons-react';
 
 import { updateProfile } from '../../store/actions/auth';
 const {prefix} = settings
+
+
 const fileUploader= () => {
     return {
       labelTitle:  'Upload image',
@@ -22,6 +24,7 @@ const fileUploader= () => {
       iconDescription: "Upload imge"
     };
 }
+
 const TextAreaProps = () => ({
   labelText: 'Group description ',
   placeholder: 'Placeholder text.',
@@ -29,6 +32,13 @@ const TextAreaProps = () => ({
   cols:50,
   rows: 4,
 });
+
+/**
+ * Setting page
+ * show profile update form
+ * @component
+ */
+
 function Settings() {
   const [isSubmitting, setIsSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);

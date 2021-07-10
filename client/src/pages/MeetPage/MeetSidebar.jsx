@@ -4,6 +4,11 @@ import { useSelector } from 'react-redux'
 import MeetChat from '../../components/MeetChat/MeetChat'
 import MeetPeople from '../../components/MeetPeople/MeetPeople'
 
+/**
+ * MeetSidebar
+ * display chat/people sidebar based on global state
+ * @component
+ */
 function MeetSidebar() {
     const isChatActive = useSelector(state=>state.socket.isChatActive)
     const isPeopleActive = useSelector(state=>state.socket.isPeopleActive)

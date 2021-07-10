@@ -11,6 +11,11 @@ import NavigationPrompt from "react-router-navigation-prompt";
 import "./_style.css"
 import LeaveMeet from '../../components/LeaveMeet/LeaveMeet'
 
+/**
+ * Meet page component
+ * Show all the users inside meet
+ * @component
+ */
 function MeetPage() {
     const context = useContext(SocketContext)
     const {meetID} = useParams()
@@ -20,6 +25,11 @@ function MeetPage() {
     e.preventDefault()
     e.returnValue = ''
   }
+
+  /**Inctialize meet on load
+   * add onleave eventlistners to cleanup state
+   * after leaving meet
+   */
     
     useEffect(() => {
         if(auth.profile)context.initializeVideoCall(meetID)

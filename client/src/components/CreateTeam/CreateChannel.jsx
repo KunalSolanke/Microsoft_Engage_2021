@@ -16,11 +16,22 @@ const TextAreaProps = () => ({
   rows: 4,
 });
 
+/**
+ * Create channel modal;
+ * this component create teams using create channel api
+ * @component
+ */
+
+
 
 function CreateChannel({open,setOpen,refetch,teamID}) {
     const [teamName, setteamName] = useState("")
     const [desc,setdesc] = useState("")
     const dispatch = useDispatch()
+    /**
+     * React query mutation :
+     * sends post request to create channel api
+     */
     const mutation = useMutation(createChannel,{
         onSuccess:(data,variables,context)=>{
             refetch()

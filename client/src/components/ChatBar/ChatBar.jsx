@@ -9,6 +9,10 @@ import "./_styles.css"
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
+/**
+ * React-fetcher to fetch the user contacts
+ * @param {string} token 
+ */
 const useFetchChats= (token)=>{
     const {data,isLoading,error,refetch} = useQuery("getContacts",()=>getMyContacts(token=token), {
   refetchOnWindowFocus: true,
@@ -17,7 +21,11 @@ const useFetchChats= (token)=>{
     return {data,isLoading,error,refetch}
 }
 
-
+/**
+ * ChatBar component list all the contacts of user
+ * chatPage
+ * @component
+ */
 function ChatBar() {
     const token = useSelector(state => state.auth.token)
     const {data,isLoading,error,refetch} = useFetchChats(token);

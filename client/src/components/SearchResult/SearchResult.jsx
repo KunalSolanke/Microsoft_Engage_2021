@@ -4,6 +4,12 @@ import React, { useState } from 'react'
 import { SocketContext } from '../../context/GlobalSocketContext'
 import "./_style.css"
 
+/**
+ * Serach peers component
+ * Serached users with debounced query
+ * are listed here
+ * @component
+ */
 export default function SearchResult({user,setuser,setmodelopen}) {
     
     const openUserModel = (e)=>{ 

@@ -7,6 +7,12 @@ import { SocketContext } from '../../context/GlobalSocketContext';
 import { addUsertoDeck } from '../../store/actions/socket';
 import "./_styles.css"
 
+/**
+ *Topbar card component,when some is pinned or deck is full users are listed
+ in the topBase
+ @component 
+ *
+ */
 function TopCard({peerObj}) {
     const ref = useRef();
     const peerStream= useSelector(state => state.socket.peerStreams.find(p=>p.peerID==peerObj.peerID))

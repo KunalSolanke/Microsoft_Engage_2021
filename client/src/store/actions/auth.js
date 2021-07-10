@@ -53,6 +53,10 @@ export const updateProfileSuccess = (data) => {
   };
 };
 
+/**
+ * Update the authState,if current session
+ *  expires,try tp get new token before logging out
+ */
 export const authUpdateState = () => {
   return async (dispatch, getState) => {
     try {
@@ -68,6 +72,11 @@ export const authUpdateState = () => {
   };
 };
 
+/**
+ * check if auth is still valid,by trying to refresh
+ * the token with resfresh token api
+ * @param {*} history
+ */
 export const authCheckState = (history) => {
   return async (dispatch, getState) => {
     try {
@@ -84,6 +93,11 @@ export const authCheckState = (history) => {
   };
 };
 
+/**
+ * Logout user and setcurrent refresh token null
+ * logout api
+ * and refirect user to landing page
+ */
 export const logout = () => {
   return async (dispatch, getState) => {
     console.log("hree");
@@ -107,6 +121,11 @@ export const logout = () => {
   };
 };
 
+/**
+ * Wait till auth token expiry and try to refesh to auth token
+ * send notification to logged in
+ * @param {string} ms
+ */
 let wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 export const checkauthtimeout = (expiry) => {
   return async (dispatch, getState) => {
@@ -127,7 +146,10 @@ export const checkauthtimeout = (expiry) => {
     }
   };
 };
-
+/**
+ * Get current user profile with auth token from
+ * profile endpoint
+ */
 export const getProfile = () => {
   return async (dispatch, getState) => {
     dispatch(getProfileRequest());
@@ -147,6 +169,11 @@ export const getProfile = () => {
     }
   };
 };
+
+/**
+ * Update profile request with changed data
+ * @param {*} data
+ */
 
 export const updateProfile = (data) => {
   console.log("entering here");
@@ -171,6 +198,10 @@ export const updateProfile = (data) => {
   };
 };
 
+/**
+ * call login endpoint with user creds
+ * @param {*} creds email and password
+ */
 export const authLogin = ({ password, email }) => {
   return async (dispatch, getState) => {
     await dispatch(authStart());
@@ -190,6 +221,10 @@ export const authLogin = ({ password, email }) => {
   };
 };
 
+/**
+ * Post signup endpoint
+ * @param {*} userdata signup user with user data
+ */
 export const authRegister = ({ username, email, password }) => {
   return async (dispatch, getState) => {
     await dispatch(authStart());
@@ -219,6 +254,11 @@ export const authRegister = ({ username, email, password }) => {
   };
 };
 
+/**
+ * handle social auth endpoint ,login user using google,outlook,github
+ * @param {*} data accestokens
+ * @param {*} provider google | outlook | github
+ */
 export const socialAuth = (data, provider) => {
   return async (dispatch, getState) => {
     await dispatch(authStart());
@@ -238,6 +278,13 @@ export const socialAuth = (data, provider) => {
     }
   };
 };
+
+/**
+ * Set new notification ,handles error ,waringin and info notificatios
+ * @param {sting} title title of not tile
+ * @param {string} message subtitle of not. tile
+ * @param {string} kind info | info-square | error | success | warning
+ */
 
 export const setNotification = (title, message, kind = "error") => {
   return async (dispatch, getState) => {

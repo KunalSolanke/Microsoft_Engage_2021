@@ -13,6 +13,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import useFetchChat from '../../hooks/useFetchChat'
 import HI from "../../assets/images/Hi.png"
 
+/**
+ * Chat page component
+ * show invidual chat page
+ * @component
+ */
 
 function UserChatPage(props) {
     const context = useContext(SocketContext)
@@ -20,6 +25,7 @@ function UserChatPage(props) {
     const dispatch = useDispatch()
     const token = useSelector(state => state.auth.token)
     const {data,isLoading,error,refetch}=useFetchChat(chatID);
+    /**Join chat  */
     useEffect(()=>{
         context.socket.emit("join_chat",chatID)
         dispatch({
@@ -28,6 +34,7 @@ function UserChatPage(props) {
         })
         if(token)refetch(chatID);
     },[chatID,token])
+
     useEffect(()=>{
         context.socket.emit("join_chat",chatID)
     },[])

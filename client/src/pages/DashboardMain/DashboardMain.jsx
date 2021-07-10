@@ -8,7 +8,10 @@ import group from "../../assets/images/group.jpg"
 import vChat from "../../assets/images/video_chat.jpg"
 import { useHistory } from 'react-router-dom'
 
-
+/**
+ *Dashboard main area
+ * @component
+ */
 function DashboardMain() {
     const history = useHistory()
     return (

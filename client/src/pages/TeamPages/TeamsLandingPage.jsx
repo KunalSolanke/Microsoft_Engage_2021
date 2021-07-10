@@ -15,6 +15,10 @@ import CreateChannel from '../../components/CreateTeam/CreateChannel'
 import { setNotification } from '../../store/actions/auth'
 
 
+/**
+ * TeamLanding Page
+ * @component
+ */
 
 function TeamsLandingPage(props) {
     const context = useContext(SocketContext)

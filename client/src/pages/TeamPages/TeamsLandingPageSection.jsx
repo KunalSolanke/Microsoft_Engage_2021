@@ -3,6 +3,12 @@ import React from 'react'
 import channelImage from "../../assets/images/channels.svg"
 import teamsImage from "../../assets/images/teams.svg"
 
+/**
+ *TeamLanding page main area
+ * Create channel and invite user ctas
+ * @component
+ */
+
 function TeamsLandingPageSection({setOpen}) {
      const shareLink = (e)=>{
          prompt(

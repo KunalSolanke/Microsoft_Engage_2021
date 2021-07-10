@@ -5,7 +5,11 @@ import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
 import chatImage from "../../assets/images/chat.jpg"
 import "./_styles.css"
 import { useHistory } from 'react-router-dom'
-
+/**
+ * Chat landing page component
+ * show list of all chat
+ * @component
+ */
 function ChatLanding() {
     const history=useHistory()
     return (

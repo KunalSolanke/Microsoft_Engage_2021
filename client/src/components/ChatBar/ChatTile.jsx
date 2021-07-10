@@ -3,6 +3,10 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import {useHistory, useParams} from "react-router-dom"
 
+/**
+ * This component displays each contact of current user
+ * @component
+ */
 function ChatTile(props) {
     const history = useHistory()
     const {chatID} = useParams()

@@ -2,6 +2,10 @@ import React, { useState } from 'react'
 import { LightboxMediaViewer } from '@carbon/ibmdotcom-react';
 import ldImag from "../../assets/images/c_us.png"
 import { useHistory } from 'react-router-dom';
+/**
+ * Contact page component
+ * @component
+ */
 function ContactPage() {
     const [open, setopen] = useState(true)
     const history = useHistory()

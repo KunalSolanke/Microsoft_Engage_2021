@@ -16,6 +16,11 @@ import TeamChatArea from './TeamChatArea'
 import HI from "../../assets/images/team.webp"
 import LocalLoading from '../../components/Loading/LocalLoading'
 
+/**
+ * TeamChannel
+ * Team channel chat area
+ * @component
+ */
 
 function TeamChatPage(props) {
     const context = useContext(SocketContext)
@@ -23,6 +28,9 @@ function TeamChatPage(props) {
     const dispatch = useDispatch()
     const token = useSelector(state => state.auth.token)
     const {data,isLoading,error,refetch}=useFetchChannel(channelID);
+
+    /** Join chat on mount or channelId change */
+
     useEffect(()=>{
         context.socket.emit("join_chat",channelID)
         dispatch({
@@ -34,6 +42,8 @@ function TeamChatPage(props) {
      useEffect(()=>{
         context.socket.emit("join_chat",channelID)
     },[])
+
+    /** Start group call */
     const makeCall = ()=>{
         context.groupMeet(channelID)
     }

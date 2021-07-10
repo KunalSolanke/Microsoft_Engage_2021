@@ -22,18 +22,29 @@ import IncomingCall from "../../components/IncomingCall/IncomingCall";
 import { SocketContext } from "../../context/GlobalSocketContext";
 import NotificationHelper from "../../components/Notification/Notification";
 
+/**
+ * Navigation dashboard area
+ * @component
+ */
+
 function LayoutNav(props) {
      const token = useSelector((state) => state.auth.token);
     const dispatch = useDispatch();
+    /**
+     * set sidenavigation bar open state
+     */
     const [isSideNavExpanded, setisSideNavExpanded] = useState(false);
     const onClickSideNavExpand = () => {
         setisSideNavExpanded((prev) => !prev);
     };
     const history = useHistory();
+
     const context = useContext(SocketContext);
     const style = {
         height: "100%",
     };
+
+    /** send logout request */
     const handleLogout = ()=>{
       dispatch(logout());
       history.push("/")

@@ -19,9 +19,11 @@ import store from "./store";
 //     // We recommend adjusting this value in production
 //     tracesSampleRate: 1.0,
 // });
+
 if (process.env.REACT_APP_ENV != "dev") {
   window.console.log = () => {};
 }
+/** Subscribing to redux store  */
 ReactDOM.render(
   <Provider store={store}>
     <App />

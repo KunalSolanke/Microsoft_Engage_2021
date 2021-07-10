@@ -2,6 +2,11 @@ import { ArrowRight16 } from '@carbon/icons-react'
 import React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
+/**
+ * Teamcard
+ * individual team card
+ * @component
+ */
 function TeamCard({card}) {
     const history = useHistory()
     return (

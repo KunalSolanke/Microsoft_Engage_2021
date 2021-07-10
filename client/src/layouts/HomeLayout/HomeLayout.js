@@ -16,6 +16,11 @@ import {
 import { useHistory } from "react-router-dom";
 import NotificationHelper from "../../components/Notification/Notification";
 
+/**
+ * Landing base interface
+ * @component
+ * Landing navbar,and basic styles
+ */
 function HomeLayout(props) {
   const history = useHistory();
   return (

@@ -6,14 +6,21 @@ import SendMessage from '../SendMessage/SendMessage'
 import * as actionTypes from "../../store/constants/socket"
 import "./_style.css"
 
+/**
+ * Meeting chat area component
+ * renders the side meeting chat bar in met
+ * @component
+ */
 function MeetChat() {
    const messageEl= useRef(null);
     const messages= useSelector(state => state.socket.currMessages)
     const dispatch = useDispatch()
+    /**Scroll to bottom listener */
     const scrollBottom =  event => {
         const { currentTarget: target } = event;
         target.scroll({ top: target.scrollHeight, behavior: 'smooth' });
       }
+    /**On new message scroll to bottom  */
     useEffect(() => {
         if (messageEl) {
          messageEl.current?.addEventListener('DOMNodeInserted',scrollBottom);

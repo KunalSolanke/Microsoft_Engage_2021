@@ -10,6 +10,11 @@ import vLiveImg from "../../assets/images/vlive.png"
 import { useHistory } from 'react-router-dom'
 import { Desktop, Pattern, Touch } from '@carbon/pictograms-react';
 
+/**
+ *Landing main area
+ * @component
+ */
+
 const pictogramitems=[
          {
             heading:"Connect",

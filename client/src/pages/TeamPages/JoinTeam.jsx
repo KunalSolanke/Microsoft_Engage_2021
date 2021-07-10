@@ -10,6 +10,13 @@ import "./_styles.css"
 import { joinTeam } from '../../http/requests'
 import { setNotification } from '../../store/actions/auth'
 
+
+/**
+ * Join team
+ * Show join team cta
+ * @component
+ */
+
 function JoinTeam() {
     const {teamID} = useParams();
     const token = useSelector(state => state.auth.token)

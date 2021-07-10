@@ -21,11 +21,20 @@ const TextAreaProps = () => ({
 });
 
 
+/**
+ * Create team modal;
+ * this component create teams using create team api
+ * @component
+ */
+
 function CreateTeam({open,setOpen,refetch}) {
      // Get QueryClient from the context
     const queryClient = useQueryClient()
     const [teamName, setteamName] = useState("")
     const [desc,setdesc] = useState("")
+    /**
+     * search users to be added to team and add them inside the team users list
+     */
     const [users, setusers]= useState([]);
     const remove = (user)=>{
         setusers(users=>{
@@ -37,6 +46,11 @@ function CreateTeam({open,setOpen,refetch}) {
     const debouncedQuery = useDebounce(searchValue,500)
     const {results,error,isLoading} = useFetchUsers(debouncedQuery)
     const dispatch = useDispatch()
+
+    /**
+     * React query mutation :
+     * sends post request to create team api
+     */
     const mutation = useMutation(createTeam,{
         onSuccess:(data,variables,context)=>{
             refetch()
@@ -46,6 +60,10 @@ function CreateTeam({open,setOpen,refetch}) {
             dispatch(setNotification("Error","Couldn't not create new team"))
         }
     });
+
+    /**
+     * Submit create team
+     */
     const handleCreateTeam = ()=>{
         let data={
             channel_name:teamName,

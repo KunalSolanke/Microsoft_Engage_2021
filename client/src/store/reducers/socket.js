@@ -1,6 +1,9 @@
 import * as actionTypes from "../constants/socket";
 import { UpdatedObj } from "../UpdateObj";
 
+/**
+ * socket intial state
+ */
 const intialState = {
   unseenMessages: [],
   peers: [],
@@ -31,6 +34,11 @@ const prevMessages = (state, action) => {
   });
 };
 
+/**
+ * add new peer ,is someone is pinned add new user to deck
+ * @param {*} state
+ * @param {*} action
+ */
 const addPeer = (state, action) => {
   let peers = state.peers;
   let peer = peers.findIndex((p) => p.peerID == action.payload.peerID);
@@ -66,6 +74,11 @@ const peerLeft = (state, action) => {
   });
 };
 
+/**
+ * set stream of new user ,if peer already exist replace the stream
+ * @param {*} state
+ * @param {*} action
+ */
 const setPeerStream = (state, action) => {
   let connectedPeerStreams = state.peerStreams;
   console.log(state);
@@ -85,6 +98,11 @@ const removePeerStream = (state, action) => {
   return UpdatedObj(state, { peerStreams });
 };
 
+/**
+ * Link all the action of socket
+ * @param {*} state
+ * @param {*} action
+ */
 const reducer = (state = intialState, action) => {
   switch (action.type) {
     case actionTypes.NEW_MESSAGE:

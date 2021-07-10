@@ -5,6 +5,11 @@ import * as actionTypes from "../../store/constants/socket"
 import People from './People'
 import "./_style.css"
 
+/**
+ * Meeting peoples area component
+ * renders the side meeting people bar and give people inside the met
+ * @component
+ */
 function MeetPeople() {
     const peers= useSelector(state => state.socket.peers)
     const dispatch = useDispatch()

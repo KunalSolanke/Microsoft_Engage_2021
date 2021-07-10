@@ -3,6 +3,12 @@ import React from 'react'
 
 import {useHistory, useParams} from "react-router-dom"
 
+/**
+ *TeamChannelTile
+ Displays all the channels inside given meet
+ @component
+
+ */
 function TeamChannelTile({channel}) {
     const history = useHistory()
     const {channelID} = useParams()

@@ -23,6 +23,10 @@ import Error404 from "./components/Errors/Error404";
 import { ErrorBoundary } from "carbon-components-react";
 import ErrorOther from "./components/Errors/ErrorOther";
 
+/** 
+ Dasboard urls
+  @component
+**/
 const DashBoardRoutes = () => (
   <ContextProvider>
     <Switch>
@@ -44,6 +48,10 @@ const DashBoardRoutes = () => (
   </ContextProvider>
 );
 
+/**
+ * Componet for routing to different pages
+ * @component
+ */
 const Router = () => {
   console.log("Starting app");
   return (

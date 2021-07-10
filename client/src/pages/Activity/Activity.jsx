@@ -8,6 +8,11 @@ import useFetchActivity from '../../hooks/useFetchActivity'
 import { useSelector } from 'react-redux'
 import Log from '../../components/Message/Log'
 
+/**
+ * Activity page component
+ * Display user feed
+ * @component
+ */
 function Activity() {
     const {data,isLoading,error,refetch}=useFetchActivity();
     const token = useSelector(state => state.auth.token)

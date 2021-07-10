@@ -1,5 +1,9 @@
 import React from "react";
-
+/**
+ * Debounce the search query to provide better ux
+ * @param {*} value value that is to be debounced
+ * @param {} delay by how much the value should be debounced
+ */
 export default function useDebounce(value, delay = 1000) {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
 

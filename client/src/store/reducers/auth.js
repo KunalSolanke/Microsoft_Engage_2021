@@ -1,6 +1,8 @@
 import * as actionTypes from "../constants/auth";
 import { UpdatedObj } from "../UpdateObj";
-
+/**
+ * intial auth state
+ */
 const initialState = {
   error: null,
   loading: false,
@@ -24,6 +26,11 @@ const authStart = (state, action) => {
   });
 };
 
+/**
+ * set auth user on success and loading to false
+ * @param {*} state
+ * @param {*} action
+ */
 const authSucces = (state, action) => {
   console.log("in authsuccess action", action.payload);
   return UpdatedObj(state, {
@@ -83,6 +90,11 @@ const authLogout = (state, action) => {
   });
 };
 
+/**
+ * Link all the auth action
+ * @param {*} state
+ * @param {*} action
+ */
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.AUTH_START:

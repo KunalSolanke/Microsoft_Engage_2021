@@ -1,5 +1,10 @@
 import React from 'react'
 import {HTTPError404 } from "@carbon/ibm-cloud-cognitive"
+
+/**
+ * Error 404 component
+ * @component
+ */
 function Error404() {
     return (
         <HTTPError404

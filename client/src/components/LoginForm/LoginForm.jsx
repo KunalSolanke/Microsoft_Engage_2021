@@ -10,8 +10,13 @@ const InvalidPasswordProps = {
     invalid:false,
     invalidText:
         'Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number.',
-    };
+};
 
+/**
+ * Login form component handles login form submit
+ * @component
+ * 
+ */
 
 function LoginForm() {
      const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,6 +27,9 @@ function LoginForm() {
     const auth = useSelector(state=>state.auth)
     const [userData, setuserData] = useState({email:"",password:""});
     const history = useHistory();
+    /**
+     * Set and unset local loading based on the status of login
+     */
     const handleSubmit=async (e)=>{
         setAriaLive('asserative');
         setIsSubmitting(true)

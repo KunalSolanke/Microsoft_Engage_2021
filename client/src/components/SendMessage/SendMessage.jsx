@@ -10,6 +10,12 @@ const TextInputProps= () => ({
     hideLabel: true,
     id:"sine-id"
   })
+
+/**
+ * Send new message inside the currentChar(global state)
+ * user context to send socket event
+ * @component
+ */
 function SendMessage({light}) {
     const context = useContext(SocketContext)
     const [text, settext] = useState("")

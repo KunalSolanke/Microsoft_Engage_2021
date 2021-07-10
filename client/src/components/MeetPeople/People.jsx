@@ -3,6 +3,11 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import "./_style.css"
 
+/**
+ * Person tile componet
+ * renders person inside the meeting
+ *@component
+ */
 function People(props) {
    const me = useSelector(state => state.auth.userID)
    const renderUserProfile = ()=>{

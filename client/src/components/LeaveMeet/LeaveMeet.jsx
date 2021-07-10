@@ -3,6 +3,12 @@ import React from 'react'
 import { useContext } from 'react'
 import { SocketContext } from '../../context/GlobalSocketContext'
 
+/**
+ * Leave meet confirmation popup
+ * rendered when user tries to leave meet
+ * @component
+ */
+
 function LeaveMeet({onCancel,onConfirm}) {
     const context = useContext(SocketContext)
     const handleConfirm = ()=>{
