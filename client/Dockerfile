@@ -2,7 +2,8 @@ FROM node:12.13.0-alpine
 
 WORKDIR /app
 # for caching optimisations
-COPY package.json /
+COPY package.json ./
+RUN mkdir -p /app/build
 RUN yarn install
 # required to serve the react app on the live server
 RUN yarn global add serve

@@ -24,6 +24,7 @@ services:
       - redis
     volumes:
       - .:/code
+      - node_modules:/code/node_modules
     command: sh -c "/entrypoint"
     environment:
       - MONGO_URI=mongodb://mongodb_engage2021:27017/engage2021
@@ -46,6 +47,7 @@ services:
 
 volumes:
   dbdata:
+  node_modules:
 
 networks:
   default:

@@ -2,7 +2,7 @@ FROM node:12.13.0-alpine
 WORKDIR /code
 
 RUN mkdir -p /code/node_modules
-COPY package.json .
+COPY package.json ./
 
 #Setup
 RUN yarn install

@@ -9,16 +9,22 @@ services:
       - 3000
     volumes:
       - ".:/app:rw"
-    command: serve build
+      - node_modules:/app/node_modules
+      - build:/app/build
+    command: serve
     env_file:
       - .env
     environment:
-      - VIRTUAL_HOST=connect_engage.voldemort.wtf
+      - VIRTUAL_HOST=connect-engage.voldemort.wtf
       - VIRTUAL_PORT=3000
       - LETSENCRYPT_HOST=connect-engage.voldemort.wtf
       - LETSENCRYPT_EMAIL=kunalsolanke1000@gmail.com
       - REACT_APP_ENV=production
       - REACT_APP_BACKEND=1
+
+voulumes:
+  - build
+  - node_modules
 networks:
   default:
     external:

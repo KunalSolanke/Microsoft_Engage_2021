@@ -76,9 +76,9 @@ export const newMessage = (message) => {
     let currMessages = getState().socket.currMessages;
     if (message.chat != getState().socket.chatID) {
       unseenMessages = [...unseenMessages, message];
+      dispatch(setNotification("New message", "You received new message", "info-square"));
     } else {
       currMessages = [...currMessages, message];
-      dispatch(setNotification("New message", "You received new message", "info-square"));
     }
     dispatch({
       type: actionTypes.NEW_MESSAGE,
