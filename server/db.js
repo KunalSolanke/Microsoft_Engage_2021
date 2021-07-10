@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
-
+/**
+ * @memberof db
+ * @name connnect_to_db
+ * Create database connection with mongoose db
+ * @function
+ */
 const configure_db = () => {
   mongoose.connect(process.env.MONGO_URI, {
     useCreateIndex: true,

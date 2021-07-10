@@ -42,116 +42,6 @@
 
 
 
-    <section>
-        <article><h1>Nodejs boilerplate</h1>
-<pre><code> This is just another nodejs boilerplate with docker and eslint configuration to make dev easier .
-</code></pre>
-<img align="center" src="./landing.png"/>
-<h2>Skeleton</h2>
-<p>Here is the basic suggested skeleton for your app repo that each of the starter templates conforms to:</p>
-<pre class="prettyprint source lang-bash"><code>├── public(html file)
-├── src
-    ├──components(add your components here)
-│   ├── layouts(add yours layout here)
-│   └── pages(add yours pages here)
-    └── routes(add all yours routes here)
-├── README.md
-├── node_modules
-├── Dockerfile
-├── docker_compose.yaml
-├── package.json
-├── yarn.lock(if using yarn)
-└── .gitignore
-</code></pre>
-<blockquote>
-<p>If you are using multer to save files on disc,configure it to save files inside pulblic&gt;upload folder</p>
-</blockquote>
-<h2>Dev Setup</h2>
-<blockquote>
-<p>NOTE : Dockerfiles for react are mostly build in regards of production builds, in dev you don't need to use docker if you want coz react itlsef uses a lot of compoute resourdces</p>
-</blockquote>
-<p>The docker files and environment variables are configured to be spin up mongo db inside one docker container and your applications inside another container.If you want to learn docker here is full <a href="">tutorial</a></p>
-<blockquote>
-<p>NOTE : Please do not remove the environment the variables already present inside the env file</p>
-</blockquote>
-<pre class="prettyprint source lang-bash"><code>  #To start the containers
-  docker-compose up
-  #Stop containers in diff terminal than docker
-  docker-compose --volumes down
-  #build docker images
-  docker-compose up --build #if there are changes in installed deps
-  #faster builds
-  COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build
-  #windows
-  set &quot;COMPOSE_DOCKER_CLI_BUILD=1&quot; & set &quot;DOCKER_BUILDKIT=1&quot; & docker-compose build
-  # or to make this permanent add following to docker daemon /etc/docker/daemon.json
-  { &quot;features&quot;: { &quot;buildkit&quot;: true } }
-</code></pre>
-<p><strong>Withour docker</strong></p>
-<pre class="prettyprint source lang-bash"><code>yarn add/npm install
-yarn start #start the server
-#remove landing page designs if you want
-</code></pre>
-<p><strong>Helpers:</strong></p>
-<ol>
-<li>Remove dangling images: <code>docker rmi $(docker images -f dangling=true -q ) -f</code></li>
-<li>Remove all volumes: <code>docker volume rm $(docker volume ls -q)</code></li>
-</ol>
-<h2>Editor Setup</h2>
-<p>If you're using Visual Studio Code, you can install the ESLint extension, which
-will automatically highlight warnings and errors using this boilerplate.</p>
-<ol>
-<li>Press <strong>Ctrl + Shift + X</strong> or click the <strong>Extensions</strong> button</li>
-<li>Search for <strong>ESLint</strong> and <strong>Prettier(to format your code)</strong></li>
-<li>Click the <strong>Install</strong> button next to the <strong>ESLint</strong> search result</li>
-</ol>
-<p>With this extension, you can also choose to automatically fix/format your code
-when you save. Add the following to your Visual Studio Code settings.</p>
-<pre class="prettyprint source"><code>&quot;eslint.autoFixOnSave&quot;: true
-&quot;editor.formatOnSave&quot;: true,
-</code></pre>
-<p>This setting only takes effect if <code>files.autoSave</code> is set to <code>off</code>,
-<code>onFocusChange</code>, or <code>onWindowChange</code>.</p>
-<h1>Getting Started with Create React App</h1>
-<p>This project was bootstrapped with <a href="https://github.com/facebook/create-react-app">Create React App</a>.</p>
-<h2>Available Scripts</h2>
-<p>In the project directory, you can run:</p>
-<h3><code>yarn start</code></h3>
-<p>Runs the app in the development mode.<br>
-Open <a href="http://localhost:3000">http://localhost:3000</a> to view it in the browser.</p>
-<p>The page will reload if you make edits.<br>
-You will also see any lint errors in the console.</p>
-<h3><code>yarn test</code></h3>
-<p>Launches the test runner in the interactive watch mode.<br>
-See the section about <a href="https://facebook.github.io/create-react-app/docs/running-tests">running tests</a> for more information.</p>
-<h3><code>yarn build</code></h3>
-<p>Builds the app for production to the <code>build</code> folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.</p>
-<p>The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!</p>
-<p>See the section about <a href="https://facebook.github.io/create-react-app/docs/deployment">deployment</a> for more information.</p>
-<h3><code>yarn eject</code></h3>
-<p><strong>Note: this is a one-way operation. Once you <code>eject</code>, you can’t go back!</strong></p>
-<p>If you aren’t satisfied with the build tool and configuration choices, you can <code>eject</code> at any time. This command will remove the single build dependency from your project.</p>
-<p>Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except <code>eject</code> will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.</p>
-<p>You don’t have to ever use <code>eject</code>. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.</p>
-<h2>Learn More</h2>
-<p>You can learn more in the <a href="https://facebook.github.io/create-react-app/docs/getting-started">Create React App documentation</a>.</p>
-<p>To learn React, check out the <a href="https://reactjs.org/">React documentation</a>.</p>
-<h3>Code Splitting</h3>
-<p>This section has moved here: <a href="https://facebook.github.io/create-react-app/docs/code-splitting">https://facebook.github.io/create-react-app/docs/code-splitting</a></p>
-<h3>Analyzing the Bundle Size</h3>
-<p>This section has moved here: <a href="https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size">https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size</a></p>
-<h3>Making a Progressive Web App</h3>
-<p>This section has moved here: <a href="https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app">https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app</a></p>
-<h3>Advanced Configuration</h3>
-<p>This section has moved here: <a href="https://facebook.github.io/create-react-app/docs/advanced-configuration">https://facebook.github.io/create-react-app/docs/advanced-configuration</a></p>
-<h3>Deployment</h3>
-<p>This section has moved here: <a href="https://facebook.github.io/create-react-app/docs/deployment">https://facebook.github.io/create-react-app/docs/deployment</a></p>
-<h3><code>yarn build</code> fails to minify</h3>
-<p>This section has moved here: <a href="https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify">https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify</a></p></article>
-    </section>
-
 
 
 
@@ -166,7 +56,7 @@ Your app is ready to be deployed!</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jul 10 2021 12:04:18 GMT+0530 (India Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jul 10 2021 14:50:27 GMT+0530 (India Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

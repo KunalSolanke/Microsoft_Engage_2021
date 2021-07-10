@@ -3,7 +3,9 @@ const http = require("http");
 const { setupMaster } = require("@socket.io/sticky");
 
 const WORKERS_COUNT = 4;
-
+/**
+ * Nodejs cluster
+ */
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
 

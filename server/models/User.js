@@ -68,6 +68,14 @@ const userSchema = mongoose.Schema(
 
 userSchema.set("toJSON", { getters: true, virtuals: true });
 
+/**
+ * Pre save hook user
+ * if password is modified hash it and then insert in db
+ *
+ * @name models/users/presave
+ * @inner
+ *
+ */
 userSchema.pre("save", async function (next) {
   const user = this;
   if (user.isModified("password")) {
@@ -77,6 +85,14 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+/**
+ * Generate auth token for user
+ * create auth token for current user with given expiry
+ *
+ * @name models/users/genToken
+ * @inner
+ * @param {*} expiry
+ */
 userSchema.methods.generateAuthToken = async function (expiry) {
   const user = this;
   const token = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_KEY, {
@@ -85,6 +101,15 @@ userSchema.methods.generateAuthToken = async function (expiry) {
   return token;
 };
 
+/**
+ * find user by creds
+ * find user by given email and password
+ *
+ * @name models/users/find
+ * @inner
+ * @param {*} email
+ * @param {*} password
+ */
 userSchema.statics.findByCredentials = async function (email, password) {
   const user = await this.findOne({ email });
   if (!user) {
@@ -107,6 +132,15 @@ userSchema.statics.findByCredentials = async function (email, password) {
   });
 };
 
+/**
+ * Azure user add
+ * add user profile from azure strategy
+ *
+ * @name models/users/azure_add
+ * @inner
+ * @param {*} token
+ * @param {*} cb
+ */
 userSchema.statics.upsertAzureUser = async function (token, cb) {
   console.log(token);
   var that = this;
@@ -140,6 +174,17 @@ userSchema.statics.upsertAzureUser = async function (token, cb) {
   }
 };
 
+/**
+ * Google user add
+ * add user profile from google passport streategy
+ *
+ * @name models/users/google_add
+ * @inner
+ * @param {*} accessToken
+ * @param {*} refreshToken
+ * @param {*} profile
+ * @param {*} cb
+ */
 userSchema.statics.upsertGoogleUser = async function (accessToken, refreshToken, profile, cb) {
   let emails = [];
   if (profile.emails) {
@@ -182,6 +227,17 @@ userSchema.statics.upsertGoogleUser = async function (accessToken, refreshToken,
   }
 };
 
+/**
+ * github user add
+ * add user profile from github strategy
+ *
+ * @name models/users/github_add
+ * @inner
+ * @param {*} accessToken
+ * @param {*} refreshToken
+ * @param {*} profile
+ * @param {*} cb
+ */
 userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken, profile, cb) {
   let emails = [];
   if (profile.emails) {
@@ -224,6 +280,14 @@ userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken,
   }
 };
 
+/**
+ * find user by refresh token auth
+ * @param {string} token
+ *
+ * @name models/users/findByToken
+ * @inner
+ *
+ */
 userSchema.statics.findByRefreshToken = async function (token) {
   console.log(token);
   try {

@@ -1,3 +1,8 @@
+/**
+ * Set resfresh token while sending back response
+ * @param {*} res
+ * @param {*} token
+ */
 const setResToken = (res, token) => {
   let maxAge = 7 * 24 * 60 * 60 * 1000;
   let cookieOpts = {
@@ -15,6 +20,12 @@ const setResToken = (res, token) => {
 };
 module.exports = {
   setResToken,
+  /**
+   * generate refresh token and attach to request object
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   */
   generateToken: async function (req, res, next) {
     let user = req.user;
     req.accessToken = await user.generateAuthToken("1h");
@@ -22,6 +33,11 @@ module.exports = {
 
     return next();
   },
+  /**
+   * send the refresh token with response
+   * @param {*} req
+   * @param {*} res
+   */
   sendToken: async function (req, res) {
     let user = req.user;
     res.setHeader("Cache-control", "private");

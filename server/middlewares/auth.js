@@ -1,5 +1,15 @@
 const { User } = require("../models");
 const jwt = require("jsonwebtoken");
+/**
+ * Auth middleware
+ * associate user to request
+ * @name accounts/auth/middleware
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ *
+ */
 const auth = async (req, res, next) => {
   const token = req.get("Authorization") ? req.get("Authorization").split(" ")[1] : null;
   if (token) {

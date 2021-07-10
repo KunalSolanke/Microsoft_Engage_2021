@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/meet.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/meet.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { Chat, Meet, Message, User } = require("../models");
+const { createLog } = require("../utils");
+
+/**
+ * Route serving chat
+ * Create new chat between two users
+ * return chat
+ * @name meet/contacts_add
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+const createChat = async (req, res) => {
+  try {
+    let chat = await Chat.findOne({
+      $and: [
+        { participants: req.user._id },
+        { participants: req.body.userID },
+        { participants: { $size: 2 } },
+      ],
+      is_channel: false,
+      is_group: false,
+      is_meet_chat: false,
+    })
+      .populate("messages")
+      .exec();
+    let user = await User.findById(req.body.userID);
+    createLog(req.user._id, "Started conversation with " + user.username);
+    if (!chat) chat = await Chat.create({ participants: [req.user._id, req.body.userID] });
+
+    return res.send(chat);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
+/**
+ * Route serving create meet
+ * Create new meet
+ * return meet
+ * @name meet/create
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+const createMeet = async (req, res) => {
+  try {
+    let meet = await Meet({ author: req.user, is_group: req.body.is_group });
+    let chatID = req.body.chatID;
+
+    if (!req.body.chatID) {
+      let chat = await Chat.findOne({
+        $and: [
+          { participants: req.user._id },
+          { participants: req.body.userID },
+          { participants: { $size: 2 } },
+        ],
+        is_channel: false,
+        is_group: false,
+        is_meet_chat: false,
+      });
+      if (!chat)
+        chat = await Chat.create({
+          particpants: [req.body.user._id, req.body.userID],
+        });
+      chatID = chat._id;
+    }
+
+    meet.chat = chatID;
+    await meet.save();
+    res.send(meet);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
+/**
+ * Route serving team
+ * Create new team
+ * return chat
+ * @name meet/teams_add
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+
+const createTeam = async (req, res) => {
+  let { description, channel_name, users } = req.body;
+  try {
+    users.push(req.user._id);
+    let team = await Chat.create({
+      is_group: true,
+      participants: users,
+      channel_name,
+      description,
+      created_by: req.user._id,
+    });
+    let generalChannel = await Chat.create({
+      is_channel: true,
+      channel_name: "General",
+      created_by: req.user._id,
+      description: "This is the general channel",
+    });
+    createLog(req.user._id, "Created new team " + team.channel_name);
+    team.channels.push(generalChannel._id);
+    await team.save();
+    res.send(team);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
+/**
+ * Route serving get chat
+ * get chat by chatID
+ * return chat
+ * @name meet/chat/get
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+const getChat = async (req, res) => {
+  try {
+    let chat = await Chat.findById(req.params.chatID)
+      .lean()
+      .populate("participants", "-refreshTokens");
+    res.send({
+      ...chat,
+      user: chat.participants.filter((p) => `${p._id}` != `${req.user._id}`)[0] || null,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
+/**
+ * Route serving get team
+ * Get team by ID
+ * return team
+ * @name meet/teams/get
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ * @swagger
+ */
+const getTeam = async (req, res) => {
+  try {
+    let team = await Chat.findById(req.params.teamID)
+      .lean()
+      .populate("participants", "-refreshTokens")
+      .populate("channels");
+    res.send(team);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
+/**
+ * Route serving create new channel in teams
+ * Create new channel in teams
+ * return channel obj
+ * @name meet/channels_add
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+const createChannel = async (req, res) => {
+  try {
+    let channel = await Chat.create({
+      ...req.body,
+      is_channel: true,
+    });
+    let team = await Chat.findById(req.body.team);
+    createLog(req.user._id, "Created new channel " + channel.channel_name);
+    team.channels.push(channel._id);
+    await team.save();
+    return res.send(channel);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
+/**
+ * Route serving get channel
+ * Get channel by id
+ * return channel
+ * @name meet/channel/get
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+
+const getChannel = async (req, res) => {
+  try {
+    let team = await Chat.findOne({ channels: req.params.channelID }).lean().populate("channels");
+    res.send({
+      channel: team.channels.filter((c) => c._id == req.params.channelID)[0],
+      team: team,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+/**
+ * Route serving join team
+ * @name meet/chat/get
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+const joinTeam = async (req, res) => {
+  try {
+    let team = await Chat.findById(req.params.teamID).lean();
+    team.participants.push(req.user._id);
+    createLog(req.user._id, "Joined team " + team.team_name);
+    team.save();
+    res.send(team);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
+module.exports = {
+  createChat,
+  createMeet,
+  getChat,
+  getTeam,
+  createTeam,
+  getChannel,
+  joinTeam,
+  createChannel,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">accounts/auth/middleware</a></li><li><a href="global.html">accounts/auth/middleware/isloggedin1</a></li><li><a href="global.html">accounts/auth/middleware/socket</a></li><li><a href="global.html">accounts/login</a></li><li><a href="global.html">accounts/logout</a></li><li><a href="global.html">accounts/profile</a></li><li><a href="global.html">accounts/profile/update</a></li><li><a href="global.html">accounts/referesh</a></li><li><a href="global.html">accounts/signup</a></li><li><a href="global.html#answer_call">answer_call</a></li><li><a href="global.html#call_user">call_user</a></li><li><a href="global.html#change_media_state">change_media_state</a></li><li><a href="global.html#configureAdmin">configureAdmin</a></li><li><a href="global.html#create_group_meet">create_group_meet</a></li><li><a href="global.html#disconnect_socket">disconnect_socket</a></li><li><a href="global.html#endcall">endcall</a></li><li><a href="global.html#exit_meet">exit_meet</a></li><li><a href="global.html#getLastDay">getLastDay</a></li><li><a href="global.html#join_chat">join_chat</a></li><li><a href="global.html#join_meet">join_meet</a></li><li><a href="global.html">meet/channel/get</a></li><li><a href="global.html">meet/channels_add</a></li><li><a href="global.html">meet/chat/get</a></li><li><a href="global.html">meet/contacts_add</a></li><li><a href="global.html">meet/create</a></li><li><a href="global.html">meet/teams/get</a></li><li><a href="global.html">meet/teams_add</a></li><li><a href="global.html">models/users/azure_add</a></li><li><a href="global.html">models/users/find</a></li><li><a href="global.html">models/users/findByToken</a></li><li><a href="global.html">models/users/genToken</a></li><li><a href="global.html">models/users/github_add</a></li><li><a href="global.html">models/users/google_add</a></li><li><a href="global.html">models/users/presave</a></li><li><a href="global.html#new_message">new_message</a></li><li><a href="global.html#reject_call">reject_call</a></li><li><a href="global.html#return_signal">return_signal</a></li><li><a href="global.html#setResToken">setResToken</a></li><li><a href="global.html">social/azure</a></li><li><a href="global.html">social/github</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jul 10 2021 15:15:12 GMT+0530 (India Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

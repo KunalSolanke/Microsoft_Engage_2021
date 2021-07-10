@@ -7,6 +7,12 @@ const AdminBroExpress = require("@admin-bro/express");
 const AdminBroMongoose = require("@admin-bro/mongoose");
 
 BASE_URL = process.env.BASE_URL || "project";
+/**
+ * @function
+ * @inner
+ * Admin panel configratioj
+ * add dev and prod setup of admin panel
+ */
 
 const configureAdmin = () => {
   const connection = configure_db();

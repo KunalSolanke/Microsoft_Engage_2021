@@ -4,6 +4,13 @@ var GitHubTokenStrategy = require("passport-github-token");
 const User = require("../models/User");
 const passport = require("passport");
 
+/**
+ * github social strategy
+ * helps setup github auth
+ * @name social/github
+ * @inner
+ *
+ */
 let githubStrategy = new GitHubTokenStrategy(
   {
     clientID: process.env.GITHUB_CLIENT_ID,
@@ -11,17 +18,18 @@ let githubStrategy = new GitHubTokenStrategy(
     passReqToCallback: true,
   },
   function (req, accessToken, refreshToken, profile, done) {
-    User.upsertGithubUser(
-      accessToken,
-      refreshToken,
-      profile,
-      function (err, user) {
-        return done(err, user);
-      }
-    );
+    User.upsertGithubUser(accessToken, refreshToken, profile, function (err, user) {
+      return done(err, user);
+    });
   }
 );
 
+/**
+ * azure social strategy
+ * helps setup azure outlook auth
+ * @name social/azure
+ * @inner
+ */
 let azureStrategy = new AzureAdOAuth2Strategy(
   {
     clientID: process.env.AZURE_AD_CLIENT_ID,
@@ -42,20 +50,22 @@ let azureStrategy = new AzureAdOAuth2Strategy(
   }
 );
 
+/**
+ * google social strategy
+ * helps setup google auth
+ * @name social/github
+ * @inner
+ *
+ */
 let googleStrategy = new GoogleTokenStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
   },
   function (accessToken, refreshToken, profile, done) {
-    User.upsertGoogleUser(
-      accessToken,
-      refreshToken,
-      profile,
-      function (err, user) {
-        return done(err, user);
-      }
-    );
+    User.upsertGoogleUser(accessToken, refreshToken, profile, function (err, user) {
+      return done(err, user);
+    });
   }
 );
 

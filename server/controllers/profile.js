@@ -1,6 +1,16 @@
 const Chat = require("../models/Chat");
 const User = require("../models/User");
 const Activity = require("../models/Activity");
+
+/**
+ * Route serving get user profile
+ * get users profile
+ * @name accounts/profile
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 const getProfile = async (req, res) => {
   try {
     const user = req.user;
@@ -11,6 +21,17 @@ const getProfile = async (req, res) => {
     res.status(401).send(err.message);
   }
 };
+
+/**
+ * Route serving update user profile
+ * with all fields in user model
+ * get users profile
+ * @name accounts/profile/update
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 
 const updateProfile = async (req, res) => {
   try {
@@ -28,6 +49,17 @@ const updateProfile = async (req, res) => {
     res.status(401).send(err.message);
   }
 };
+
+/**
+ * Route serving get my contacts from
+ * get users contacts
+ * return populated chat with user profiles
+ * @name accounts/profile
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 
 const getMyContacts = async (req, res) => {
   try {
@@ -52,6 +84,15 @@ const getMyContacts = async (req, res) => {
   }
 };
 
+/**
+ * Route serving get my teams
+ * return all the team I am participant in
+ * @name accounts/profile
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 const getMyTeams = async (req, res) => {
   try {
     let teams = await Chat.find({
@@ -64,10 +105,26 @@ const getMyTeams = async (req, res) => {
     res.status(400).send(err.message);
   }
 };
+
+/**
+ * retrun the last day of moth helper
+ * @param {*} month
+ * @param {*} year
+ */
 const getLastDay = function (month, year) {
   return new Date(year, month + 1, 0);
 };
 
+/**
+ * Route serving get my activity
+ * returns all the feed of user ,
+ * based on month if provided
+ * @name accounts/profile
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 const getMyLogs = async (req, res) => {
   try {
     let myLogTable;

@@ -1,6 +1,16 @@
 const { Chat, Meet, Message, User } = require("../models");
 const { createLog } = require("../utils");
 
+/**
+ * Route serving chat
+ * Create new chat between two users
+ * return chat
+ * @name meet/contacts_add
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 const createChat = async (req, res) => {
   try {
     let chat = await Chat.findOne({
@@ -26,6 +36,16 @@ const createChat = async (req, res) => {
   }
 };
 
+/**
+ * Route serving create meet
+ * Create new meet
+ * return meet
+ * @name meet/create
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 const createMeet = async (req, res) => {
   try {
     let meet = await Meet({ author: req.user, is_group: req.body.is_group });
@@ -58,6 +78,17 @@ const createMeet = async (req, res) => {
   }
 };
 
+/**
+ * Route serving team
+ * Create new team
+ * return chat
+ * @name meet/teams_add
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+
 const createTeam = async (req, res) => {
   let { description, channel_name, users } = req.body;
   try {
@@ -85,6 +116,16 @@ const createTeam = async (req, res) => {
   }
 };
 
+/**
+ * Route serving get chat
+ * get chat by chatID
+ * return chat
+ * @name meet/chat/get
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 const getChat = async (req, res) => {
   try {
     let chat = await Chat.findById(req.params.chatID)
@@ -100,6 +141,17 @@ const getChat = async (req, res) => {
   }
 };
 
+/**
+ * Route serving get team
+ * Get team by ID
+ * return team
+ * @name meet/teams/get
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ * @swagger
+ */
 const getTeam = async (req, res) => {
   try {
     let team = await Chat.findById(req.params.teamID)
@@ -113,6 +165,16 @@ const getTeam = async (req, res) => {
   }
 };
 
+/**
+ * Route serving create new channel in teams
+ * Create new channel in teams
+ * return channel obj
+ * @name meet/channels_add
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 const createChannel = async (req, res) => {
   try {
     let channel = await Chat.create({
@@ -129,6 +191,18 @@ const createChannel = async (req, res) => {
     res.status(400).send(err.message);
   }
 };
+
+/**
+ * Route serving get channel
+ * Get channel by id
+ * return channel
+ * @name meet/channel/get
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+
 const getChannel = async (req, res) => {
   try {
     let team = await Chat.findOne({ channels: req.params.channelID }).lean().populate("channels");
@@ -141,6 +215,14 @@ const getChannel = async (req, res) => {
     res.status(400).send(err.message);
   }
 };
+/**
+ * Route serving join team
+ * @name meet/chat/get
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 const joinTeam = async (req, res) => {
   try {
     let team = await Chat.findById(req.params.teamID).lean();

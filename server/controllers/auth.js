@@ -2,6 +2,16 @@ const User = require("../models/User");
 const Activity = require("../models/Activity");
 const { setResToken } = require("../utils/tokens");
 
+/**
+ * Route serving signup
+ * Return userdata and tokens
+ * @name accounts/signup
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ *
+ */
 const signup = async (req, res) => {
   const { username, email, password } = req.body;
   try {
@@ -36,6 +46,16 @@ const signup = async (req, res) => {
   }
 };
 
+/**
+ * Route serving slogin
+ * Return userdata and tokens
+ * @name accounts/login
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   console.log("email,passowrd on server are...", email, password);
@@ -61,6 +81,15 @@ const login = async (req, res) => {
   }
 };
 
+/**
+ * Route serving refresh
+ * Refersh tokens
+ * @name accounts/referesh
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 const refresh = async (req, res) => {
   try {
     let token = req.cookies["refresh_token"];
@@ -92,6 +121,15 @@ const refresh = async (req, res) => {
   }
 };
 
+/**
+ * Route serving logout
+ * Return userdata and tokens
+ * @name accounts/logout
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 const logout = async (req, res) => {
   let cookieOpts = {
     httpOnly: true,

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/auth.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/auth.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const User = require("../models/User");
+const Activity = require("../models/Activity");
+const { setResToken } = require("../utils/tokens");
+
+/**
+ * Route serving signup
+ * Return userdata and tokens
+ * @name accounts/signup
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ *
+ */
+const signup = async (req, res) => {
+  const { username, email, password } = req.body;
+  try {
+    let oldUser = await User.findOne({ email });
+    if (oldUser) {
+      throw new Error("User with email already exists");
+    }
+    const user = await User.create({
+      username: username,
+      email: email,
+    });
+    user.password = password;
+    await user.save();
+    let accessToken = await user.generateAuthToken("3d");
+    let refreshToken = await user.generateAuthToken("15d");
+    user.refreshTokens = user.refreshTokens.concat([refreshToken]);
+    await user.save();
+    res.setHeader("Cache-control", "private");
+    setResToken(res, refreshToken);
+    await Activity.create({ user: user._id, log: "Joined Connect" });
+    res.status(200).send({
+      token: accessToken,
+      username: user.username || user.fullName || user.email,
+      email: user.email,
+      expiry: 3600,
+      userID: user._id,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400);
+    res.send("Validation error.Please enter proper/new email");
+  }
+};
+
+/**
+ * Route serving slogin
+ * Return userdata and tokens
+ * @name accounts/login
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  console.log("email,passowrd on server are...", email, password);
+  try {
+    const user = await User.findByCredentials(email, password);
+    let accessToken = await user.generateAuthToken("3d");
+    let refreshToken = await user.generateAuthToken("15d");
+    user.refreshTokens = user.refreshTokens.concat([refreshToken]);
+    await user.save();
+    res.setHeader("Cache-control", "private");
+    setResToken(res, refreshToken);
+    res.status(200).send({
+      token: accessToken,
+      username: user.username || user.fullName || user.email,
+      email: user.email,
+      userID: user._id,
+      expiry: 3600,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(400);
+    res.send("Please check the credentials");
+  }
+};
+
+/**
+ * Route serving refresh
+ * Refersh tokens
+ * @name accounts/referesh
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+const refresh = async (req, res) => {
+  try {
+    let token = req.cookies["refresh_token"];
+    let user = await User.findByRefreshToken(token);
+    if (user) {
+      user.refreshTokens = user.refreshTokens.filter((t) => t != token);
+      await user.save();
+      let accessToken = await user.generateAuthToken("3d");
+      let refreshToken = await user.generateAuthToken("15d");
+      res.setHeader("Cache-control", "private");
+      setResToken(res, refreshToken);
+      user.refreshTokens = user.refreshTokens.concat([refreshToken]);
+      await user.save();
+      res.status(200).send({
+        token: accessToken,
+        expiry: 3600,
+        username: user.username || user.fullName || user.email,
+        email: user.email,
+        userID: user._id,
+      });
+    } else {
+      throw new Error("user not found");
+    }
+  } catch (err) {
+    console.log(err);
+    res.clearCookie("refresh_token");
+    res.status(400);
+    res.send("Refresh session failed,please login");
+  }
+};
+
+/**
+ * Route serving logout
+ * Return userdata and tokens
+ * @name accounts/logout
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+const logout = async (req, res) => {
+  let cookieOpts = {
+    httpOnly: true,
+    secure: true,
+  };
+  res.clearCookie("refresh_token", cookieOpts);
+  let user = req.user;
+  user.refreshTokens = user.refreshTokens.filter((t) => t != req.token);
+  await user.save();
+  res.status(200).send("User logged out");
+};
+
+module.exports = {
+  signup,
+  login,
+  logout,
+  refresh,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">accounts/auth/middleware</a></li><li><a href="global.html">accounts/auth/middleware/isloggedin1</a></li><li><a href="global.html">accounts/auth/middleware/socket</a></li><li><a href="global.html">accounts/login</a></li><li><a href="global.html">accounts/logout</a></li><li><a href="global.html">accounts/profile</a></li><li><a href="global.html">accounts/profile/update</a></li><li><a href="global.html">accounts/referesh</a></li><li><a href="global.html">accounts/signup</a></li><li><a href="global.html#answer_call">answer_call</a></li><li><a href="global.html#call_user">call_user</a></li><li><a href="global.html#change_media_state">change_media_state</a></li><li><a href="global.html#configureAdmin">configureAdmin</a></li><li><a href="global.html#create_group_meet">create_group_meet</a></li><li><a href="global.html#disconnect_socket">disconnect_socket</a></li><li><a href="global.html#endcall">endcall</a></li><li><a href="global.html#exit_meet">exit_meet</a></li><li><a href="global.html#getLastDay">getLastDay</a></li><li><a href="global.html#join_chat">join_chat</a></li><li><a href="global.html#join_meet">join_meet</a></li><li><a href="global.html">meet/channel/get</a></li><li><a href="global.html">meet/channels_add</a></li><li><a href="global.html">meet/chat/get</a></li><li><a href="global.html">meet/contacts_add</a></li><li><a href="global.html">meet/create</a></li><li><a href="global.html">meet/teams/get</a></li><li><a href="global.html">meet/teams_add</a></li><li><a href="global.html">models/users/azure_add</a></li><li><a href="global.html">models/users/find</a></li><li><a href="global.html">models/users/findByToken</a></li><li><a href="global.html">models/users/genToken</a></li><li><a href="global.html">models/users/github_add</a></li><li><a href="global.html">models/users/google_add</a></li><li><a href="global.html">models/users/presave</a></li><li><a href="global.html#new_message">new_message</a></li><li><a href="global.html#reject_call">reject_call</a></li><li><a href="global.html#return_signal">return_signal</a></li><li><a href="global.html#setResToken">setResToken</a></li><li><a href="global.html">social/azure</a></li><li><a href="global.html">social/github</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jul 10 2021 15:15:12 GMT+0530 (India Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

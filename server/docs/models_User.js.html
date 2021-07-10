@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: models/User.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: models/User.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const mongoose = require("mongoose");
+const bycrpt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+const userSchema = mongoose.Schema(
+  {
+    email: {
+      type: String,
+      unique: true,
+    },
+    image: String,
+    username: {
+      type: String,
+    },
+    fullName: {
+      type: String,
+    },
+    bio: {
+      type: String,
+    },
+    password: {
+      type: String,
+    },
+    role: {
+      type: String,
+      enum: ["admin", "member"],
+      required: true,
+      default: "member",
+    },
+    facebookProvider: {
+      type: {
+        id: String,
+        token: String,
+      },
+      select: false,
+    },
+    githubProvider: {
+      type: {
+        id: String,
+        token: String,
+      },
+      select: false,
+    },
+    azureProvider: {
+      type: {
+        id: String,
+        token: String,
+      },
+      select: false,
+    },
+    googleProvider: {
+      type: {
+        id: String,
+        token: String,
+      },
+      select: false,
+    },
+    refreshTokens: [
+      {
+        type: String,
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  }
+);
+
+userSchema.set("toJSON", { getters: true, virtuals: true });
+
+/**
+ * Pre save hook user
+ * if password is modified hash it and then insert in db
+ *
+ * @name models/users/presave
+ * @inner
+ *
+ */
+userSchema.pre("save", async function (next) {
+  const user = this;
+  if (user.isModified("password")) {
+    user.password = await bycrpt.hash(user.password, 8);
+    console.log(user.password);
+  }
+  next();
+});
+
+/**
+ * Generate auth token for user
+ * create auth token for current user with given expiry
+ *
+ * @name models/users/genToken
+ * @inner
+ * @param {*} expiry
+ */
+userSchema.methods.generateAuthToken = async function (expiry) {
+  const user = this;
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_REFRESH_KEY, {
+    expiresIn: expiry,
+  });
+  return token;
+};
+
+/**
+ * find user by creds
+ * find user by given email and password
+ *
+ * @name models/users/find
+ * @inner
+ * @param {*} email
+ * @param {*} password
+ */
+userSchema.statics.findByCredentials = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (!user) {
+    throw new Error({
+      error: {
+        message: "No user with given email",
+      },
+    });
+  }
+  console.log(user);
+  let res = await bycrpt.compare(password, user.password);
+  console.log(res);
+  if (res) {
+    return user;
+  }
+  throw new Error({
+    error: {
+      message: "Invalid Credentials",
+    },
+  });
+};
+
+/**
+ * Azure user add
+ * add user profile from azure strategy
+ *
+ * @name models/users/azure_add
+ * @inner
+ * @param {*} token
+ * @param {*} cb
+ */
+userSchema.statics.upsertAzureUser = async function (token, cb) {
+  console.log(token);
+  var that = this;
+  let user = await this.findOne({
+    "azureProvider.id": token.oid,
+  });
+
+  if (!user) {
+    user = await this.findOne({
+      email: token.preferred_username || token.email,
+    });
+  }
+  if (!user) {
+    var newUser = await new that({
+      fullName: token.name || token.preferred_username || null,
+      username: token.name || token.preferred_username || null,
+      email: token.preferred_username || token.email || null,
+      azureProvider: {
+        id: token.oid,
+      },
+    });
+
+    await newUser.save(function (error, savedUser) {
+      if (error) {
+        console.log(error);
+      }
+      return cb(error, savedUser);
+    });
+  } else {
+    return cb(null, user);
+  }
+};
+
+/**
+ * Google user add
+ * add user profile from google passport streategy
+ *
+ * @name models/users/google_add
+ * @inner
+ * @param {*} accessToken
+ * @param {*} refreshToken
+ * @param {*} profile
+ * @param {*} cb
+ */
+userSchema.statics.upsertGoogleUser = async function (accessToken, refreshToken, profile, cb) {
+  let emails = [];
+  if (profile.emails) {
+    emails = profile.emails.map((e) => e.value);
+  }
+
+  console.log(profile);
+  var that = this;
+  let user = await this.findOne({
+    "googleProvider.id": profile.id,
+  });
+
+  if (!user) {
+    user = await this.findOne({}).where("email").in(emails);
+    if (user &amp;&amp; !user.image) {
+      user.image = profile.picture || null;
+      await user.save();
+    }
+  }
+  if (!user) {
+    var newUser = new that({
+      fullName: profile.displayName || null,
+      username: profile.displayName || null,
+      email: profile.emails[0].value || profile.email || null,
+      googleProvider: {
+        id: profile.id,
+        token: accessToken,
+      },
+      image: profile.picture || null,
+    });
+
+    await newUser.save(function (error, savedUser) {
+      if (error) {
+        console.log(error);
+      }
+      return cb(error, savedUser);
+    });
+  } else {
+    return cb(null, user);
+  }
+};
+
+/**
+ * github user add
+ * add user profile from github strategy
+ *
+ * @name models/users/github_add
+ * @inner
+ * @param {*} accessToken
+ * @param {*} refreshToken
+ * @param {*} profile
+ * @param {*} cb
+ */
+userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken, profile, cb) {
+  let emails = [];
+  if (profile.emails) {
+    emails = profile.emails.map((e) => e.value);
+  }
+
+  console.log(profile);
+  var that = this;
+  let user = await this.findOne({
+    "githubProvider.id": profile.id,
+  });
+
+  if (!user) {
+    user = await this.findOne({}).where("email").in(emails);
+    if (user &amp;&amp; !user.image) {
+      user.image = profile.avatar_url || null;
+      await user.save();
+    }
+  }
+  if (!user) {
+    var newUser = new that({
+      fullName: profile.displayName || profile.username || null,
+      username: profile.displayName || profile.username || null,
+      email: profile.emails[0].value || profile.email || null,
+      githubProvider: {
+        id: profile.id,
+        token: accessToken,
+      },
+      image: profile.avatar_url || null,
+    });
+
+    await newUser.save(function (error, savedUser) {
+      if (error) {
+        console.log(error);
+      }
+      return cb(error, savedUser);
+    });
+  } else {
+    return cb(null, user);
+  }
+};
+
+/**
+ * find user by refresh token auth
+ * @param {string} token
+ *
+ * @name models/users/findByToken
+ * @inner
+ *
+ */
+userSchema.statics.findByRefreshToken = async function (token) {
+  console.log(token);
+  try {
+    let { _id } = await jwt.verify(token, process.env.JWT_REFRESH_KEY);
+    let user = await this.findById(_id);
+    if (user.refreshTokens.includes(token)) {
+      return user;
+    } else {
+      throw new Error("no User found");
+    }
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">accounts/auth/middleware</a></li><li><a href="global.html">accounts/auth/middleware/isloggedin1</a></li><li><a href="global.html">accounts/auth/middleware/socket</a></li><li><a href="global.html">accounts/login</a></li><li><a href="global.html">accounts/logout</a></li><li><a href="global.html">accounts/profile</a></li><li><a href="global.html">accounts/profile/update</a></li><li><a href="global.html">accounts/referesh</a></li><li><a href="global.html">accounts/signup</a></li><li><a href="global.html#answer_call">answer_call</a></li><li><a href="global.html#call_user">call_user</a></li><li><a href="global.html#change_media_state">change_media_state</a></li><li><a href="global.html#configureAdmin">configureAdmin</a></li><li><a href="global.html#create_group_meet">create_group_meet</a></li><li><a href="global.html#disconnect_socket">disconnect_socket</a></li><li><a href="global.html#endcall">endcall</a></li><li><a href="global.html#exit_meet">exit_meet</a></li><li><a href="global.html#getLastDay">getLastDay</a></li><li><a href="global.html#join_chat">join_chat</a></li><li><a href="global.html#join_meet">join_meet</a></li><li><a href="global.html">meet/channel/get</a></li><li><a href="global.html">meet/channels_add</a></li><li><a href="global.html">meet/chat/get</a></li><li><a href="global.html">meet/contacts_add</a></li><li><a href="global.html">meet/create</a></li><li><a href="global.html">meet/teams/get</a></li><li><a href="global.html">meet/teams_add</a></li><li><a href="global.html">models/users/azure_add</a></li><li><a href="global.html">models/users/find</a></li><li><a href="global.html">models/users/findByToken</a></li><li><a href="global.html">models/users/genToken</a></li><li><a href="global.html">models/users/github_add</a></li><li><a href="global.html">models/users/google_add</a></li><li><a href="global.html">models/users/presave</a></li><li><a href="global.html#new_message">new_message</a></li><li><a href="global.html#reject_call">reject_call</a></li><li><a href="global.html#return_signal">return_signal</a></li><li><a href="global.html#setResToken">setResToken</a></li><li><a href="global.html">social/azure</a></li><li><a href="global.html">social/github</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jul 10 2021 15:15:12 GMT+0530 (India Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

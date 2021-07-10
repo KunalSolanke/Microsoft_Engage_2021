@@ -16,7 +16,6 @@ Here is the basic suggested skeleton for your app repo that each of the starter 
 │   └── pages(add yours pages here)
     └── routes(add all yours routes here)
 ├── README.md
-├── node_modules
 ├── Dockerfile
 ├── docker_compose.yaml
 ├── package.json

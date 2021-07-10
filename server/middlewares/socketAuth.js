@@ -1,5 +1,12 @@
 const { User } = require("../models");
 const jwt = require("jsonwebtoken");
+/**
+ * Socket js auth middleware
+ * @name accounts/auth/middleware/socket
+ * @function
+ * @inner
+ *
+ */
 const auth = async (socket, next) => {
   const token = socket.handshake.auth.token;
   console.log(token);

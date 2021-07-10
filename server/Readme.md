@@ -1,4 +1,5 @@
-# Nodejs boilerplate    
+# Nodejs boilerplate
+
      This is just another nodejs boilerplate with docker and eslint configuration to make dev easier .
 
 <img align="center" src="./public/images/landing.png"/>
@@ -44,7 +45,7 @@ The docker files and environment variables are configured to be spin up mongo db
   docker-compose up
   #Stop containers in diff terminal than docker
   docker-compose --volumes down
-  #build docker images 
+  #build docker images
   docker-compose up --build #if there are changes in installed deps
   #faster builds
   COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build
@@ -55,34 +56,11 @@ The docker files and environment variables are configured to be spin up mongo db
 ```
 
 **Helpers:**
+
 1. Remove dangling images: `docker rmi $(docker images -f dangling=true -q ) -f`
 2. Remove all volumes: `docker volume rm $(docker volume ls -q)`
-
-
-
 
 **Admin panel:**
 
 <img align="center" src="./public/images/admin.png"/>
 In dev you can use any valid email  pass can be anything for login into admin panel make sure to remove those in product
-
-
-## Editor Setup
-
-If you're using Visual Studio Code, you can install the ESLint extension, which
-will automatically highlight warnings and errors using this boilerplate.
-
-1. Press **Ctrl + Shift + X** or click the **Extensions** button
-2. Search for **ESLint** and **Prettier(to format your code)**
-3. Click the **Install** button next to the **ESLint** search result
-
-With this extension, you can also choose to automatically fix/format your code
-when you save. Add the following to your Visual Studio Code settings.
-
-```
-"eslint.autoFixOnSave": true
-"editor.formatOnSave": true,
-```
-
-This setting only takes effect if `files.autoSave` is set to `off`,
-`onFocusChange`, or `onWindowChange`.

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/profile.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/profile.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Chat = require("../models/Chat");
+const User = require("../models/User");
+const Activity = require("../models/Activity");
+
+/**
+ * Route serving get user profile
+ * get users profile
+ * @name accounts/profile
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+const getProfile = async (req, res) => {
+  try {
+    const user = req.user;
+    user.refreshTokens = [];
+    res.status(200).send(user);
+  } catch (err) {
+    console.log(err.message);
+    res.status(401).send(err.message);
+  }
+};
+
+/**
+ * Route serving update user profile
+ * with all fields in user model
+ * get users profile
+ * @name accounts/profile/update
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+
+const updateProfile = async (req, res) => {
+  try {
+    let user = req.user;
+    await User.findByIdAndUpdate(user._id, req.body);
+    if (req.file) {
+      user.image = req.file.url;
+      await user.save();
+    }
+    user = await User.findById(user._id);
+    user.refreshToken = [];
+    res.status(200).send(user);
+  } catch (err) {
+    console.log(err);
+    res.status(401).send(err.message);
+  }
+};
+
+/**
+ * Route serving get my contacts from
+ * get users contacts
+ * return populated chat with user profiles
+ * @name accounts/profile
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+
+const getMyContacts = async (req, res) => {
+  try {
+    let contacts = await Chat.find({
+      participants: req.user._id,
+      is_group: false,
+      is_meet_chat: false,
+      is_channel: false,
+    })
+      .lean()
+      .populate("participants", "-refreshTokens")
+      .populate("messages")
+      .exec();
+    contacts = contacts.map((c) => ({
+      last_message: c.messages.length > 0 ? c.messages[chat.messages.length - 1] : null,
+      chat: (({ messages, ...o }) => o)(c),
+    }));
+    res.send(contacts);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
+/**
+ * Route serving get my teams
+ * return all the team I am participant in
+ * @name accounts/profile
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+const getMyTeams = async (req, res) => {
+  try {
+    let teams = await Chat.find({
+      participants: req.user._id,
+      is_group: true,
+    }).exec();
+    res.send(teams);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
+/**
+ * retrun the last day of moth helper
+ * @param {*} month
+ * @param {*} year
+ */
+const getLastDay = function (month, year) {
+  return new Date(year, month + 1, 0);
+};
+
+/**
+ * Route serving get my activity
+ * returns all the feed of user ,
+ * based on month if provided
+ * @name accounts/profile
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+const getMyLogs = async (req, res) => {
+  try {
+    let myLogTable;
+    if (req.body.start_month) {
+      let date = new Date(req.body.start_month);
+      let last_date = getLastDay(date.getMonth() + 1, date.getFullYear());
+      console.log(date, last_date);
+      myLogTable = await Activity.find({
+        user: req.user._id,
+        created_at: {
+          $gte: date.toISOString(),
+          $lte: last_date.toISOString(),
+        },
+      });
+    } else {
+      myLogTable = await Activity.find({ user: req.user._id }).sort({ created_at: 1 });
+    }
+    res.send(myLogTable);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err.message);
+  }
+};
+
+module.exports = {
+  getProfile,
+  updateProfile,
+  getMyContacts,
+  getMyTeams,
+  getMyLogs,
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">accounts/auth/middleware</a></li><li><a href="global.html">accounts/auth/middleware/isloggedin1</a></li><li><a href="global.html">accounts/auth/middleware/socket</a></li><li><a href="global.html">accounts/login</a></li><li><a href="global.html">accounts/logout</a></li><li><a href="global.html">accounts/profile</a></li><li><a href="global.html">accounts/profile/update</a></li><li><a href="global.html">accounts/referesh</a></li><li><a href="global.html">accounts/signup</a></li><li><a href="global.html#answer_call">answer_call</a></li><li><a href="global.html#call_user">call_user</a></li><li><a href="global.html#change_media_state">change_media_state</a></li><li><a href="global.html#configureAdmin">configureAdmin</a></li><li><a href="global.html#create_group_meet">create_group_meet</a></li><li><a href="global.html#disconnect_socket">disconnect_socket</a></li><li><a href="global.html#endcall">endcall</a></li><li><a href="global.html#exit_meet">exit_meet</a></li><li><a href="global.html#getLastDay">getLastDay</a></li><li><a href="global.html#join_chat">join_chat</a></li><li><a href="global.html#join_meet">join_meet</a></li><li><a href="global.html">meet/channel/get</a></li><li><a href="global.html">meet/channels_add</a></li><li><a href="global.html">meet/chat/get</a></li><li><a href="global.html">meet/contacts_add</a></li><li><a href="global.html">meet/create</a></li><li><a href="global.html">meet/teams/get</a></li><li><a href="global.html">meet/teams_add</a></li><li><a href="global.html">models/users/azure_add</a></li><li><a href="global.html">models/users/find</a></li><li><a href="global.html">models/users/findByToken</a></li><li><a href="global.html">models/users/genToken</a></li><li><a href="global.html">models/users/github_add</a></li><li><a href="global.html">models/users/google_add</a></li><li><a href="global.html">models/users/presave</a></li><li><a href="global.html#new_message">new_message</a></li><li><a href="global.html#reject_call">reject_call</a></li><li><a href="global.html#return_signal">return_signal</a></li><li><a href="global.html#setResToken">setResToken</a></li><li><a href="global.html">social/azure</a></li><li><a href="global.html">social/github</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jul 10 2021 15:15:12 GMT+0530 (India Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
