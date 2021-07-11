@@ -149,7 +149,7 @@ export const prevMessages = (messages) => {
 export const peerLeft = (peerID) => {
   return async (dispatch, getState) => {
     try {
-      let peer = getState().find((p) => p.peerID == peerID);
+      let peer = getState().socket.peers.find((p) => p.peerID == peerID);
       if (peer)
         dispatch(
           setNotification("Notification", `${peer?.user?.username} left the meet"`, "info-square")
