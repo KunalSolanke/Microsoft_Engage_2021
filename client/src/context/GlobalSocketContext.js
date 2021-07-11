@@ -105,9 +105,9 @@ const ContextProvider = ({ children }) => {
    * prev message : fetch all previous message of current chat
    * new message : set new message with corresponding chatID
    */
-  console.log(auth);
+  console.log("updateed the auth", auth);
   useEffect(() => {
-    console.log("updated");
+    console.log("Attempting to connect to socket");
     if (auth.token) {
       if (socket.connected) socket.disconnect();
       socket.auth = { token: auth.token };

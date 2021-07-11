@@ -27,21 +27,17 @@ function UserChatPage(props) {
     const {data,isLoading,error,refetch}=useFetchChat(chatID);
     /**Join chat  */
     useEffect(()=>{
-        context.socket.emit("join_chat",chatID)
-        dispatch({
-           type:actionTypes.SET_CHAT,
-           payload:chatID
-        })
         if(token)refetch(chatID);
-    },[chatID,token])
-
+    },[token])
+ 
     useEffect(()=>{
         context.socket.emit("join_chat",chatID)
         dispatch({
            type:actionTypes.SET_CHAT,
            payload:chatID
         })
-    },[])
+        if(token)refetch(chatID);
+    },[chatID])
     
     const makeCall = ()=>{
         if(data&&data.user)context.callUser({user:data.user},{chatID,userID:data.user._id})

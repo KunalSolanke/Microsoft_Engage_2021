@@ -32,16 +32,18 @@ function TeamChatPage(props) {
     /** Join chat on mount or channelId change */
 
     useEffect(()=>{
-        context.socket.emit("join_chat",channelID)
+        if(token)refetch(channelID);
+    },[token])
+    /**
+     * Join chat and set global chatId vriable
+     */
+    useEffect(()=>{
+         context.socket.emit("join_chat",channelID)
         dispatch({
            type:actionTypes.SET_CHAT,
            payload:channelID
         })
-        if(token)refetch(channelID);
-    },[channelID,token])
-     useEffect(()=>{
-        context.socket.emit("join_chat",channelID)
-    },[])
+    },[channelID])
 
     /** Start group call */
     const makeCall = ()=>{
