@@ -2,30 +2,47 @@ version: "3.8"
 
 services:
   web:
-    build: .
+    image: node:14-alpine
     ports:
       - "3000:3000"
     expose:
       - 3000
+      - 5000
     volumes:
       - ".:/app:rw"
-      - node_modules:/app/node_modules
-      - build:/app/build
-    command: serve
+    command: sh -c "cd /app &&yarn global add serve&& serve -s build"
     env_file:
       - .env
     environment:
       - VIRTUAL_HOST=connect-engage.voldemort.wtf
-      - VIRTUAL_PORT=3000
+      - VIRTUAL_PORT=5000
       - LETSENCRYPT_HOST=connect-engage.voldemort.wtf
       - LETSENCRYPT_EMAIL=kunalsolanke1000@gmail.com
       - REACT_APP_ENV=production
       - REACT_APP_BACKEND=1
+  docs:
+      image: node:14-alpine
+      expose:
+            - 5000
+      volumes:
+             - "./docs:/docs"
+      command: sh -c "yarn global add serve && serve -s docs"
+      environment:
+        - VIRTUAL_HOST=reactdocs.voldemort.wtf
+        - VIRTUAL_PORT=5000
+        - LETSENCRYPT_HOST=reactdocs.voldemort.wtf
+        - LETSENCRYPT_EMAIL=kunalsolanke1000@gmail.com
 
-volumes:
-  build:
-  node_modules:
+
 networks:
   default:
     external:
       name: nginx-proxy
+~                                                                                                                                                                                             
+~                                                                                                                                                                                             
+~                                                                                                                                                                                             
+~                                                                                                                                                                                             
+~                                                                                                                                                                                             
+~                                                                                                                                                                                             
+~                                                                                                                                                                                             
+"docker-compose.yaml" 40L,

@@ -6,17 +6,24 @@ const turnUri = process.env.REACT_APP_TURN_URI;
 /**
  * Peer connection options
  */
+
+let iceServers = [
+  { urls: "stun:stun.l.google.com:19302" },
+  { urls: "stun:global.stun.twilio.com:3478?transport=udp" },
+];
+if (turnUri)
+  iceServers = [
+    ...iceServers,
+    {
+      urls: turnUri,
+      username: "engage",
+      credential: "engage",
+    },
+  ];
+
 const peerOptions = {
   config: {
-    iceServers: [
-      { urls: "stun:stun.l.google.com:19302" },
-      { urls: "stun:global.stun.twilio.com:3478?transport=udp" },
-      {
-        urls: [turnUri],
-        username: "engage",
-        credential: "engage",
-      },
-    ],
+    iceServers,
   },
 };
 

@@ -37,6 +37,10 @@ function UserChatPage(props) {
 
     useEffect(()=>{
         context.socket.emit("join_chat",chatID)
+        dispatch({
+           type:actionTypes.SET_CHAT,
+           payload:chatID
+        })
     },[])
     
     const makeCall = ()=>{
