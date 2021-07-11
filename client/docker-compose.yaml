@@ -26,11 +26,3 @@ networks:
   default:
     external:
       name: nginx-proxy
-~                                                                                                                                                                                             
-~                                                                                                                                                                                             
-~                                                                                                                                                                                             
-~                                                                                                                                                                                             
-~                                                                                                                                                                                             
-~                                                                                                                                                                                             
-~                                                                                                                                                                                             
-"docker-compose.yaml" 40L,
