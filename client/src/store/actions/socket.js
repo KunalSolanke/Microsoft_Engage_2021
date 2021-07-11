@@ -33,6 +33,10 @@ export const addPeer = (peerObj) => {
             },
           })
         );
+      dispatch({
+        type: actionTypes.TOGGLE_DECK,
+        payload: true,
+      });
       dispatch(
         setNotification(
           "New user joined",
