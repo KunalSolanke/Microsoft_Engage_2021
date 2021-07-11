@@ -107,7 +107,8 @@ const ContextProvider = ({ children }) => {
    */
 
   useEffect(() => {
-    if (auth.profile && !socket.connected) {
+    if (auth.token) {
+      if (socket.connected) socket.disconnect();
       socket.auth = { token: auth.token };
       socket.connect();
       socket.on("incoming_call", handleIncomingCall);
@@ -126,7 +127,7 @@ const ContextProvider = ({ children }) => {
         socket.removeAllListeners("call_ended");
       };
     }
-  }, [auth.profile]);
+  }, [auth.token]);
 
   /**
    * If auth state fails try to refresh the token once before logging user out
