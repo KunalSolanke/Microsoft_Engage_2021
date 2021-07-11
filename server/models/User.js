@@ -199,21 +199,25 @@ userSchema.statics.upsertGoogleUser = async function (accessToken, refreshToken,
 
   if (!user) {
     user = await this.findOne({}).where("email").in(emails);
-    if (user && !user.image) {
-      user.image = profile.picture || null;
+  }
+  if (user && !user.image) {
+    try {
+      user.image = profile._json.picture || null;
       await user.save();
+    } catch (err) {
+      console.log(err);
     }
   }
   if (!user) {
     var newUser = new that({
       fullName: profile.displayName || null,
-      username: profile.displayName || null,
-      email: profile.emails[0].value || profile.email || null,
+      username: profile.name.givenName || profile.displayName || null,
+      email: profile._json.email || profile.emails[0].value || null,
       googleProvider: {
         id: profile.id,
         token: accessToken,
       },
-      image: profile.picture || null,
+      image: profile._json.picture || null,
     });
 
     await newUser.save(function (error, savedUser) {
@@ -252,21 +256,25 @@ userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken,
 
   if (!user) {
     user = await this.findOne({}).where("email").in(emails);
-    if (user && !user.image) {
-      user.image = profile.avatar_url || null;
+  }
+  if (user && !user.image) {
+    try {
+      user.image = profile.photos[0] || profile._json.avatar_url || null;
       await user.save();
+    } catch (err) {
+      console.log(err);
     }
   }
   if (!user) {
     var newUser = new that({
       fullName: profile.displayName || profile.username || null,
-      username: profile.displayName || profile.username || null,
+      username: profile.name.givenName || profile.displayName || null,
       email: profile.emails[0].value || profile.email || null,
       githubProvider: {
         id: profile.id,
         token: accessToken,
       },
-      image: profile.avatar_url || null,
+      image: profile.photos[0] || profile._json.avatar_url || null,
     });
 
     await newUser.save(function (error, savedUser) {

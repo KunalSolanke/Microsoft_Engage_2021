@@ -192,7 +192,7 @@ export const updateProfile = (data) => {
     } catch (err) {
       console.log(err);
       await dispatch(authFail(err));
-      let errMessage = err.response.data || err.message || err;
+      let errMessage = err.response?.data || err.message || err;
       dispatch(setNotification("Something went wrong", errMessage + "\nPlease try refreshing"));
     }
   };

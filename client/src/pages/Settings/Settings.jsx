@@ -56,22 +56,29 @@ function Settings() {
     const handleFileUpload = e=>{
         setprofileImage(URL.createObjectURL(e.target.files[0]));
         setprofileFile(e.target.files[0]);
+        console.log(e.target.files)
     }
    const handleSubmit = async (e)=>{
+     e.preventDefault();
+     setTimeout(() => {
+           setSuccess(false);
+           setDescription('Submitting...');
+           setIsSubmitting(false);
+           setAriaLive('off');
+     }, 1500);
      setAriaLive('asserative');
      setIsSubmitting(true)
      let formData = new FormData(e.target)
+     console.log(profileFile)
+     console.log(formData.get("image"))
      if(profileFile)formData.set("image",profileFile)
+     console.log(formData.get("image"))
+     setprofileFile(null)
      await dispatch(updateProfile(formData));
-     setIsSubmitting(false);
-        setSuccess(true);
-        setDescription('Submitted!');
-        setAriaLive('off');
-    setTimeout(() => {
-          setSuccess(false);
-          setDescription('Submitting...');
-          setAriaLive('off');
-        }, 1500);
+    setIsSubmitting(false);
+    setSuccess(true);
+    setDescription('Submitted!');
+    setAriaLive('off');
    }
 
      const renderUserProfile = ()=>{
@@ -137,8 +144,9 @@ function Settings() {
                         style={{ marginBottom: '1rem' }}
                         onChange={(e)=>{}}
                     />
-                    <TextArea {...TextAreaProps()} style={{ marginBottom: '1rem' }} onChange={(e)=>{}} name="bio" defaultValue={profile?.bio||""}/>
+                    <TextArea required {...TextAreaProps()} style={{ marginBottom: '1rem' }} onChange={(e)=>{}} name="bio" defaultValue={profile?.bio||""}/>
                     </FormGroup>
+                     
                     {isSubmitting || success ? (
             <InlineLoading
               style={{ marginLeft: '1rem' }}
@@ -147,7 +155,7 @@ function Settings() {
               aria-live={ariaLive}
             />
           ) : (
-            <Button kind="primary" type="submit" className="login__button">Save</Button>
+          <Button kind="primary" type="submit" className="login__button">Save</Button>
           )}
                    
                       
