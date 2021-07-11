@@ -1,12 +1,12 @@
-# Nodejs boilerplate
+# Connect backend
 
-     This is just another nodejs boilerplate with docker and eslint configuration to make dev easier .
+This is backend folder
 
 <img align="center" src="./public/images/landing.png"/>
 
 ## Skeleton
 
-Here is the basic suggested skeleton for your app repo that each of the starter templates conforms to:
+Here is the basic skeletion:
 
 ```bash
 ├── bin/www(server file)
@@ -24,6 +24,7 @@ Here is the basic suggested skeleton for your app repo that each of the starter 
 │   │   ├── **/*.js
 │   └── partials/template
 ├── README.md
+--- socket.js
 ├── node_modules
 ├── Dockerfile
 ├── docker_compose.yaml
@@ -32,13 +33,9 @@ Here is the basic suggested skeleton for your app repo that each of the starter 
 └── .gitignore
 ```
 
-> If you are using multer to save files on disc,configure it to save files inside pulblic>upload folder
-
 ## Dev Setup
 
-The docker files and environment variables are configured to be spin up mongo db inside one docker container and your applications inside another container.If you want to learn docker here is full [tutorial]()
-
-> NOTE : Please do not remove the environment the variables already present inside the env file
+The docker files and environment variables are configured to be spin up mongo db inside one docker container and your applications inside another container.
 
 ```bash
   #To start the containers
@@ -64,3 +61,5 @@ The docker files and environment variables are configured to be spin up mongo db
 
 <img align="center" src="./public/images/admin.png"/>
 In dev you can use any valid email  pass can be anything for login into admin panel make sure to remove those in product
+
+### docs are live [here](https://kunalsolanke.github.io/EngageNodeDocs/)
