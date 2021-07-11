@@ -78,22 +78,22 @@ Peers in the top bar can be added back to main area.
 
 ### 1-n video chat
 
-    Mutiple people can the meet and ui for multiple people is joining as follows,all the rest users get notified that new user has joined and if the deck is at its limit
-    (2) new user is pushed to top bar.
+Mutiple people can the meet and ui for multiple people is joining as follows,all the rest users get notified that new user has joined and if the deck is at its limit
+(2) new user is pushed to top bar.
 
 ### Chat inside meet
 
-    This chat is persited inside db,and if meet started from the 1-1 call or tems chat,same chat will be used inside the meet.
+This chat is persited inside db,and if meet started from the 1-1 call or tems chat,same chat will be used inside the meet.
 
 ### Screen share
 
-    Users can start their screen share with button below,this will replace the videoTrack of all the rest peers inside the meet
+Users can start their screen share with button below,this will replace the videoTrack of all the rest peers inside the meet
 
 ## Stop and start audio
 
-    When some stops or starts his audio or video such changes are reflected on the screens of rest of the other peers;
-    if video is off : user's profile is shown
-    if audio is off : mute symbol is shown
+When some stops or starts his audio or video such changes are reflected on the screens of rest of the other peers;
+if video is off : user's profile is shown
+if audio is off : mute symbol is shown
 
 # Folder structure
 
