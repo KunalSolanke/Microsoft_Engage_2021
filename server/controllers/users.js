@@ -4,7 +4,7 @@ const User = require("../models/User");
  * Route serving find Users
  * Find users by keyword
  * return users array
- * @name meet/chat/get
+ * @name findUsers
  * @function
  * @inner
  * @param {string} path - Express path

@@ -10,6 +10,7 @@ BASE_URL = process.env.BASE_URL || "project";
 /**
  * @function
  * @inner
+ * @name adminConfig
  * Admin panel configratioj
  * add dev and prod setup of admin panel
  */

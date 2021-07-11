@@ -2,7 +2,7 @@ const { User } = require("../models");
 const jwt = require("jsonwebtoken");
 /**
  * Socket js auth middleware
- * @name accounts/auth/middleware/socket
+ * @name socketAuth
  * @function
  * @inner
  *

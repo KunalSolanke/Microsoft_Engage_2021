@@ -5,7 +5,7 @@ const { setResToken } = require("../utils/tokens");
 /**
  * Route serving signup
  * Return userdata and tokens
- * @name accounts/signup
+ * @name Register
  * @function
  * @inner
  * @param {string} path - Express path
@@ -49,7 +49,7 @@ const signup = async (req, res) => {
 /**
  * Route serving slogin
  * Return userdata and tokens
- * @name accounts/login
+ * @name Login
  * @function
  * @inner
  * @param {string} path - Express path
@@ -84,7 +84,7 @@ const login = async (req, res) => {
 /**
  * Route serving refresh
  * Refersh tokens
- * @name accounts/referesh
+ * @name RefreshToken
  * @function
  * @inner
  * @param {string} path - Express path
@@ -124,7 +124,7 @@ const refresh = async (req, res) => {
 /**
  * Route serving logout
  * Return userdata and tokens
- * @name accounts/logout
+ * @name Logout
  * @function
  * @inner
  * @param {string} path - Express path

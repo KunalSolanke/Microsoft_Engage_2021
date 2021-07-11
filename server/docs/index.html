@@ -42,6 +42,66 @@
 
 
 
+    <section>
+        <article><h1>Nodejs boilerplate</h1>
+<pre><code> This is just another nodejs boilerplate with docker and eslint configuration to make dev easier .
+</code></pre>
+<img align="center" src="./public/images/landing.png"/>
+<h2>Skeleton</h2>
+<p>Here is the basic suggested skeleton for your app repo that each of the starter templates conforms to:</p>
+<pre class="prettyprint source lang-bash"><code>├── bin/www(server file)
+├── controllers(all the views)
+├── routes(all the routes)
+├── models (all database models)
+├── views
+│    ├── **/*.js(ejs views)
+├── public
+    ├──uploads(all the media uploaded by user)
+│   ├── css
+│   │   ├── **/*.css
+│   ├── images
+│   ├── js
+│   │   ├── **/*.js
+│   └── partials/template
+├── README.md
+├── node_modules
+├── Dockerfile
+├── docker_compose.yaml
+├── package.json
+├── yarn.lock(if using yarn)
+└── .gitignore
+</code></pre>
+<blockquote>
+<p>If you are using multer to save files on disc,configure it to save files inside pulblic&gt;upload folder</p>
+</blockquote>
+<h2>Dev Setup</h2>
+<p>The docker files and environment variables are configured to be spin up mongo db inside one docker container and your applications inside another container.If you want to learn docker here is full <a href="">tutorial</a></p>
+<blockquote>
+<p>NOTE : Please do not remove the environment the variables already present inside the env file</p>
+</blockquote>
+<pre class="prettyprint source lang-bash"><code>  #To start the containers
+  docker-compose up
+  #Stop containers in diff terminal than docker
+  docker-compose --volumes down
+  #build docker images
+  docker-compose up --build #if there are changes in installed deps
+  #faster builds
+  COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build
+  #windows
+  set &quot;COMPOSE_DOCKER_CLI_BUILD=1&quot; & set &quot;DOCKER_BUILDKIT=1&quot; & docker-compose build
+  # or to make this permanent add following to docker daemon /etc/docker/daemon.json
+  { &quot;features&quot;: { &quot;buildkit&quot;: true } }
+</code></pre>
+<p><strong>Helpers:</strong></p>
+<ol>
+<li>Remove dangling images: <code>docker rmi $(docker images -f dangling=true -q ) -f</code></li>
+<li>Remove all volumes: <code>docker volume rm $(docker volume ls -q)</code></li>
+</ol>
+<p><strong>Admin panel:</strong></p>
+<img align="center" src="./public/images/admin.png"/>
+In dev you can use any valid email  pass can be anything for login into admin panel make sure to remove those in product</article>
+    </section>
+
 
 
 
@@ -50,13 +110,16 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">accounts/auth/middleware</a></li><li><a href="global.html">accounts/auth/middleware/isloggedin1</a></li><li><a href="global.html">accounts/auth/middleware/socket</a></li><li><a href="global.html">accounts/login</a></li><li><a href="global.html">accounts/logout</a></li><li><a href="global.html">accounts/profile</a></li><li><a href="global.html">accounts/profile/update</a></li><li><a href="global.html">accounts/referesh</a></li><li><a href="global.html">accounts/signup</a></li><li><a href="global.html#answer_call">answer_call</a></li><li><a href="global.html#call_user">call_user</a></li><li><a href="global.html#change_media_state">change_media_state</a></li><li><a href="global.html#configureAdmin">configureAdmin</a></li><li><a href="global.html#create_group_meet">create_group_meet</a></li><li><a href="global.html#disconnect_socket">disconnect_socket</a></li><li><a href="global.html#endcall">endcall</a></li><li><a href="global.html#exit_meet">exit_meet</a></li><li><a href="global.html#getLastDay">getLastDay</a></li><li><a href="global.html#join_chat">join_chat</a></li><li><a href="global.html#join_meet">join_meet</a></li><li><a href="global.html">meet/channel/get</a></li><li><a href="global.html">meet/channels_add</a></li><li><a href="global.html">meet/chat/get</a></li><li><a href="global.html">meet/contacts_add</a></li><li><a href="global.html">meet/create</a></li><li><a href="global.html">meet/teams/get</a></li><li><a href="global.html">meet/teams_add</a></li><li><a href="global.html">models/users/azure_add</a></li><li><a href="global.html">models/users/find</a></li><li><a href="global.html">models/users/findByToken</a></li><li><a href="global.html">models/users/genToken</a></li><li><a href="global.html">models/users/github_add</a></li><li><a href="global.html">models/users/google_add</a></li><li><a href="global.html">models/users/presave</a></li><li><a href="global.html#new_message">new_message</a></li><li><a href="global.html#reject_call">reject_call</a></li><li><a href="global.html#return_signal">return_signal</a></li><li><a href="global.html#setResToken">setResToken</a></li><li><a href="global.html">social/azure</a></li><li><a href="global.html">social/github</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">accounts/auth/middleware</a></li><li><a href="global.html">addContact</a></li><li><a href="global.html">adminConfig
+Admin panel configratioj
+add dev and prod setup of admin panel</a></li><li><a href="global.html#answer_call">answer_call</a></li><li><a href="global.html#call_user">call_user</a></li><li><a href="global.html#change_media_state">change_media_state</a></li><li><a href="global.html#connnect_to_dbCreatedatabaseconnectionwithmongoosedb">connnect_to_db
+Create database connection with mongoose db</a></li><li><a href="global.html#create_group_meet">create_group_meet</a></li><li><a href="global.html">createChannel</a></li><li><a href="global.html">createMeeting</a></li><li><a href="global.html">createTeam</a></li><li><a href="global.html#disconnect_socket">disconnect_socket</a></li><li><a href="global.html#endcall">endcall</a></li><li><a href="global.html#exit_meet">exit_meet</a></li><li><a href="global.html">findUsers</a></li><li><a href="global.html">getChannel</a></li><li><a href="global.html">getChat</a></li><li><a href="global.html#getLastDay">getLastDay</a></li><li><a href="global.html">getMyContacts</a></li><li><a href="global.html">getMyLogs</a></li><li><a href="global.html">getMyTeams</a></li><li><a href="global.html">getProfile</a></li><li><a href="global.html">getTeam</a></li><li><a href="global.html">isLoggedIn</a></li><li><a href="global.html#join_chat">join_chat</a></li><li><a href="global.html#join_meet">join_meet</a></li><li><a href="global.html">joinTeams</a></li><li><a href="global.html">Login</a></li><li><a href="global.html">Logout</a></li><li><a href="global.html">models/users/azure_add</a></li><li><a href="global.html">models/users/find</a></li><li><a href="global.html">models/users/findByToken</a></li><li><a href="global.html">models/users/genToken</a></li><li><a href="global.html">models/users/github_add</a></li><li><a href="global.html">models/users/google_add</a></li><li><a href="global.html">models/users/presave</a></li><li><a href="global.html#new_message">new_message</a></li><li><a href="global.html">RefreshToken</a></li><li><a href="global.html">Register</a></li><li><a href="global.html#reject_call">reject_call</a></li><li><a href="global.html#return_signal">return_signal</a></li><li><a href="global.html#setResToken">setResToken</a></li><li><a href="global.html">social/azure</a></li><li><a href="global.html">social/github</a></li><li><a href="global.html">socketAuth</a></li><li><a href="global.html">UpdateProfile</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jul 10 2021 15:15:12 GMT+0530 (India Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jul 10 2021 22:43:36 GMT+0530 (India Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

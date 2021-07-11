@@ -32,7 +32,7 @@
  * Route serving find Users
  * Find users by keyword
  * return users array
- * @name meet/chat/get
+ * @name findUsers
  * @function
  * @inner
  * @param {string} path - Express path
@@ -71,13 +71,16 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">accounts/auth/middleware</a></li><li><a href="global.html">accounts/auth/middleware/isloggedin1</a></li><li><a href="global.html">accounts/auth/middleware/socket</a></li><li><a href="global.html">accounts/login</a></li><li><a href="global.html">accounts/logout</a></li><li><a href="global.html">accounts/profile</a></li><li><a href="global.html">accounts/profile/update</a></li><li><a href="global.html">accounts/referesh</a></li><li><a href="global.html">accounts/signup</a></li><li><a href="global.html#answer_call">answer_call</a></li><li><a href="global.html#call_user">call_user</a></li><li><a href="global.html#change_media_state">change_media_state</a></li><li><a href="global.html#configureAdmin">configureAdmin</a></li><li><a href="global.html#create_group_meet">create_group_meet</a></li><li><a href="global.html#disconnect_socket">disconnect_socket</a></li><li><a href="global.html#endcall">endcall</a></li><li><a href="global.html#exit_meet">exit_meet</a></li><li><a href="global.html#getLastDay">getLastDay</a></li><li><a href="global.html#join_chat">join_chat</a></li><li><a href="global.html#join_meet">join_meet</a></li><li><a href="global.html">meet/channel/get</a></li><li><a href="global.html">meet/channels_add</a></li><li><a href="global.html">meet/chat/get</a></li><li><a href="global.html">meet/contacts_add</a></li><li><a href="global.html">meet/create</a></li><li><a href="global.html">meet/teams/get</a></li><li><a href="global.html">meet/teams_add</a></li><li><a href="global.html">models/users/azure_add</a></li><li><a href="global.html">models/users/find</a></li><li><a href="global.html">models/users/findByToken</a></li><li><a href="global.html">models/users/genToken</a></li><li><a href="global.html">models/users/github_add</a></li><li><a href="global.html">models/users/google_add</a></li><li><a href="global.html">models/users/presave</a></li><li><a href="global.html#new_message">new_message</a></li><li><a href="global.html#reject_call">reject_call</a></li><li><a href="global.html#return_signal">return_signal</a></li><li><a href="global.html#setResToken">setResToken</a></li><li><a href="global.html">social/azure</a></li><li><a href="global.html">social/github</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html">accounts/auth/middleware</a></li><li><a href="global.html">addContact</a></li><li><a href="global.html">adminConfig
+Admin panel configratioj
+add dev and prod setup of admin panel</a></li><li><a href="global.html#answer_call">answer_call</a></li><li><a href="global.html#call_user">call_user</a></li><li><a href="global.html#change_media_state">change_media_state</a></li><li><a href="global.html#connnect_to_dbCreatedatabaseconnectionwithmongoosedb">connnect_to_db
+Create database connection with mongoose db</a></li><li><a href="global.html#create_group_meet">create_group_meet</a></li><li><a href="global.html">createChannel</a></li><li><a href="global.html">createMeeting</a></li><li><a href="global.html">createTeam</a></li><li><a href="global.html#disconnect_socket">disconnect_socket</a></li><li><a href="global.html#endcall">endcall</a></li><li><a href="global.html#exit_meet">exit_meet</a></li><li><a href="global.html">findUsers</a></li><li><a href="global.html">getChannel</a></li><li><a href="global.html">getChat</a></li><li><a href="global.html#getLastDay">getLastDay</a></li><li><a href="global.html">getMyContacts</a></li><li><a href="global.html">getMyLogs</a></li><li><a href="global.html">getMyTeams</a></li><li><a href="global.html">getProfile</a></li><li><a href="global.html">getTeam</a></li><li><a href="global.html">isLoggedIn</a></li><li><a href="global.html#join_chat">join_chat</a></li><li><a href="global.html#join_meet">join_meet</a></li><li><a href="global.html">joinTeams</a></li><li><a href="global.html">Login</a></li><li><a href="global.html">Logout</a></li><li><a href="global.html">models/users/azure_add</a></li><li><a href="global.html">models/users/find</a></li><li><a href="global.html">models/users/findByToken</a></li><li><a href="global.html">models/users/genToken</a></li><li><a href="global.html">models/users/github_add</a></li><li><a href="global.html">models/users/google_add</a></li><li><a href="global.html">models/users/presave</a></li><li><a href="global.html#new_message">new_message</a></li><li><a href="global.html">RefreshToken</a></li><li><a href="global.html">Register</a></li><li><a href="global.html#reject_call">reject_call</a></li><li><a href="global.html#return_signal">return_signal</a></li><li><a href="global.html#setResToken">setResToken</a></li><li><a href="global.html">social/azure</a></li><li><a href="global.html">social/github</a></li><li><a href="global.html">socketAuth</a></li><li><a href="global.html">UpdateProfile</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jul 10 2021 15:15:12 GMT+0530 (India Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jul 10 2021 22:43:36 GMT+0530 (India Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

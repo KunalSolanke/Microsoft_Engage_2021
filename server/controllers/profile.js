@@ -5,7 +5,7 @@ const Activity = require("../models/Activity");
 /**
  * Route serving get user profile
  * get users profile
- * @name accounts/profile
+ * @name getProfile
  * @function
  * @inner
  * @param {string} path - Express path
@@ -26,7 +26,7 @@ const getProfile = async (req, res) => {
  * Route serving update user profile
  * with all fields in user model
  * get users profile
- * @name accounts/profile/update
+ * @name UpdateProfile
  * @function
  * @inner
  * @param {string} path - Express path
@@ -54,7 +54,7 @@ const updateProfile = async (req, res) => {
  * Route serving get my contacts from
  * get users contacts
  * return populated chat with user profiles
- * @name accounts/profile
+ * @name getMyContacts
  * @function
  * @inner
  * @param {string} path - Express path
@@ -87,7 +87,7 @@ const getMyContacts = async (req, res) => {
 /**
  * Route serving get my teams
  * return all the team I am participant in
- * @name accounts/profile
+ * @name getMyTeams
  * @function
  * @inner
  * @param {string} path - Express path
@@ -119,7 +119,7 @@ const getLastDay = function (month, year) {
  * Route serving get my activity
  * returns all the feed of user ,
  * based on month if provided
- * @name accounts/profile
+ * @name getMyLogs
  * @function
  * @inner
  * @param {string} path - Express path

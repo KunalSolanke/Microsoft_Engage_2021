@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 /**
- * @memberof db
  * @name connnect_to_db
  * Create database connection with mongoose db
  * @function

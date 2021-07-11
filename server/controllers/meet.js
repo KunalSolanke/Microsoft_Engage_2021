@@ -5,7 +5,7 @@ const { createLog } = require("../utils");
  * Route serving chat
  * Create new chat between two users
  * return chat
- * @name meet/contacts_add
+ * @name addContact
  * @function
  * @inner
  * @param {string} path - Express path
@@ -40,7 +40,7 @@ const createChat = async (req, res) => {
  * Route serving create meet
  * Create new meet
  * return meet
- * @name meet/create
+ * @name createMeeting
  * @function
  * @inner
  * @param {string} path - Express path
@@ -82,7 +82,7 @@ const createMeet = async (req, res) => {
  * Route serving team
  * Create new team
  * return chat
- * @name meet/teams_add
+ * @name createTeam
  * @function
  * @inner
  * @param {string} path - Express path
@@ -120,7 +120,7 @@ const createTeam = async (req, res) => {
  * Route serving get chat
  * get chat by chatID
  * return chat
- * @name meet/chat/get
+ * @name getChat
  * @function
  * @inner
  * @param {string} path - Express path
@@ -145,7 +145,7 @@ const getChat = async (req, res) => {
  * Route serving get team
  * Get team by ID
  * return team
- * @name meet/teams/get
+ * @name getTeam
  * @function
  * @inner
  * @param {string} path - Express path
@@ -169,7 +169,7 @@ const getTeam = async (req, res) => {
  * Route serving create new channel in teams
  * Create new channel in teams
  * return channel obj
- * @name meet/channels_add
+ * @name createChannel
  * @function
  * @inner
  * @param {string} path - Express path
@@ -196,7 +196,7 @@ const createChannel = async (req, res) => {
  * Route serving get channel
  * Get channel by id
  * return channel
- * @name meet/channel/get
+ * @name getChannel
  * @function
  * @inner
  * @param {string} path - Express path
@@ -217,7 +217,7 @@ const getChannel = async (req, res) => {
 };
 /**
  * Route serving join team
- * @name meet/chat/get
+ * @name joinTeams
  * @function
  * @inner
  * @param {string} path - Express path

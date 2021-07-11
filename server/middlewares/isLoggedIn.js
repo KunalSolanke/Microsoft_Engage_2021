@@ -1,7 +1,7 @@
 /**
  * isLogged in  middleware
  * Check if user if logged in or not
- * @name accounts/auth/middleware/isloggedin1
+ * @name isLoggedIn
  * @function
  * @inner
  * @param {string} path - Express path
