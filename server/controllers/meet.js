@@ -64,7 +64,7 @@ const createMeet = async (req, res) => {
       });
       if (!chat)
         chat = await Chat.create({
-          particpants: [req.user._id, req.body.userID],
+          participants: [req.user._id, req.body.userID],
         });
       chatID = chat._id;
     }

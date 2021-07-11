@@ -37,6 +37,7 @@ const updateProfile = async (req, res) => {
   try {
     let user = req.user;
     await User.findByIdAndUpdate(user._id, req.body);
+    console.log(req.file);
     if (req.file) {
       user.image = req.file.url;
       await user.save();

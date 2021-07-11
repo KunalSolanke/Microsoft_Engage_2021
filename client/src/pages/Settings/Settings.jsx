@@ -18,7 +18,7 @@ const fileUploader= () => {
       buttonLabel: "Add profile pic",
       buttonKind: 'primary',
       filenameStatus: 'edit',
-      accept: ['.jpg', '.png','.jpeg','.svg'],
+      accept: ['image/*'],
       name: "image",
       multiple: false,
       iconDescription: "Upload imge"

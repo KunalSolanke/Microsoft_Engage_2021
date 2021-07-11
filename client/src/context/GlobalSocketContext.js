@@ -44,7 +44,7 @@ const videoConstraints = {
 const ContextProvider = ({ children }) => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const auth = useSelector((state) => state.auth);
+  const token = useSelector((state) => state.auth.token);
   const meet = useSelector((state) => state.socket.meet);
   const currentChat = useSelector((state) => state.socket.chatID);
 
@@ -105,12 +105,12 @@ const ContextProvider = ({ children }) => {
    * prev message : fetch all previous message of current chat
    * new message : set new message with corresponding chatID
    */
-  console.log("updateed the auth", auth);
+  console.log("updateed the auth", token);
   useEffect(() => {
     console.log("Attempting to connect to socket");
-    if (auth.token) {
+    if (token) {
       if (socket.connected) socket.disconnect();
-      socket.auth = { token: auth.token };
+      socket.auth = { token: token };
       socket.connect();
       socket.on("incoming_call", handleIncomingCall);
       socket.on("callaccepted", handleCallAccepted);
@@ -128,16 +128,16 @@ const ContextProvider = ({ children }) => {
         socket.removeAllListeners("call_ended");
       };
     }
-  }, [auth.token]);
+  }, [token]);
 
   /**
    * If auth state fails try to refresh the token once before logging user out
    */
   useEffect(() => {
-    if (!auth.token) {
+    if (!token) {
       dispatch(authCheckState(history));
     }
-  }, [auth.token]);
+  }, [token]);
 
   //======================== CALLING USER =========================================
   /**

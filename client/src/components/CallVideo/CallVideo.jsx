@@ -95,7 +95,8 @@ function CallVideo({peerObj}) {
                 peerObj?.peerID==userID?"You":peerObj?.user?.username
             }</p>
             <div className="peer__video">
-                    {checkVideo()?<video autoPlay playsInline ref={ref} className={"videoplayer "+
+                    {checkVideo()?<video autoPlay 
+                    playsInline ref={ref} className={"videoplayer "+
                     (peerObj.isPinned?"pinned":"")
                     +(peerObj.isPinned&&userDeckopen?" pinned_deck":"")
                 }
