@@ -62,9 +62,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(`/static`, express.static(path.join(__dirname, "public")));
-app.use("/api", express.static(__dirname + "/docs"));
-app.use("/api", express.directory(__dirname + "/docs"));
-
 /*========== ROUTING SETUP : DECLARE YOURS ROUTERS INSIDE INDEXROUTER =================================*/
 
 app.use(`/`, indexRouter);
