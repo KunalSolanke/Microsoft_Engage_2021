@@ -17,13 +17,13 @@ function SignUpPage() {
                    <Column md={4} sm={12} lg={4}>
                        <h3>Sign up</h3>
                        <div className="redirect">
-                           <Link to="#">Already have an Account ? </Link>
+                           <Link to="/accounts/login">Already have an Account ? </Link>
                            <Link to="/accounts/login">Login</Link> 
                        </div>
                        <hr color="#ededed" style={{marginTop:"1rem",marginBottom:"1rem"}}/>
                        <SignUpForm/>
                         <div className="redirect">
-                           <Link to="#">Need help?Contact us here</Link>
+                           <Link to="/contact">Need help?Contact us here</Link>
                            <Link to="/contact">Support</Link> 
                        </div>
                    </Column>

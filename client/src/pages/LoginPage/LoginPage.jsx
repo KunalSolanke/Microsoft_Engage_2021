@@ -23,13 +23,13 @@ function LoginPage() {
                    <Column md={4} sm={12} lg={4}>
                        <h3>Log In</h3>
                        <div className="redirect">
-                           <Link to="#">Don't have an Account ? </Link>
+                           <Link to="/accounts/signup">Don't have an Account ? </Link>
                            <Link to="/accounts/signup">Signup</Link> 
                        </div>
                        <hr color="#ededed" style={{marginTop:"1rem",marginBottom:"2rem"}}/>
                        <LoginForm/>
                         <div className="redirect">
-                           <Link to="#">Need help?Contact us here</Link>
+                           <Link to="/contact">Need help?Contact us here</Link>
                            <Link to="/contact">Support</Link> 
                        </div>
                    </Column>
