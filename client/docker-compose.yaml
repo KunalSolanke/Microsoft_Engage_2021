@@ -20,20 +20,8 @@ services:
       - LETSENCRYPT_EMAIL=kunalsolanke1000@gmail.com
       - REACT_APP_ENV=production
       - REACT_APP_BACKEND=1
-  docs:
-      image: node:14-alpine
-      expose:
-            - 5000
-      volumes:
-             - "./docs:/docs"
-      command: sh -c "yarn global add serve && serve -s docs"
-      environment:
-        - VIRTUAL_HOST=reactdocs.voldemort.wtf
-        - VIRTUAL_PORT=5000
-        - LETSENCRYPT_HOST=reactdocs.voldemort.wtf
-        - LETSENCRYPT_EMAIL=kunalsolanke1000@gmail.com
-
-
+      - REACT_APP_TURN_URI=turn:20.102.73.48:3479?transport=tcp
+  s
 networks:
   default:
     external:
