@@ -236,12 +236,7 @@ export const authRegister = ({ username, email, password }) => {
       });
       let token = response.data.token;
       console.log("sennding post req....", response.data);
-      const data = {
-        username,
-        email,
-        token,
-      };
-      await dispatch(authSuccess(data));
+      await dispatch(authSuccess(response.data));
       await dispatch(getProfile());
       dispatch(setNotification("Success", "Registered successfully", "success"));
       dispatch(checkauthtimeout((response.data.expiry - 60) * 1000));
