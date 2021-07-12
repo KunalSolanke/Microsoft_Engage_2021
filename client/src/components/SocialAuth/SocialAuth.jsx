@@ -83,7 +83,7 @@ function SocialAuth() {
             >
               <img src="https://img.icons8.com/ios-glyphs/52/000000/github.png" className={"socialButton"}/>
             </GitHubLogin>
-            <MicrosoftLogin
+            {/* <MicrosoftLogin
               clientId={config.outlook.clientId}
               className="button"
               validateAuthority={config.outlook.validateAuthority}
@@ -92,7 +92,7 @@ function SocialAuth() {
               tenantUrl={config.outlook.tenantUrl}
             >
               <img src="https://img.icons8.com/color/48/000000/microsoft-outlook-2019--v2.png" className={"socialButton"}/>
-            </MicrosoftLogin>
+            </MicrosoftLogin> */}
         </div>
         </div>
     )
