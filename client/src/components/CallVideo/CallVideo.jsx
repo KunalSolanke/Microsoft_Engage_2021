@@ -19,7 +19,6 @@ function CallVideo({peerObj}) {
     const userDeckopen = useSelector(state=>state.socket.userDeckOn)
 
     useEffect(()=>{
-        console.log(peerStream)
       if(peerStream&&ref.current)ref.current.srcObject=peerStream.stream;
     },[peerStream])
 

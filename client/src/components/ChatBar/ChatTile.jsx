@@ -13,7 +13,7 @@ function ChatTile(props) {
     const userID= useSelector(state => state.auth.userID)
     const user = props.chat.participants[0]._id==userID?props.chat.participants[1]:props.chat.participants[0]
     let getTitle = ()=>{
-        let peers= props.chat.participants.filter(p=>p._id!=userID);
+        let peers= props.chat.participants.filter(p=>p._id!==userID);
         let chatpeople = peers.map(p=>p.username);
         return chatpeople.join().slice(0,20)
     }

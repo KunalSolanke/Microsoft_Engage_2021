@@ -24,24 +24,24 @@ function VideoControls() {
     /**start video */
     const handleVideoOff = (e)=>{
        if(userVideoStream)userVideoStream.getVideoTracks()[0].enabled=true;
-        dispatch(setmediaState({videoPaused:false},userID,context.socket,meetID))
+       dispatch(setmediaState({videoPaused:false},userID,context.socket,meetID))
     }
     /**stop video */
     const handleVideoOn =()=>{
         if(userVideoStream)userVideoStream.getVideoTracks()[0].enabled=false;
-       dispatch(setmediaState({videoPaused:true},userID,context.socket,meetID))
+	dispatch(setmediaState({videoPaused:true},userID,context.socket,meetID))
     }
     /**stop audio */
     const handleAudioOn = (e)=>{
         if(userVideoStream&&
         userVideoStream.getAudioTracks()[0])userVideoStream.getAudioTracks()[0].enabled=false;  
-        dispatch(setmediaState({muted:true},userID,context.socket,meetID))
+	dispatch(setmediaState({muted:true},userID,context.socket,meetID))
     }
     /**start audio */
     const handleAudioOff = (e)=>{
         if(userVideoStream
           &&userVideoStream.getAudioTracks()[0])userVideoStream.getAudioTracks()[0].enabled=true;
-        dispatch(setmediaState({muted:false},userID,context.socket,meetID))
+	dispatch(setmediaState({muted:false},userID,context.socket,meetID))
     }
     /**stop screen */
     const handleScreenOn = (e)=>{

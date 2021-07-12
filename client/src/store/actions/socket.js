@@ -476,7 +476,7 @@ export const unPinUser = (userID) => {
         type: actionTypes.UPDATE_PEERS,
         payload: peers,
       });
-    } catch (err) {
+    }catch (err) {
       dispatch(
         setNotification(
           "Warning:Pin user failed due to network error",
@@ -548,7 +548,7 @@ export const setmediaState = (mediaState, peerID, socket = null, meetID = null) 
           payload: mediaState,
         });
       }
-      if (peerIndex != -1) {
+ if (peerIndex != -1) {
         peerStreams[peerIndex] = {
           ...peerStreams[peerIndex],
           ...mediaState,

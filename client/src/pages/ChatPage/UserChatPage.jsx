@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react'
 import ChatBar from '../../components/ChatBar/ChatBar'
 import DashboardLayout from '../../layouts/DashboardLayout/DashboardLayout'
 import "./_styles.css"
-import { UserAvatar16, VideoChat20, VideoChat32 } from '@carbon/icons-react'
+import { UserAvatar16, VideoChat20, VideoChat32, Group16 } from '@carbon/icons-react'
 import SendMessage from "../../components/SendMessage/SendMessage"
 import UserChatArea from './UserChatArea'
 import { socket, SocketContext } from '../../context/GlobalSocketContext'
@@ -22,6 +22,7 @@ import HI from "../../assets/images/Hi.png"
 function UserChatPage(props) {
     const context = useContext(SocketContext)
     const {chatID}= useParams()
+    const userID = useSelector(state=>state.auth.userID);
     const dispatch = useDispatch()
     const token = useSelector(state => state.auth.token)
     const {data,isLoading,error,refetch}=useFetchChat(chatID);
@@ -45,7 +46,7 @@ function UserChatPage(props) {
     }
 
     let getTitle = (data)=>{
-        let peers = data.participants.filter(p=>p._id!=userID);
+        let peers = data.participants.filter(p=>p._id!==userID);
         let chatpeople = peers.map(p=>p.username);
         return chatpeople.join()
     }
@@ -70,10 +71,11 @@ function UserChatPage(props) {
                                                     </>
                                 :(<UserAvatar16 className="user__profile"/>)}</>)}
 
-
-                                <h5>{data.is_group?"Group":data?.user?.username}</h5>
-                                {data.is_group?<p>{getTitle(data)}</p>:null}
-                                </div>
+                                <div>
+                                	<h5>{data?.is_group?"Group":data?.user?.username}</h5>
+					{data?.is_group?<p>{getTitle(data)}</p>:null}
+		                </div>				
+				</div>
                                 <div className="chathead__call" onClick={(e)=>makeCall()}>
                                   <VideoChat20/>
                                 </div>
