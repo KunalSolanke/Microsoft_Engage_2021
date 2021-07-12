@@ -20,7 +20,7 @@ function ChatTile(props) {
     const handleOnClick = e=>{history.push(`/dashboard/chat/${props.chat._id}`)}
     return (
         <div className={"chat__tile"+(chatID==props.chat._id?" white":"")} onClick={e=>handleOnClick()}>
-            {props.chat.is_group?(<>
+            {props.chat.is_meet_group?(<>
             <Group16 className="user__profile"/>
             </>):(<>
             {user&&user.image? <>
@@ -29,7 +29,7 @@ function ChatTile(props) {
             :(<UserAvatar16 className="user__profile"/>)}
             </>)}
             <div className="chattile__content">
-                {props.chat.is_group?<p style={{fontSize:"12px"}}>Group</p>:null}
+                {props.chat.is_meet_group?<p style={{fontSize:"12px"}}>Group</p>:null}
                 <h6 style={{marginBottom:"0.4rem"}}>{getTitle()}</h6>
             {chatID!=props.chat._id?
             <p>

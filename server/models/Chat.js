@@ -28,7 +28,7 @@ const chatSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    is_meet_chat: {
+    is_meet_group: {
       type: Boolean,
       default: false,
     },

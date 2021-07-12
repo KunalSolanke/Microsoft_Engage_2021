@@ -66,7 +66,7 @@ const getMyContacts = async (req, res) => {
   try {
     let contacts = await Chat.find({
       participants: req.user._id,
-      is_meet_chat: false,
+      is_group: false,
       is_channel: false,
     })
       .lean()
@@ -99,6 +99,8 @@ const getMyTeams = async (req, res) => {
     let teams = await Chat.find({
       participants: req.user._id,
       is_group: true,
+      is_meet_group: false,
+      is_channel: false,
     }).exec();
     res.send(teams);
   } catch (err) {

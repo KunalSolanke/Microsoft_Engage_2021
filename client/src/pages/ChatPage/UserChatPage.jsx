@@ -42,7 +42,7 @@ function UserChatPage(props) {
     
     const makeCall = ()=>{
         if(data){
-            if(data.is_group){
+            if(data.is_meet_group){
                 context.groupMeet(chatID)
             }
             else if(data.user)context.callUser({user:data.user},{chatID,userID:data.user._id})
@@ -69,7 +69,7 @@ function UserChatPage(props) {
                           <Column sm={4} md={6} lg={13} style={{height:"100%",padding:"0rem"}} className="userchat">
                              <div className="chatpage_head">
                                 <div>
-                                    {data?.is_group?(<>
+                                    {data?.is_meet_group?(<>
                             <Group16 className="user__profile"/>
                             </>):(<>{data?.user&&data?.user?.image? <>
                                                     <img src={data?.user?.image} className="user__profile"/>
@@ -77,8 +77,8 @@ function UserChatPage(props) {
                                 :(<UserAvatar16 className="user__profile"/>)}</>)}
 
                                 <div>
-                                	<h5>{data?.is_group?"Group":data?.user?.username}</h5>
-					{data?.is_group?<p>{getTitle(data)}</p>:null}
+                                	<h5>{data?.is_meet_group?"Group":data?.user?.username}</h5>
+					{data?.is_meet_group?<p>{getTitle(data)}</p>:null}
 		                </div>				
 				</div>
                                 <div className="chathead__call" onClick={(e)=>makeCall()}>

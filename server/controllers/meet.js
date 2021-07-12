@@ -21,7 +21,7 @@ const createChat = async (req, res) => {
       ],
       is_channel: false,
       is_group: false,
-      is_meet_chat: false,
+      is_meet_group: false,
     })
       .populate("messages")
       .exec();
@@ -60,7 +60,7 @@ const createMeet = async (req, res) => {
         ],
         is_channel: false,
         is_group: false,
-        is_meet_chat: false,
+        is_meet_group: false,
       });
       if (!chat)
         chat = await Chat.create({
