@@ -73,7 +73,7 @@ const getMyContacts = async (req, res) => {
       .populate("participants", "-refreshTokens")
       .populate("messages")
       .exec();
-    contacts = contacts.filter((c) => c.participants.length >= 1);
+    contacts = contacts.filter((c) => c.participants.length > 1);
     contacts = contacts.map((c) => ({
       last_message: c.messages.length > 0 ? c.messages[chat.messages.length - 1] : null,
       chat: (({ messages, ...o }) => o)(c),
