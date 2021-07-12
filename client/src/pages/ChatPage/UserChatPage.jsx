@@ -41,8 +41,13 @@ function UserChatPage(props) {
     },[chatID])
     
     const makeCall = ()=>{
-        if(data&&data.user)context.callUser({user:data.user},{chatID,userID:data.user._id})
-        else alert("Please refresh the page")
+        if(data){
+            if(data.is_group){
+                context.groupMeet(chatID)
+            }
+            else if(data.user)context.callUser({user:data.user},{chatID,userID:data.user._id})
+            else alert("Please refresh browser")
+        }else alert("Please refresh browser")
     }
 
     let getTitle = (data)=>{
