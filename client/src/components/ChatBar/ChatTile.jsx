@@ -1,4 +1,4 @@
-import { UserAvatar16 } from '@carbon/icons-react'
+import { Group16, UserAvatar16 } from '@carbon/icons-react'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import {useHistory, useParams} from "react-router-dom"
