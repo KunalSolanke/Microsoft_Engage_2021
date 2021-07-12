@@ -66,7 +66,6 @@ const getMyContacts = async (req, res) => {
   try {
     let contacts = await Chat.find({
       participants: req.user._id,
-      is_group: false,
       is_meet_chat: false,
       is_channel: false,
     })

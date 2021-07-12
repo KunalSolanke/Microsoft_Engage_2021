@@ -37,7 +37,8 @@ Users can choose to chat with anyone just by searching them and adding them to t
 
 ```
 Imeplentation details:
-Messages are persisted with chatId and message object inside mongo database with the help of socket events
+Messages are persisted with chatId and message object inside
+mongo database with the help of socket events
 ```
 
 ## Teams
@@ -118,6 +119,14 @@ I have used js docs for both client and server so here are github pages of both
 2. [Backend](https://kunalsolanke.github.io/EngageNodeDocs/)
 
 More info can be found inside the readmes of both folders
+
+# User flow and plans
+
+I used whimiscal to lay the basic user flow in the beginning and then used trello to follow through plan
+and list all important things
+
+1. [Trello](https://trello.com/b/atuNjaPP/engage)
+2. [UserFlow](https://whimsical.com/connect-engage-CGWvuzuggiU1sKJBbg8psn)
 
 ## Here are some snaps
 

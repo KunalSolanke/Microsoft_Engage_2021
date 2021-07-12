@@ -12,15 +12,25 @@ function ChatTile(props) {
     const {chatID} = useParams()
     const userID= useSelector(state => state.auth.userID)
     const user = props.chat.participants[0]._id==userID?props.chat.participants[1]:props.chat.participants[0]
+    let getTitle = ()=>{
+        let peers= props.chat.participants.filter(p=>p._id!=userID);
+        let chatpeople = peers.map(p=>p.username);
+        return chatpeople.join().slice(0,20)
+    }
     const handleOnClick = e=>{history.push(`/dashboard/chat/${props.chat._id}`)}
     return (
         <div className={"chat__tile"+(chatID==props.chat._id?" white":"")} onClick={e=>handleOnClick()}>
+            {props.chat.is_group?(<>
+            <Group16 className="user__profile"/>
+            </>):(<>
             {user&&user.image? <>
                 <img src={user.image} className="user__profile"/>
                 </>
             :(<UserAvatar16 className="user__profile"/>)}
+            </>)}
             <div className="chattile__content">
-                <h6 style={{marginBottom:"0.4rem"}}>{user?.username}</h6>
+                {props.chat.is_group?<p style={{fontSize:"12px"}}>Group</p>:null}
+                <h6 style={{marginBottom:"0.4rem"}}>{getTitle()}</h6>
             {chatID!=props.chat._id?
             <p>
                 {props.last_message?<>{props.last_message?.slice(0,20)}...</>:<>No new message</>}

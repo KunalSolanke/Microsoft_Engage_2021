@@ -74,6 +74,14 @@ const addParticipants = async (meetID, userID) => {
       meet.participants.push(userID);
       meet.save();
     }
+    let chat = await Chat.findById(meet.chat);
+    if (chat) {
+      if (!chat.participants.includes(userID)) {
+        chat.participants.push(userID);
+        chat.is_group = true;
+        chat.save();
+      }
+    }
     console.log("New participant", meet);
   } catch (err) {}
 };

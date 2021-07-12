@@ -44,6 +44,12 @@ function UserChatPage(props) {
         else alert("Please refresh the page")
     }
 
+    let getTitle = (data)=>{
+        let peers = data.participants.filter(p=>p._id!=userID);
+        let chatpeople = peers.map(p=>p.username);
+        return chatpeople.join()
+    }
+
     return (
         <DashboardLayout>
             <Content
@@ -57,11 +63,16 @@ function UserChatPage(props) {
                           <Column sm={4} md={6} lg={13} style={{height:"100%",padding:"0rem"}} className="userchat">
                              <div className="chatpage_head">
                                 <div>
-                                    {data?.user&&data?.user?.image? <>
-                                    <img src={data?.user?.image} className="user__profile"/>
-                                    </>
-                                :(<UserAvatar16 className="user__profile"/>)}
-                                    <h5>{data?.user?.username}</h5>
+                                    {data?.is_group?(<>
+                            <Group16 className="user__profile"/>
+                            </>):(<>{data?.user&&data?.user?.image? <>
+                                                    <img src={data?.user?.image} className="user__profile"/>
+                                                    </>
+                                :(<UserAvatar16 className="user__profile"/>)}</>)}
+
+
+                                <h5>{data.is_group?"Group":data?.user?.username}</h5>
+                                {data.is_group?<p>{getTitle(data)}</p>:null}
                                 </div>
                                 <div className="chathead__call" onClick={(e)=>makeCall()}>
                                   <VideoChat20/>
