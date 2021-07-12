@@ -9,7 +9,7 @@ const google = {
 const outlook = {
   clientId: "4b50ad11-ad70-42d7-8a61-1f640f386f82",
   validateAuthority: false,
-  redirectUri: env == "dev" ? "http://localhost:5000/" : "https://interview-tracker.netlify.app/",
+  redirectUri: env == "dev" ? "http://localhost:5000/" : "https://connect-engage.voldemort.wtf/",
   tenantUrl: "https://login.microsoftonline.com/850aa78d-94e1-4bc6-9cf3-8c11b530701c",
 };
 const github = {
