@@ -103,17 +103,21 @@ Mutiple people can the meet and ui for multiple people is joining as follows,all
 
 ### Chat inside meet
 
-This chat is persited inside db,and if meet started from the 1-1 call or tems chat,same chat will be used inside the meet.
+This chat is persited inside db,and if meet started from the 1-1 call or teams chat,same chat will be used inside the meet.
+If you invite muliple users in 1-1 call the current chat will be labelled as group chat and all meeting particoipants will be added
+in that.
+If meeting was started inside a team channel,invitees will be added to the team to which that channel belongs.
 
 ### Screen share
 
-Users can start their screen share with button below,this will replace the videoTrack of all the rest peers inside the meet
+Users can start their screen share with button below,this will replace the videoTrack of all the rest peers inside the meet.
+On stopping screen share camera video will be replaced back.
 
 ## Stop and start audio
 
 When some stops or starts his audio or video such changes are reflected on the screens of rest of the other peers;
-if video is off : user's profile is shown
-if audio is off : mute symbol is shown
+if video is off/not active : user's profile is shown
+if audio is off/not active : mute symbol is shown
 
 # Folder structure
 
