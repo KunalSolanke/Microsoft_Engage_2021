@@ -20,7 +20,7 @@ Connect: Helps youActivey enagage and collaborate with your peers.
  
  [Product](https://connect-engage.voldemort.wtf)
 
- Backend is hosted on azure with 4 worker nodes setup,also for testing purpose and due to the ease in continous deployed,a dev version
+ Backend is hosted on azure with 4 worker nodes setup,also for testing purpose and due to the ease in continous deployment,a dev version
  is deployed on netlify and heroku .<br/>
  [Netlify](https://connect-engage.netlify.app)
 
