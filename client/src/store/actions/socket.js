@@ -379,7 +379,6 @@ export const stopShare = () => {
 export const connectAlPeers = ({ users, chatID }, peersRef) => {
   return async (dispatch, getState) => {
     try {
-      console.log("Setting new chat", chatID);
       let stream = getState().socket.userVideoStream;
       dispatch(setChat(chatID));
       connectToAllUsers(users, dispatch, peersRef, stream, getState().auth.userID);

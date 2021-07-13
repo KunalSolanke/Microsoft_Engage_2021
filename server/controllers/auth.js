@@ -58,7 +58,6 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log("email,passowrd on server are...", email, password);
   try {
     const user = await User.findByCredentials(email, password);
     let accessToken = await user.generateAuthToken("3d");

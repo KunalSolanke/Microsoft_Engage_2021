@@ -56,7 +56,6 @@ function Settings() {
     const handleFileUpload = e=>{
         setprofileImage(URL.createObjectURL(e.target.files[0]));
         setprofileFile(e.target.files[0]);
-        console.log(e.target.files)
     }
    const handleSubmit = async (e)=>{
      e.preventDefault();
@@ -69,10 +68,7 @@ function Settings() {
      setAriaLive('asserative');
      setIsSubmitting(true)
      let formData = new FormData(e.target)
-     console.log(profileFile)
-     console.log(formData.get("image"))
      if(profileFile)formData.set("image",profileFile)
-     console.log(formData.get("image"))
      setprofileFile(null)
      await dispatch(updateProfile(formData));
     setIsSubmitting(false);
@@ -82,7 +78,6 @@ function Settings() {
    }
 
      const renderUserProfile = ()=>{
-         console.log(profileImage)
        if(profileImage)return (
            <>
            <img src={profileImage} className="profile__avatar"/>

@@ -80,7 +80,6 @@ userSchema.pre("save", async function (next) {
   const user = this;
   if (user.isModified("password")) {
     user.password = await bycrpt.hash(user.password, 8);
-    console.log(user.password);
   }
   next();
 });
@@ -119,9 +118,7 @@ userSchema.statics.findByCredentials = async function (email, password) {
       },
     });
   }
-  console.log(user);
   let res = await bycrpt.compare(password, user.password);
-  console.log(res);
   if (res) {
     return user;
   }
@@ -142,7 +139,6 @@ userSchema.statics.findByCredentials = async function (email, password) {
  * @param {*} cb
  */
 userSchema.statics.upsertAzureUser = async function (token, cb) {
-  console.log(token);
   var that = this;
   let user = await this.findOne({
     "azureProvider.id": token.oid,
@@ -191,7 +187,6 @@ userSchema.statics.upsertGoogleUser = async function (accessToken, refreshToken,
     emails = profile.emails.map((e) => e.value);
   }
 
-  console.log(profile);
   var that = this;
   let user = await this.findOne({
     "googleProvider.id": profile.id,
@@ -248,7 +243,7 @@ userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken,
     emails = profile.emails.map((e) => e.value);
   }
 
-  console.log(profile);
+
   var that = this;
   let user = await this.findOne({
     "githubProvider.id": profile.id,
@@ -297,7 +292,6 @@ userSchema.statics.upsertGithubUser = async function (accessToken, refreshToken,
  *
  */
 userSchema.statics.findByRefreshToken = async function (token) {
-  console.log(token);
   try {
     let { _id } = await jwt.verify(token, process.env.JWT_REFRESH_KEY);
     let user = await this.findById(_id);

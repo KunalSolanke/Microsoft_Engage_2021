@@ -75,7 +75,7 @@ const ContextProvider = ({ children }) => {
    */
 
   const handlePrevMessages = (messages) => {
-    console.log("Saving prev messages...", messages);
+    console.log("Saving prev messages...");
     dispatch(prevMessages(messages));
   };
 
@@ -84,7 +84,6 @@ const ContextProvider = ({ children }) => {
    * @param {} message
    */
   const handleNewMessage = (message) => {
-    console.log("Saved new message ", message);
     dispatch(newMessage(message));
   };
 
@@ -105,9 +104,7 @@ const ContextProvider = ({ children }) => {
    * prev message : fetch all previous message of current chat
    * new message : set new message with corresponding chatID
    */
-  console.log("updateed the auth", token);
   useEffect(() => {
-    console.log("Attempting to connect to socket");
     if (token) {
       if (socket.connected) socket.disconnect();
       socket.auth = { token: token };
@@ -220,17 +217,13 @@ const ContextProvider = ({ children }) => {
 
   /** reset all state to default,handles end call inside meeting */
   const leftMeet = (peerID) => {
-    console.log("user left chat", peerID);
     peersRef.current = peersRef.current.filter((p) => p.peerID != peerID);
     dispatch(peerLeft(peerID));
   };
 
   /** Simple peer event,handle received signal back from the peer initially signalled */
   const receiveSignalBack = (payload) => {
-    console.log("Receive signal back", payload);
     const peerRef = peersRef.current.findIndex((p) => p.peerID === payload.id);
-    console.log("found a user peer to signal to ... ", peerRef);
-    console.log(peersRef);
     if (peerRef != -1 && !peersRef.current[peerRef].destroyed) {
       try {
         peersRef.current[peerRef].peer.signal(payload.signal);
@@ -290,7 +283,10 @@ const ContextProvider = ({ children }) => {
       .then((stream) => {
         dispatch(startShare(stream));
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>{
+          console.log(err);
+          dispatch(setNotification("Media Error", `Please make sure media is allowed`, "error"));
+      });
   };
 
   const stopScreenShare = () => {
@@ -329,7 +325,7 @@ const ContextProvider = ({ children }) => {
   };
 
   const leaveCall = (meetID) => {
-    console.log("leaving");
+    console.log("Leaving meet...");
     socket.emit("leave_meet", meetID);
     if (meet) reinitialize();
   };

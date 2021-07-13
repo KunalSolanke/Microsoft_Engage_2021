@@ -37,7 +37,7 @@ const updateProfile = async (req, res) => {
   try {
     let user = req.user;
     await User.findByIdAndUpdate(user._id, req.body);
-    console.log(req.file);
+
     if (req.file) {
       user.image = req.file.url;
       await user.save();
@@ -134,7 +134,6 @@ const getMyLogs = async (req, res) => {
     if (req.body.start_month) {
       let date = new Date(req.body.start_month);
       let last_date = getLastDay(date.getMonth() + 1, date.getFullYear());
-      console.log(date, last_date);
       myLogTable = await Activity.find({
         user: req.user._id,
         created_at: {

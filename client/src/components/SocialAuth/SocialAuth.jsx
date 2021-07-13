@@ -22,7 +22,6 @@ function SocialAuth() {
      * @param {*} data 
      */
     const azureAuthHandler =async (err, data) => {
-        console.log(err, data);
         let token = JSON.stringify({access_token: data?.idToken?.rawIdToken})
         await dispatch(socialAuth(token,"microsoft"))
     };
@@ -32,8 +31,6 @@ function SocialAuth() {
      * @param {*} response
      */
     const onGithubSuccess = async (response) => {
-       console.log(response);
-    
        await dispatch(socialAuth(response,"github"))
     }
     const onFailure = (response) => console.error(response);
@@ -42,7 +39,6 @@ function SocialAuth() {
      * @param {*} response
      */
     const responseGoogle = async (response) => {
-        console.log(response);
         let token = getToken(response)
        await dispatch(socialAuth(token,"google"))
     };

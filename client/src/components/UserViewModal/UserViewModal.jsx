@@ -35,7 +35,6 @@ function UserViewModal({user,open,setmodelopen}) {
         context.callUser({user});
     }
     const onAddContact = ()=>{
-        console.log("Adding user to contacts")
         mutation.mutate(user._id)
     }
     return (

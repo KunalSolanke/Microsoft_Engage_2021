@@ -52,8 +52,8 @@ const DashBoardRoutes = () => (
  * Componet for routing to different pages
  * @component
  */
-const Router = () => {
-  console.log("Starting app");
+const Router = () => { 
+  console.log("Welcome to connect");
   return (
     <ErrorBoundary fallback={<ErrorOther />}>
       <BrowserRouter>

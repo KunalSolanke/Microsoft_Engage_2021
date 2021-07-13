@@ -81,7 +81,6 @@ const peerLeft = (state, action) => {
  */
 const setPeerStream = (state, action) => {
   let connectedPeerStreams = state.peerStreams;
-  console.log(state);
   let streamIndex = connectedPeerStreams.findIndex(
     (stream) => stream.peerID == action.payload.peerID
   );

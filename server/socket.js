@@ -219,7 +219,7 @@ const configure_socket = (server) => {
         const meet = await getMeet(meetID);
         leaveMeet(meetID, socket.user._id);
         createLog(socket.user._id, "Left meet started by  " + meet.author.username);
-        console.log("Leaving meet .....", meet);
+        console.log("Leaving meet .....");
         socket.to(`${meet.chat}`).emit("left_meet", socket.user._id);
         socket.leave(`${meet.chat}`);
       }

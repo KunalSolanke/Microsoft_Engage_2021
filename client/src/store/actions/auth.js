@@ -100,7 +100,7 @@ export const authCheckState = (history) => {
  */
 export const logout = () => {
   return async (dispatch, getState) => {
-    console.log("hree");
+    console.log("Log user out");
     try {
       const token = await getState().auth.token;
 
@@ -130,7 +130,6 @@ let wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 export const checkauthtimeout = (expiry) => {
   return async (dispatch, getState) => {
     await wait(expiry);
-    console.log(expiry, "here");
     try {
       await dispatch(authUpdateState());
     } catch (err) {
@@ -164,7 +163,7 @@ export const getProfile = () => {
     } catch (err) {
       console.log(err);
       await dispatch(authFail(err));
-      let errMessage = err.response.data || err.message || err;
+      let errMessage = err.response?.data || err.message || err;
       dispatch(setNotification("Something went wrong", errMessage + "\nPlease try refreshing"));
     }
   };
@@ -176,10 +175,8 @@ export const getProfile = () => {
  */
 
 export const updateProfile = (data) => {
-  console.log("entering here");
   return async (dispatch, getState) => {
     dispatch(updateProfileRequest());
-    console.log("entering here");
     const token = await getState().auth.token;
     if (!token) {
       return;
@@ -187,7 +184,6 @@ export const updateProfile = (data) => {
     try {
       axios.defaults.headers["Authorization"] = `Token ${token}`;
       const response = await axios.post(`/accounts/profile`, data);
-      console.log(response);
       await dispatch(getProfileSuccess(response.data));
     } catch (err) {
       console.log(err);
@@ -214,8 +210,7 @@ export const authLogin = ({ password, email }) => {
     } catch (err) {
       console.log(err);
       await dispatch(authFail(err));
-      let errMessage = err.response.data || err.message || err;
-      console.log(errMessage, err.response, err.message);
+      let errMessage = err.response?.data || err.message || err;
       dispatch(setNotification("Something went wrong", errMessage + "\nPlease try refreshing"));
     }
   };
@@ -235,7 +230,6 @@ export const authRegister = ({ username, email, password }) => {
         password,
       });
       let token = response.data.token;
-      console.log("sennding post req....", response.data);
       await dispatch(authSuccess(response.data));
       await dispatch(getProfile());
       dispatch(setNotification("Success", "Registered successfully", "success"));
@@ -259,7 +253,6 @@ export const socialAuth = (data, provider) => {
     await dispatch(authStart());
     try {
       const response = await axios.post(`/auth/social/${provider}`, data);
-      console.log("sending post req....", response.data);
       const expiry = new Date(new Date().getTime() + (response.data.expiry - 60) * 1000);
       await dispatch(authSuccess(response.data));
       await dispatch(getProfile());
@@ -268,7 +261,7 @@ export const socialAuth = (data, provider) => {
     } catch (err) {
       console.log(err);
       await dispatch(authFail(err));
-      let errMessage = err.response.data || err.message || err;
+      let errMessage = err.response?.data || err.message || err;
       dispatch(setNotification("Something went wrong", errMessage + "\nPlease try refreshing"));
     }
   };

@@ -19,7 +19,7 @@ function IncomingCall({user}) {
                     (<UserAvatar20 className="user__avatar"/>)
             }
             <div class="call__actions">
-                <div className="accept_button" onClick={(e)=>{ console.log("answer")
+                <div className="accept_button" onClick={(e)=>{ 
                   context.answerCall()}}>
                   <PhoneIncomingFilled24  />
                 </div>

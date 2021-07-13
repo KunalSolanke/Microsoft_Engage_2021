@@ -91,7 +91,6 @@ const addParticipants = async (meetID, userID) => {
         }
       }
     }
-    console.log("New participant", meet);
   } catch (err) {}
 };
 
@@ -101,12 +100,10 @@ const leaveMeet = async (meetID, userID) => {
   try {
     meet = await Meet.findById(meetID);
     if (meet.participants.includes(`${userID}`)) {
-      console.log("Leaving ");
       meet.participants = meet.participants.filter((id) => id != `${userID}`);
       await meet.save();
     }
   } catch (err) {}
-  console.log("Meet after leaving ", meet);
 };
 
 const createLog = async (userID, log) => {

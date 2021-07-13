@@ -9,7 +9,6 @@ router.route("/google").post(
   passport.authenticate("google-token", { session: false }),
 
   function (req, res, next) {
-    console.log(req.body);
     if (!req.user) {
       return res.status(400).send("User Not Authenticated");
     }
@@ -25,7 +24,6 @@ router.route("/google").post(
 
 router.route("/github").post(
   async (req, res, next) => {
-    console.log(req.body);
     const { code } = req.body;
 
     const data = {};
@@ -33,7 +31,6 @@ router.route("/github").post(
     data["client_secret"] = process.env.GITHUB_CLIENT_SECRET;
     data["code"] = code;
     data["redirect_uri"] = "";
-    console.log(data);
     try {
       // Request to exchange code for an access token
       const res = await fetch("https://github.com/login/oauth/access_token", {
@@ -47,7 +44,6 @@ router.route("/github").post(
       let params = new URLSearchParams(paramsString);
       const access_token = params.get("access_token");
       req.body.access_token = access_token;
-      console.log(paramsString);
       next();
     } catch (err) {
       console.log(err);
