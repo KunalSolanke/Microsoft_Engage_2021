@@ -43,7 +43,7 @@ Let's start with listing and somewhat knowing what they are:
     Involves complete jwt authetication flow,including
     social auth with passport js and jwt
 
-> :Warning: If you are some add blockers or browsers like brave which by default block
+> :Warning: If you are using some add blockers or browsers like brave which by default block
 > third party cookies,please allow them first,even Ms teams web won't work without that.
 
 ## Call User
