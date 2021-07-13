@@ -1,7 +1,9 @@
 # Connect
 
 Connect: Helps youActivey enagage and collaborate with your peers.
-[Join now](https://connect-engage.voldemort.wtf)
+**[Join now](https://connect-engage.voldemort.wtf)**
+
+<br/>
 <img align="center" src="./images/1.png"/>
 
 # Stack
@@ -14,6 +16,21 @@ Connect: Helps youActivey enagage and collaborate with your peers.
 - socket io
 - carbon design lib and desgin aspects
 
+# Docs
+
+Lets talk a little about docs.
+I have used js docs for both client and server so here are github pages of both
+
+1. [Frontend](https://kunalsolanke.github.io/EngageReactDocs/)
+2. [Backend](https://kunalsolanke.github.io/EngageNodeDocs/)
+
+if you are a reader docs inside the code are self sufficient
+
+1. [Frontend](./client)
+2. [Backend](./server)
+
+More info can be found inside the readmes of both folders
+
 # Features
 
 Let's start with listing and somewhat knowing what they are:
@@ -22,10 +39,12 @@ Let's start with listing and somewhat knowing what they are:
 
     - Google
     - Github
-    - Outlook(for IITG)
 
     Involves complete jwt authetication flow,including
     social auth with passport js and jwt
+
+> :Warning: If you are some add blockers or browsers like brave which by default block
+> third party cookies,please allow them first,even Ms teams web won't work without that.
 
 ## Call User
 
@@ -105,21 +124,6 @@ if audio is off : mute symbol is shown
 
 more inside the respectivefolder
 
-# Docs
-
-Lets talk a little about docs.
-if you are a reader docs inside the code are self sufficient
-
-1. [Frontend](./client)
-2. [Backend](./server)
-
-I have used js docs for both client and server so here are github pages of both
-
-1. [Frontend](https://kunalsolanke.github.io/EngageReactDocs/)
-2. [Backend](https://kunalsolanke.github.io/EngageNodeDocs/)
-
-More info can be found inside the readmes of both folders
-
 # User flow and plans
 
 I used whimiscal to lay the basic user flow in the beginning and then used trello to follow through plan
@@ -129,8 +133,6 @@ and list all important things
 2. [UserFlow](https://whimsical.com/connect-engage-CGWvuzuggiU1sKJBbg8psn)
 
 ## Here are some snaps
-
-# Gallery
 
 Here we have a quick glimse at all the ui aspects of Connect
 
