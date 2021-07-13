@@ -1,9 +1,0 @@
-{
-    "editor.formatOnSave": true,
-    "eslint.autoFixOnSave": true,
-    "eslint.options": {
-        "ignorePattern": [
-            "!client/src/*"
-        ],
-    }
-}
